@@ -68,7 +68,7 @@ Note: After import the image, edit the yml file with the correct location.
 SROS vSIMs require a valid license. You need to get a valid license from Nokia and place it in the "/r23_license.key" file.
 ```bash
 # Copy/paste the license to the "r23_license.key" file
-cd SROS_CLAB_FP5_ANYSec/
+cd sros-anysec-macsec-lab/
 vi r23_license.key
 # press "i" key for insert mode => paste the license => ctl+x to save and exit 
 ```
@@ -85,7 +85,7 @@ The physical setup is ilustrated below:
 
 
 <p align="center">
-  <img width="900" height="500" src="https://github.com/tiago-amado/SROS_CLAB_FP5_ANYSec/blob/main/pics/physical-setup.jpg?raw=true">
+  <img width="900" height="500" src="https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/physical-setup.jpg?raw=true">
 </p>
 
 
@@ -125,7 +125,7 @@ The logical setup with the services is the following:
 
 
 <p align="center">
-  <img width="900" height="500" src="https://github.com/tiago-amado/SROS_CLAB_FP5_ANYSec/blob/main/pics/vprn.jpg?raw=true">
+  <img width="900" height="500" src="https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/logical-setup.jpg?raw=true">
 </p>
 
 
@@ -177,7 +177,7 @@ The 3 SR-ISIS topologies are illustrated bellow:
 
 
 <p align="center">
-  <img width="900" height="500" src="https://github.com/tiago-amado/SROS_CLAB_FP5_ANYSec/blob/main/pics/vll.jpg?raw=true">
+  <img width="900" height="500" src="https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/isis-topology.jpg?raw=true">
 </p>
 
 
@@ -295,7 +295,7 @@ The following picture picture ilustrates the Telemetry and Automation stack:
 
 
 <p align="center">
-  <img width="900" height="500" src="https://github.com/tiago-amado/SROS_CLAB_FP5_ANYSec/blob/main/pics/telemetry_automation.jpg?raw=true">
+  <img width="900" height="500" src="https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/telemetry-automation.jpg?raw=true">
 </p>
 
 
@@ -332,7 +332,7 @@ Nokia has an internal version with a protocol dissector for ANYSec MACSec / 802.
 This is the output comparison between the public wireshark and the Nokia's version:
 
 
-![pic1](https://github.com/tiago-amado/SROS_CLAB_FP5_ANYSec/blob/main/pics/ANYSec_Wireshark.jpg)
+![pic1](https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/anysec-wireshark.jpg)
 
 
 Note: With the public Wireshark, the ANYSec header not decoded but you still be able to validate ANYSec looking into the ANYSec label.
@@ -347,7 +347,7 @@ The ANYSec introduces the MACSec Header and the Encryption SID (ES) label betwee
 The picture below provides an example of the ANYSec label stack between PE1 and PE2.
 
 
-![pic1](https://github.com/tiago-amado/SROS_CLAB_FP5_ANYSec/blob/main/pics/ANYSec_Stack.jpg?raw=true)
+![pic1](https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/anysec-stack.jpg?raw=true)
 
 
 
@@ -359,7 +359,7 @@ TCPDUMP on a single interface shows label stack correctly (Ethernet+VLAN+MPLS+AN
 TCPDUMP on a multiple interfaces shows a distinct stack: Linux cooked capture v2 + additional MPLS Label (instead of Ethernet + VLAN)
 
 
-![pic1](https://github.com/tiago-amado/SROS_CLAB_FP5_ANYSec/blob/main/pics/ANYSec_Tcpdump.jpg?raw=true)
+![pic1](https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/anysec-tcpdump.jpg?raw=true)
 
 
 
@@ -401,7 +401,7 @@ show router bgp routes 10.0.0.2/32 vpn-ipv4 hunt
 
 
 <p align="center">
-  <img width="900" height="500" src="https://github.com/tiago-amado/SROS_CLAB_FP5_ANYSec/blob/main/pics/LINK-DOWN.jpg?raw=true">
+  <img width="900" height="500" src="https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/link-down.jpg?raw=true">
 </p>
 
 ### Test 2 - Disable ANYSec at PE1 and PE2 
@@ -413,7 +413,7 @@ Re-enable ANYSec and verify traffic is encrypted again
 
 
 <p align="center">
-  <img width="900" height="500" src="https://github.com/tiago-amado/SROS_CLAB_FP5_ANYSec/blob/main/pics/ANYSec-DISABLE.jpg?raw=true">
+  <img width="900" height="500" src="https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/anysec-disable.jpg?raw=true">
 </p>
 
 
