@@ -12,7 +12,7 @@ The automation uses Flask with python and gNMIc to start/stop traffic, enable/di
 
 
 ## ANYSec Overview
-ANYSec is a Nokia network encryption solution available with the new FP5 models in SROS 23.10R1. 
+ANYSec is a Nokia network encryption solution available with the new FP5 models in SROS 23.10R2. 
 It is low-latency line-rate encryption, scalable, flexible and ensures a quantum-safe network encryption solution for the industry.
 It is a simple concept, based on MACSec standards as the foundation and introduces the flexibility to offset the authentication and encription to allow L2, L2.5 and L3 encryption.
 
@@ -26,7 +26,7 @@ To deploy these labs, you must clone these labs to your server with "git clone".
 # change to your working directory
 cd /home/user/
 # Clone the lab to your server
-git clone https://github.com/tiago-amado/SROS_CLAB_FP5_ANYSec.git
+git clone git@github.com:tiago-amado/sros-anysec-macsec-lab.git
 ```
 
 
@@ -93,14 +93,23 @@ The physical setup is ilustrated below:
 The setup contains six SROS FP5 routers with 23.10R2 and 2 linux. The network contains 2 P routers, 2 PEs running ANYSec and MACSec, 2 CEs with MACSec, and 2 Linux Clients with 3 interfaces for distinct services. 
 howhever only two of them have ANYSec configured:
    - P Routers
+
 		•	sr-2se (FP5 only)
+
 		•	sr-7s (FP5 only)
+
    - PE Routers with ANYSec and MACSec
+
 		•	sr-1x-92s 
+
 		•	sr-1se
+
    - CE Routers with MACSec
+
 		•	sr-1-24d
+
 		•	sr-1-46s
+    
    - Clients are Linux hosts
 
 
@@ -143,14 +152,20 @@ ANYSec slicing is possible within 20.10R1 with 2 options:
 
 
 To demonstrate both options, 3 ISIS instance are configured:
+
 •	ISIS 0 – Flex-Algo with TE-Metrics (other constraints are possible)
+
 •	ISIS 1- IGP metrics to prefer TOP LINK
+
 •	ISIS 2 – IGP metrics to prefer BOTTOM LINK
 
 
 Regarding Services, also 3 are created:
+
 •	VLL 1001 – ISIS 1 => TOP LINK
+
 •	VPLS 1002 – ISIS 2 => BOTTOM LINK
+
 •	VPRN 1003 – ISIS 0 => Flex-Algo 
 
 
@@ -329,7 +344,7 @@ Note: With the public Wireshark, the ANYSec header not decoded but you still be 
 
 
 The ANYSec introduces the MACSec Header and the Encryption SID (ES) label between the SR-ISIS transport and VPRN service labels. The VPRN service label is encrypted.
-The picture below provides an example of the ANYSec label stack between R1 and R2.
+The picture below provides an example of the ANYSec label stack between PE1 and PE2.
 
 
 ![pic1](https://github.com/tiago-amado/SROS_CLAB_FP5_ANYSec/blob/main/pics/ANYSec_Stack.jpg?raw=true)
@@ -372,7 +387,7 @@ show router bgp routes 10.0.0.2/32 vpn-ipv4 hunt
 The tests bellow can be executed in multiple ways: flask demo page, gnmic scripts or node CLI.
 
 
-### Test 1 - Shut/No shut the link between R1 and R2 
+### Test 1 - Shut/No shut the link between PE1 and PE2 
 
 Upon shut/no shut verify ANYSec is still working but using a new SR-ISIS tunnel
 ```bash
@@ -389,7 +404,7 @@ show router bgp routes 10.0.0.2/32 vpn-ipv4 hunt
   <img width="900" height="500" src="https://github.com/tiago-amado/SROS_CLAB_FP5_ANYSec/blob/main/pics/LINK-DOWN.jpg?raw=true">
 </p>
 
-### Test 2 - Disable ANYSec at R1 and R2 
+### Test 2 - Disable ANYSec at PE1 and PE2 
 
 Upon Disable ANYSec verify ping is still working but unecripted
 Re-enable ANYSec and verify traffic is encrypted again
