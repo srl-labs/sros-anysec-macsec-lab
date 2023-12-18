@@ -5,6 +5,7 @@ ANYSec is a Nokia technology that provides low-latency and line-rate native encr
 
 This lab is an ANYSec demo using Nokia SROS FP5 (https://www.nokia.com/networks/technologies/fp5/) vSIMs running at CLAB (https://containerlab.dev/).
 It combines ANYSec with MACSec and ilustrates ANYSec slicing for distinct services with multi-instance SR-ISIS and FLEX-Algo. 
+
 It also provides a visiluazitation dashboard using a Telemetry stack with gNMIc, Prometheus and Grafana.
 The automation uses Flask with python and gNMIc to start/stop traffic, enable/disable links and enable/disable ANYSec.
 
@@ -20,7 +21,7 @@ It is a simple concept, based on MACSec standards as the foundation and introduc
 
 ## Clone the git lab to your server
 
-To deploy these labs, you must clone these labs to your server with "git clone".
+To deploy this lab, you must clone it to your server with "git clone".
 
 ```bash
 # change to your working directory
@@ -91,12 +92,12 @@ The physical setup is ilustrated below:
 
 
 The setup contains six SROS FP5 routers with 23.10R2 and 2 linux. The network contains 2 P routers, 2 PEs running ANYSec and MACSec, 2 CEs with MACSec, and 2 Linux Clients with 3 interfaces for distinct services. 
-howhever only two of them have ANYSec configured:
+Howhever only two of them, the PEs, have ANYSec configured:
    - P Routers
 
-		•	sr-2se (FP5 only)
+		•	sr-2se
 
-		•	sr-7s (FP5 only)
+		•	sr-7s
 
    - PE Routers with ANYSec and MACSec
 
@@ -111,6 +112,7 @@ howhever only two of them have ANYSec configured:
 		•	sr-1-46s
     
    - Clients are Linux hosts
+
 
 
 
@@ -144,11 +146,15 @@ The setup has:
 
 
 
+
 ### Services and Slicing
 
 ANYSec slicing is possible within 20.10R1 with 2 options:
+
 •	Multi-Instance SR IGP instance
+
 •	Flex-Algo
+
 
 
 To demonstrate both options, 3 ISIS instance are configured:
@@ -160,6 +166,7 @@ To demonstrate both options, 3 ISIS instance are configured:
 •	ISIS 2 – IGP metrics to prefer BOTTOM LINK
 
 
+
 Regarding Services, also 3 are created:
 
 •	VLL 1001 – ISIS 1 => TOP LINK
@@ -169,7 +176,9 @@ Regarding Services, also 3 are created:
 •	VPRN 1003 – ISIS 0 => Flex-Algo 
 
 
+
 Note: Each of the 3 client interfaces is mapped to a distinct service. Its possible to start iPerf or ICMP between on every interface to test the distinct topologies.
+
 
 
 The 3 SR-ISIS topologies are illustrated bellow:
@@ -252,6 +261,7 @@ ssh $containerlab_host_address "ip netns exec $lab_node_name tcpdump -U -nni $if
 
 Linux example:
 ssh root@10.82.182.179 "ip netns exec pe1 tcpdump -U -nni eth1 -w -" | /mnt/c/Program\ Files/Wireshark/wireshark.exe -k -i -
+
 Windows example:
 ssh root@10.82.182.179 "ip netns exec pe1 tcpdump -U -nni eth1 -w -" | "c:\Program Files\Wireshark\Wireshark.exe" -k -i -
 ```
@@ -277,6 +287,7 @@ It also includes Automation for the tests using gNMIC invoked through python fro
  
 
 
+
 ### Telemetry and automation stack
 
 The following stack of software solutions has been chosen for this lab:
@@ -287,6 +298,7 @@ The following stack of software solutions has been chosen for this lab:
 | Time-Series DB      | [prometheus](https://prometheus.io)                 | 9090               | http://localhost:9090/graph        |                    |
 | Visualization       | [grafana](https://grafana.com)                      | 3000               | http://localhost:3000              | admin/admin        |
 | Flask Server/gnmic  | [flask](https://flask.palletsprojects.com/en/3.0.x/)| 9080               | http://localhost:9080/             |                    |
+
 
 
 
@@ -311,6 +323,7 @@ If you are accessing from a remote host, then replace localhost by the CLAB Serv
 
 
 
+
 ## Verify the setup
 
 Verify that you're able to access all nodes (Routers and clients) and the platforms (Grafana, Prometheus and Flask Demo Page).
@@ -320,6 +333,7 @@ Start a Tcpdump/wireshark capture as explained above and start traffic between C
 You may shut the link between PE1 and P3 and see that ANYSec SR-ISIS traffic uses the bottom link.
 
 You may also disable ANYSec to view packets in clear.
+
 
 
 
@@ -340,6 +354,7 @@ Note: With the public Wireshark, the ANYSec header not decoded but you still be 
 
 
 
+
 ### ANYSec Stack
 
 
@@ -348,6 +363,7 @@ The picture below provides an example of the ANYSec label stack between PE1 and 
 
 
 ![pic1](https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/anysec-stack.jpg?raw=true)
+
 
 
 
@@ -404,6 +420,8 @@ show router bgp routes 10.0.0.2/32 vpn-ipv4 hunt
   <img width="900" height="500" src="https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/link-down.jpg?raw=true">
 </p>
 
+
+
 ### Test 2 - Disable ANYSec at PE1 and PE2 
 
 Upon Disable ANYSec verify ping is still working but unecripted
@@ -413,8 +431,9 @@ Re-enable ANYSec and verify traffic is encrypted again
 
 
 <p align="center">
-  <img width="900" height="500" src="https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/anysec-disable.jpg?raw=true">
+  <img width="900" height="500" src="https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/disable-anysec.jpg?raw=true">
 </p>
+
 
 
 
@@ -426,6 +445,7 @@ The Demo Video shows the Grafana Dashboard, the wireshark and the CLI with ICMP.
 
 
 [![Watch the video](http://img.youtube.com/vi/Ka6-zXaPYGI/maxresdefault.jpg)](https://youtu.be/Ka6-zXaPYGI)
+
 
 
 
