@@ -368,17 +368,36 @@ The picture below provides an example of the ANYSec label stack between PE1 and 
 
 
 
-### Capture multiple interfaces 
+### TCPDump Capture multiple interfaces 
 
 
 TCPDUMP on a single interface shows label stack correctly (Ethernet+VLAN+MPLS+ANYSec)
-TCPDUMP on a multiple interfaces shows a distinct stack: Linux cooked capture v2 + additional MPLS Label (instead of Ethernet + VLAN)
+TCPDUMP on a multiple interfaces (any for all) shows a distinct stack: Linux cooked capture v2 + additional MPLS Label (instead of Ethernet + VLAN)
 
 
 ![pic1](https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/anysec-tcpdump.jpg?raw=true)
 
 
 
+
+### TShark Capture multiple interfaces 
+
+Tshark is similar to TCPDump but allows to define only the interfaces to capture and does not change the header stack. 
+The drawback is it has to be installed in the CLAB Server (not installed by default as TCPDump).
+
+
+Install Tshark at CLAB Server/hypervisor:
+```bash
+sudo apt install tshark
+tshark --version
+tshark -D
+```
+
+
+Execute Tshark an pipe output to Wireshark:
+```bash
+ssh root@10.82.182.179 "ip netns exec pe1 tshark -l -i eth3 -i eth1 -i eth2 -w -" | "c:\Program Files\Wireshark\Wireshark.exe" -k -i -
+```
 
 
 ## Outputs
