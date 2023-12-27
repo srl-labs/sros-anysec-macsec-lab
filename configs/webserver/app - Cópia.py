@@ -7,6 +7,27 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+
+@app.route('/execute_python')
+def execute_python_script():
+    try:
+        result = subprocess.run('python3 /flask_app/hello.py', shell=True, capture_output=True, text=True)
+        return f"Python Script Execution Result: {result.stdout}"
+
+    except subprocess.CalledProcessError as e:
+        return f"Error executing Python script: {e.stderr}"
+
+
+@app.route('/execute_shell')
+def execute_shell_script():
+    try:
+        result = subprocess.run('echo "Shell script"', shell=True, capture_output=True, text=True)
+        return f"Shell Script Execution Result (example): {result.stdout}"
+
+    except subprocess.CalledProcessError as e:
+        return f"Error executing Shell script (ICMP): {e.stderr}"
+
+
 @app.route('/execute_gnmic/link_enable_top')
 def execute_gnmic_link_enable_top():
     try:
@@ -19,6 +40,7 @@ def execute_gnmic_link_enable_top():
     except subprocess.CalledProcessError as e:
         return f"Error executing gNMIc commands (Enable Links): {e.stderr}"
 
+
 @app.route('/execute_gnmic/link_disable_top')
 def execute_gnmic_link_disable_top():
     try:
@@ -30,6 +52,7 @@ def execute_gnmic_link_disable_top():
         return f"gNMIc Commands Execution Result (Disable Links): {result1.stdout}\n{result2.stdout}"
     except subprocess.CalledProcessError as e:
         return f"Error executing gNMIc commands (Disable Links): {e.stderr}"
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)

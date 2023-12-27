@@ -16,7 +16,7 @@ echo "END gNMIc Install script execution!"
 ## Convert all scripts to unix EOL
 #cd /tmp
 #chmod -R 777 *
-#apk add dos2unix 
+#apt install dos2unix 
 #wait
 #dos2unix /tmp/*
 #wait
@@ -26,9 +26,11 @@ echo "END gNMIc Install script execution!"
 echo ""
 echo "Install Sw!"
 ### Install lsof to view and kill Flask PID
-#apk add lsof
-apk add python3
-#apk add python3-venv
+apt update -y &
+wait
+apt install lsof -y &
+apt install python3 -y &
+apt install python3-venv -y &
 wait
 echo "END Install Sw !"
 
@@ -42,7 +44,7 @@ mkdir flask_app && cd flask_app
 python3 -m venv venv
 source venv/bin/activate
 export FLASK_APP=/flask_app/app.py
-#apk add pip
+#apt install pip
 pip install flask
 #pip install pygnmi
 #pip install gunicorn 
@@ -56,7 +58,7 @@ echo "END Flask and Python installation Install script execution!"
 
 echo ""
 echo "Flask Web Server is running at port 5000."
-#lsof -n | grep flask | grep ESTABLISHED
+lsof -n | grep flask | grep ESTABLISHED
 #wait
 echo "Try http://<SERVER-IP>:5000/"
 echo "Script execution Done!"

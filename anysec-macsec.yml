@@ -67,11 +67,14 @@ topology:
 
 
     ### CLIENTS ###
+    ### Automation STACK ###
     client7:
       kind: linux
       mgmt-ipv4: 172.50.50.31
       binds:
-        - configs/clients/client7:/config
+        - configs/clients/client7/eth1.sh:/config/eth1.sh
+        - scripts/install_gnmic.sh:/tmp/install_gnmic.sh:rw
+        - configs/webserver/:/flask_app/
       exec:
         - bash /config/eth1.sh
         - ip -6 address add 2002::192:168:1:7/96 dev eth1
@@ -79,10 +82,14 @@ topology:
         - ip address add 192.168.2.7/24 dev eth2
         - ip address add 192.168.3.7/24 dev eth3
         - ip route add 1.1.1.0/24 via 192.168.3.1
-        - echo 300 > /proc/sys/net/ipv4/neigh/eth1/base_reachable_time 
-        - echo 300 > /proc/sys/net/ipv4/neigh/eth2/base_reachable_time 
-        - echo 300 > /proc/sys/net/ipv4/neigh/eth3/base_reachable_time 
+        - echo "Install Automation tools - gnmic, python3 and flask "
+        - /bin/bash /tmp/install_gnmic.sh
       group: server
+      ports:
+        - 9080:80
+        - 5000:5000
+
+
     client8:
       kind: linux
       mgmt-ipv4: 172.50.50.32
@@ -95,9 +102,6 @@ topology:
         - ip address add 192.168.2.8/24 dev eth2
         - ip address add 1.1.1.8/24 dev eth3
         - ip route add 192.168.3.0/24 via 1.1.1.1
-        - echo 300 > /proc/sys/net/ipv4/neigh/eth1/base_reachable_time 
-        - echo 300 > /proc/sys/net/ipv4/neigh/eth2/base_reachable_time 
-        - echo 300 > /proc/sys/net/ipv4/neigh/eth3/base_reachable_time 
       group: server
 
 
@@ -140,28 +144,6 @@ topology:
         GF_AUTH_ANONYMOUS_ENABLED: "true"
         GF_AUTH_ANONYMOUS: "true"
       group: "10"
-
-
-
-    ### Automation STACK ###
-    nginx:
-      kind: linux
-      mgmt-ipv4: 172.50.50.24
-      image: nginx
-      #docker pull rapidfort/flaskapp
-      #image: hellt/nginx-uwsgi-flask-alpine-docker:py3   ### Doesn't have atp, curl, gnmic.... so not possible to install tools
-      binds:
-        - scripts/install_gnmic.sh:/tmp/install_gnmic.sh:rw
-        #- configs/nginx/:/usr/share/nginx/html/:rw
-        - configs/nginx/:/flask_app/
-      exec:
-        ### cmd: bash -c "$(curl -sL https://get-gnmic.openconfig.net)"
-        #- echo "NGINX gnmpic install"
-        - /usr/bin/bash /tmp/install_gnmic.sh &
-      ports:
-        - 9080:80
-        - 5000:5000
-
 
 
 

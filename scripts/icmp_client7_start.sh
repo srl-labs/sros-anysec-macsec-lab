@@ -7,13 +7,17 @@
 
 
 
-#### VLLL
-#ping -s 1450 -c 200000 -i 0.04 2002::192:168:1:8
-ping -s 1450 -c 200000 -i 0.04 192.168.1.8
+#### VLL
 
-#docker exec 
-ip netns exec client7 ping -s 1450 -c 200000 -i 0.04 192.168.1.8 
-#ssh root@10.82.182.179 "ip netns exec ce6 tcpdump -U -nni eth10 -w -" | "c:\Program Files\Wireshark\Wireshark.exe" -k -i -
+# Must be executed from host CLI directly
+#ping -s 1450 -c 200000 -i 0.04 2002::192:168:1:8
+ping -s 1450 -c 600 -i 0.01 192.168.1.8
+
+# Must be executed from CLAB/Hypervisor server
+#ip netns exec client7 ping -s 1450 -c 200000 -i 0.04 192.168.1.8 
+
+# Requires user password input => Cannot be used for the webserver
+#ssh root@10.82.182.179 "ip netns exec client7 ping -s 1450 -c 200000 -i 0.04 192.168.1.8"
 
 
 
