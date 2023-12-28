@@ -43,6 +43,12 @@ python3 -m venv venv
 source venv/bin/activate
 export FLASK_APP=/flask_app/app.py
 #apk add pip
+apk add gcc
+apk add python3-dev
+apk add musl-dev
+apk add libffi-dev
+/venv/bin/python3 -m pip install --upgrade pip
+pip install pygnmi
 pip install flask
 #pip install pygnmi
 #pip install gunicorn 
