@@ -3,7 +3,7 @@ apiVersion: 1
 providers:
   - name: telemetry
     type: file
-    updateIntervalSeconds: 10
+    updateIntervalSeconds: 5
     allowUiUpdates: false
     options:
       # <string, required> path to dashboard files on disk. Required when using the 'file' type

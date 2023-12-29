@@ -6,8 +6,8 @@ ANYSec is a Nokia technology that provides low-latency and line-rate native encr
 This lab is an ANYSec demo using Nokia SROS FP5 (https://www.nokia.com/networks/technologies/fp5/) vSIMs running at CLAB (https://containerlab.dev/).
 It combines ANYSec with MACSec and ilustrates ANYSec slicing for distinct services with multi-instance SR-ISIS and FLEX-Algo. 
 
-It also provides a visiluazitation dashboard using a Telemetry stack with gNMIc, Prometheus and Grafana.
-The automation uses Flask with python and gNMIc to start/stop traffic, enable/disable links and enable/disable ANYSec.
+It also provides a visualization dashboard using a Telemetry stack with gNMIc, Prometheus and Grafana.
+For tests it was added an automation panel using Flask/Python and gNMIc to start/stop traffic, enable/disable links and enable/disable ANYSec.
 
 
 
@@ -27,7 +27,7 @@ To deploy this lab, you must clone it to your server with "git clone".
 # change to your working directory
 cd /home/user/
 # Clone the lab to your server
-git clone git@github.com:tiago-amado/sros-anysec-macsec-lab.git
+git clone https://github.com/tiago-amado/sros-anysec-macsec-lab.git
 ```
 
 
@@ -35,15 +35,15 @@ git clone git@github.com:tiago-amado/sros-anysec-macsec-lab.git
 
 ### SROS Image
 
-The SROS vSIMs image file used is 23.10R2, and is available under Nokia's internal registry. 
-If you don't have access to it, then you must get the SROS image and manually import them to CLAB following the instructions here: https://containerlab.dev/manual/vrnetlab/#vrnetlab
+The SROS vSIM image file used is 23.10R2, and is available under Nokia's internal registry. 
+If you don't have access to it, then you must get the SROS image and manually import it to CLAB following the instructions here: https://containerlab.dev/manual/vrnetlab/#vrnetlab
 
 The stepts are:
 ```bash
 # Clone vrnetlab
 git clone https://github.com/hellt/vrnetlab && cd vrnetlab
 
-# Download qcow2 vSIM image from Nokia support portal (https://customer.nokia.com/support/s) or get one from your Nokia contact. 
+# Download qcow2 vSIM image from Nokia Support Portal (https://customer.nokia.com/support/s) or get one from your Nokia contacts. 
 
 # Change name to “sros-vm-<VERSION>.qcow2”   ### must start with "sros-vm-"
 
@@ -86,13 +86,13 @@ The physical setup is ilustrated below:
 
 
 <p align="center">
-  <img width="900" height="500" src="https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/physical-setup.jpg?raw=true">
+  <img width="900" height="400" src="https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/physical-setup.jpg?raw=true">
 </p>
 
 
 
-The setup contains six SROS FP5 routers with 23.10R2 and 2 linux. The network contains 2 P routers, 2 PEs running ANYSec and MACSec, 2 CEs with MACSec, and 2 Linux Clients with 3 interfaces for distinct services. 
-Howhever only two of them, the PEs, have ANYSec configured:
+The setup contains six SROS FP5 routers with 23.10R2 and 2 linux hosts. The network contains 2 P routers, 2 PEs running ANYSec and MACSec, 2 CEs with MACSec, and 2 Linux Clients with 3 interfaces for 3 distinct services. 
+Only the PEs have ANYSec configured:
    - P Routers
 
 		•	sr-2se
@@ -111,7 +111,8 @@ Howhever only two of them, the PEs, have ANYSec configured:
 
 		•	sr-1-46s
     
-   - Clients are Linux hosts
+   - Clients are Linux hosts (https://github.com/hellt/Network-MultiTool)
+		•	Note: Client7 is also running Flask and hosting the automation Tool
 
 
 
@@ -121,13 +122,13 @@ Howhever only two of them, the PEs, have ANYSec configured:
 ### Logical setup
 
 
-
+There are 3 distinct services, each using its own Segment-Routing topology.
 The logical setup with the services is the following:
 
 
 
 <p align="center">
-  <img width="900" height="500" src="https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/logical-setup.jpg?raw=true">
+  <img width="900" height="400" src="https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/logical-setup.jpg?raw=true">
 </p>
 
 
@@ -177,7 +178,7 @@ Regarding Services, also 3 are created:
 
 
 
-Note: Each of the 3 client interfaces is mapped to a distinct service. Its possible to start iPerf or ICMP between on every interface to test the distinct topologies.
+Note: Each of the 3 client interfaces is mapped to a distinct service. Its possible to start iPerf or ICMP on every interface to test the distinct topologies.
 
 
 
@@ -186,7 +187,7 @@ The 3 SR-ISIS topologies are illustrated bellow:
 
 
 <p align="center">
-  <img width="900" height="500" src="https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/isis-topology.jpg?raw=true">
+  <img width="900" height="400" src="https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/isis-topology.jpg?raw=true">
 </p>
 
 
@@ -278,11 +279,11 @@ https://github.com/srl-labs/srl-sros-telemetry-lab
 
 It also includes Automation for the tests using gNMIC invoked through python from Flask webserver. There are 3 main set of tests:
 
-1 - Start/Stop traffic for each service
+1 - Start/Stop ICMP traffic for each service.
 
-2 - Disable/enable the top link (between PE1 and P3) to see ANYSec packets flowing through the bottom link.
+2 - Disable/enable the top link (between PE1 and P3) or the bottom link (between PE1 and P4) to see ANYSec packets flowing through the other link.
 
-3 - Disable/enable ANYSec to see packets being sent in clear or encrypted on demand
+3 - Disable/enable ANYSec for each of the 3 services to see packets being sent in clear or encrypted on demand.
 
  
 
@@ -297,7 +298,7 @@ The following stack of software solutions has been chosen for this lab:
 | Telemetry collector | [gnmic](https://gnmic.openconfig.net)               | 57400              |                                    |                    |
 | Time-Series DB      | [prometheus](https://prometheus.io)                 | 9090               | http://localhost:9090/graph        |                    |
 | Visualization       | [grafana](https://grafana.com)                      | 3000               | http://localhost:3000              | admin/admin        |
-| Flask Server/gnmic  | [flask](https://flask.palletsprojects.com/en/3.0.x/)| 9080               | http://localhost:9080/             |                    |
+| Automation          | [flask](https://flask.palletsprojects.com/en/3.0.x/)| 5000               | http://localhost:5000/             |                    |
 
 
 
@@ -307,7 +308,7 @@ The following picture picture ilustrates the Telemetry and Automation stack:
 
 
 <p align="center">
-  <img width="900" height="500" src="https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/telemetry-automation.jpg?raw=true">
+  <img width="900" height="400" src="https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/telemetry-automation.jpg?raw=true">
 </p>
 
 
@@ -318,7 +319,7 @@ The following picture picture ilustrates the Telemetry and Automation stack:
 If you are accessing from a remote host, then replace localhost by the CLAB Server IP address
 * Grafana: <http://localhost:3000>. Built-in user credentials: `admin/admin`
 * Prometheus: <http://localhost:9090/graph>
-* Flask Demo Page: <http://localhost:9080/>   
+* Flask Automation Page: <http://localhost:5000/>   
 
 
 
@@ -383,10 +384,10 @@ TCPDUMP on a multiple interfaces (any for all) shows a distinct stack: Linux coo
 ### TShark Capture multiple interfaces 
 
 Tshark is similar to TCPDump but allows to define only the interfaces to capture and does not change the header stack. 
-The drawback is it has to be installed in the CLAB Server (not installed by default as TCPDump).
+The drawback is it has to be installed in the CLAB Server (ussually not installed by default as TCPDump).
 
 
-Install Tshark at CLAB Server/hypervisor:
+Install Tshark at CLAB Server/hypervisor (Ubuntu):
 ```bash
 sudo apt install tshark
 tshark --version
@@ -394,7 +395,7 @@ tshark -D
 ```
 
 
-Execute Tshark an pipe output to Wireshark:
+From your Windows laptop prompt execute Tshark an pipe the output to Wireshark:
 ```bash
 ssh root@10.82.182.179 "ip netns exec pe1 tshark -l -i eth3 -i eth1 -i eth2 -w -" | "c:\Program Files\Wireshark\Wireshark.exe" -k -i -
 ```
@@ -436,7 +437,7 @@ show router bgp routes 10.0.0.2/32 vpn-ipv4 hunt
 
 
 <p align="center">
-  <img width="900" height="500" src="https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/link-down.jpg?raw=true">
+  <img width="900" height="400" src="https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/link-down.jpg?raw=true">
 </p>
 
 
@@ -450,7 +451,7 @@ Re-enable ANYSec and verify traffic is encrypted again
 
 
 <p align="center">
-  <img width="900" height="500" src="https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/disable-anysec.jpg?raw=true">
+  <img width="900" height="400" src="https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/disable-anysec.jpg?raw=true">
 </p>
 
 
