@@ -11,7 +11,7 @@ timeout: 10s
 encoding: json_ietf
 
 targets:
-  pe1:57400:
+  r1:57400:
     subscriptions:
       - sros_port_oper_state
       - sros_port_stats
@@ -20,12 +20,9 @@ targets:
       - sros_anysec_peer
       - sros_anysec_peer_config
       - sros_anysec_sec_termination_policy
-      - sros_macsec_config
-      - sros_macsec_if_stats
       - sros_epipe_instance_oper_state
-      - sros_vpls_instance_oper_state
       - sros_vprn_instance_oper_state
-  pe2:57400:
+  r2:57400:
     subscriptions:
       - sros_port_oper_state
       - sros_port_stats
@@ -34,41 +31,20 @@ targets:
       - sros_anysec_peer
       - sros_anysec_peer_config
       - sros_anysec_sec_termination_policy
-      - sros_macsec_config
-      - sros_macsec_if_stats
       - sros_epipe_instance_oper_state
-      - sros_vpls_instance_oper_state
       - sros_vprn_instance_oper_state      
-  p3:57400:
+  r3:57400:
       subscriptions:
       - sros_port_oper_state
       - sros_port_stats
       - sros_port_traffic_rate
       - sros_if_stats
-  p4:57400:
+  r4:57400:
     subscriptions:
       - sros_port_oper_state
       - sros_port_stats
       - sros_port_traffic_rate
       - sros_if_stats
-
-  ce5:57400:
-    subscriptions:
-      - sros_port_oper_state
-      - sros_port_stats
-      - sros_port_traffic_rate
-      - sros_if_stats
-
-      - sros_epipe_instance_oper_state
-
-  ce6:57400:
-    subscriptions:
-      - sros_port_oper_state
-      - sros_port_stats
-      - sros_port_traffic_rate
-      - sros_if_stats
-
-      - sros_epipe_instance_oper_state
 
 
 subscriptions:
@@ -78,84 +54,64 @@ subscriptions:
       - /state/port[port-id=*]/oper-state
     mode: stream
     stream-mode: sample
-    sample-interval: 2s
+    sample-interval: 1s
 
   sros_port_stats:
     paths:
       - /state/port[port-id=*]/statistics
     mode: stream
     stream-mode: sample
-    sample-interval: 2s
+    sample-interval: 1s
 
   sros_port_traffic_rate:
     paths:
       - /state/port[port-id=*]/ethernet/oper-speed
     mode: stream
     stream-mode: sample
-    sample-interval: 2s
+    sample-interval: 1s
 
   sros_if_stats:
     paths:
       - /state/router[router-name=Base]/interface[interface-name=*]/statistics
     mode: stream
     stream-mode: sample
-    sample-interval: 2s
+    sample-interval: 1s
+
 
   sros_anysec_peer:
     paths:
       - /state/anysec/tunnel-encryption/encryption-group[group-name=*]/peer[peer-ip-address=*]
     mode: stream
     stream-mode: sample
-    sample-interval: 2s 
+    sample-interval: 1s 
   
   sros_anysec_peer_config:
     paths:
       - /configure/anysec/tunnel-encryption/encryption-group[group-name=*]/peer[peer-ip-address=*]
     mode: stream
     stream-mode: target-defined
-    sample-interval: 2s 
+    sample-interval: 1s 
 
   sros_anysec_sec_termination_policy:
     paths:
       - /state/anysec/tunnel-encryption/security-termination-policy[policy-name=*]
     mode: stream
     stream-mode: sample
-    sample-interval: 2s 
-
-  sros_macsec_config:
-    paths:
-      - /configure/macsec
-    mode: stream
-    stream-mode: target-defined
-    sample-interval: 2s 
-
-  sros_macsec_if_stats:
-    paths:
-      - /state/port[port-id=*]/ethernet/dot1x/macsec/sub-port/statistics
-    mode: stream
-    stream-mode: target-defined
-    sample-interval: 2s 
+    sample-interval: 1s 
 
   sros_epipe_instance_oper_state:
     paths:
       - /state/service/epipe[service-name=*]/oper-state
     mode: stream
     stream-mode: sample
-    sample-interval: 2s
-
-  sros_vpls_instance_oper_state:
-    paths:
-      - /state/service/vpls[service-name=*]/oper-state
-    mode: stream
-    stream-mode: sample
-    sample-interval: 2s
+    sample-interval: 1s
 
   sros_vprn_instance_oper_state:
     paths:
       - /state/service/vprn[service-name=*]/oper-state
     mode: stream
     stream-mode: sample
-    sample-interval: 2s
+    sample-interval: 1s
 
 
 outputs:
