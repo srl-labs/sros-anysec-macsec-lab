@@ -143,6 +143,7 @@ topology:
         GF_ORG_NAME: "Main Org."
         GF_AUTH_ANONYMOUS_ENABLED: "true"
         GF_AUTH_ANONYMOUS: "true"
+        GF_SECURITY_ALLOW_EMBEDDING: "true"
       group: "10"
 
 
