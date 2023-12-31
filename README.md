@@ -168,7 +168,7 @@ To demonstrate both options, 3 ISIS instance are configured:
 
 
 
-Regarding Services, also 3 are created:
+There are 3 distinct services, each mapped to a distinct slice:
 
 •	VLL 1001 – ISIS 1 => TOP LINK
 
@@ -444,8 +444,8 @@ show router bgp routes 10.0.0.2/32 vpn-ipv4 hunt
 
 ### Test 2 - Disable ANYSec at PE1 and PE2 
 
-Upon Disable ANYSec verify ping is still working but unecripted
-Re-enable ANYSec and verify traffic is encrypted again
+Upon Disable ANYSec verify ping is still working but unecripted.
+Re-enable ANYSec and verify traffic is encrypted again.
 
 
 
