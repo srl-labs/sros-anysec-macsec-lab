@@ -3,25 +3,205 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SROS ANYSec Lab - Automation Panel</title>
+    <title>SROS ANYSec Lab - Automation Panel3</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <style>
+    fieldset {
+        border: none;
+        border-radius: 3px;
+        margin: 10px 7px 10px 0px;
+    }
+    h2 {
+        color: rgb(52 29 227);
+        text-align: center;
+        
+    }
+    h3 {
+        color: rgb(161 32 31);
+        text-align: center;
+    }
+    .main-container {
+        display: flex;
+        min-width: 100%;
+        min-height: 100%;
+    }
+    #Left {
+        min-width: 13vw;
+    }
+    #Right {
+        min-width: 85vw;
+        min-height: 90vh;
+    }
+    .main-container.child {
+        flex: 1;
+    }
+    .main-container.child::first-child {
+        margin-right: 20px;
+    }
+    a.link-button {
+        font-weight: normal;
+        font-size: 1.0em;
+        padding: 5px 5px;
+        margin: 5px 3px;
+        text-align: center;
+        min-width: 90%;
+    }
+    a.link-button {
+        font-weight: bold;
+        color: #fff !important;
+    }
+    .link-button {
+        cursor: pointer;
+        font-size: 1.1em;
+        padding: 5px 12px;
+        display: inline-block;
+        text-decoration: none;
+    }
+    .link-button {
+        border-radius: 3px;
+        -moz-border-radius: 3px;
+        -webkit-border-radius: 3px;
+    }
+    .link-button.enabled {
+        background: #5C8621;
+        background-image: linear-gradient(-90deg,rgb(92,134,33) 0%,rgb(72,105,27) 100%);
+        background-image: -o-linear-gradient(-90deg,rgb(92,134,33) 0%,rgb(72,105,27) 100%);
+        background-image: -moz-linear-gradient(-90deg,rgb(92,134,33) 0%,rgb(72,105,27) 100%);
+        background-image: -ms-linear-gradient(-90deg,rgb(92,134,33) 0%,rgb(72,105,27) 100%);
+        background-image: -webkit-gradient(linear,50% 0%,50% 100%,color-stop(0, rgb(92,134,33)),color-stop(1, rgb(72,105,27)));
+        background-image: -webkit-linear-gradient(-90deg,rgb(92,134,33) 0%,rgb(72,105,27) 100%);
+        background-image: -webkit-linear-gradient(-90deg,rgb(92,134,33) 0%,rgb(72,105,27) 100%);
+    }
+    .link-button.disabled {
+        background: #8C2323;
+        background-image: linear-gradient(-90deg,rgb(140,35,35) 0%,rgb(112,29,29) 100%);
+        background-image: -o-linear-gradient(-90deg,rgb(140,35,35) 0%,rgb(112,29,29) 100%);
+        background-image: -moz-linear-gradient(50% 0% -90deg,rgb(140,35,35) 0%,rgb(112,29,29) 100%);
+        background-image: -ms-linear-gradient(-90deg,rgb(140,35,35) 0%,rgb(112,29,29) 100%);
+        background-image: -webkit-gradient(linear,50% 0%,50% 100%,color-stop(0, rgb(140,35,35)),color-stop(1, rgb(112,29,29)));
+        background-image: -webkit-linear-gradient(-90deg,rgb(140,35,35) 0%,rgb(112,29,29) 100%);
+    }
+    </style>
 </head>
 <body>
-    <h1>SROS ANYSec Lab - Automation Panel</h1>
-
-    <form action="/execute_python" method="get">
-        <button type="submit">Execute Python Script</button>
-    </form>
-
-    <form action="/execute_shell" method="get">
-        <button type="submit">Execute Shell Script</button>
-    </form>
-
-    <form action="/execute_gnmic/link_enable_top" method="get">
-        <button type="submit">Enable Top Link</button>
-    </form>
-
-    <form action="/execute_gnmic/link_disable_top" method="get">
-        <button type="submit">Disable Top Link</button>
-    </form>
+    <script type=text/javascript>
+        $(function() {
+            $('.main-container .left a').on('click', function(e) {
+                e.preventDefault();
+                id=e.currentTarget.id;
+                path=id.replace(/-/g,'/');
+                
+                console.log(path);
+                $.get(path,
+                    function(data) {
+                        //do nothing
+                        console.log(data);
+                    }
+                );
+                return false;
+            });
+        });
+    
+        function update_link_buttons()
+            {
+            path='/get_links/data';
+            $.get(path,
+                function(data) {
+                    //do nothing
+                    //console.log(data);
+                    Object.keys(data).forEach(key => {
+                            if($('.link-'+key).hasClass('disabled'))
+                                {
+                                $('.link-'+key).removeClass('disabled');
+                                }
+                            if($('.link-'+key).hasClass('enabled'))
+                                {
+                                $('.link-'+key).removeClass('enabled');
+                                }
+                            $('.link-'+key).addClass(data[key]);
+                        });
+                    
+                    }
+                );
+            }
+    
+        function update_anysec_buttons()
+            {
+            path='/get_anysecs/data';
+            $.get(path,
+                function(data) {
+                    //do nothing
+                    //console.log(data);
+                    Object.keys(data).forEach(key => {
+                            if($('.anysec-'+key).hasClass('disabled'))
+                                {
+                                $('.anysec-'+key).removeClass('disabled');
+                                }
+                            if($('.anysec-'+key).hasClass('enabled'))
+                                {
+                                $('.anysec-'+key).removeClass('enabled');
+                                }
+                            $('.anysec-'+key).addClass(data[key]);
+                        });
+                    
+                    }
+                );
+            }
+        function update_icmp_buttons()
+            {
+            path='/get_icmp_status';
+            $.get(path,
+                function(data) {
+                    //do nothing
+                    //console.log(data);
+                    Object.keys(data).forEach(key => {
+                            if($('.icmp-'+key).hasClass('disabled'))
+                                {
+                                $('.icmp-'+key).removeClass('disabled');
+                                }
+                            if($('.icmp-'+key).hasClass('enabled'))
+                                {
+                                $('.icmp-'+key).removeClass('enabled');
+                                }
+                            $('.icmp-'+key).addClass(data[key]);
+                        });
+                    
+                    }
+                );
+            }
+        $(document).ready(function(){ 
+          setInterval(update_link_buttons,1000); 
+          setInterval(update_anysec_buttons,1000); 
+          setInterval(update_icmp_buttons,1000); 
+        });
+    </script>
+    
+    <div class="main-container">
+        <div id="Left" class="child left" style="min.withd: 300px">
+            <div>
+                <h2>SROS ANYSec Lab</br>Automation Panel</h2>
+                <fieldset style="background-color: rgb(76 187 191 / 32%);">
+                    <h3>ICMP</h3>
+                    <div><a id="-icmp_toggle-vll" class="icmp-vll link-button">VLL</a></div>
+                    <div><a id="-icmp_toggle-vpls" class="icmp-vpls link-button">VPLS</a></div>
+                    <div><a id="-icmp_toggle-vprn" class="icmp-vprn link-button">VPRN</a></div>
+                </fieldset>
+                <fieldset style="background-color: rgb(76 187 191 / 32%);">
+                    <h3>Links</h3>
+                    <div><a id="-execute_gnmic-link_toggle-top" class="link-top link-button">Top Link</a></div>
+                    <div><a id="-execute_gnmic-link_toggle-bottom" class="link-bottom link-button">Bottom Link</a></div>
+                </fieldset>
+                <fieldset style="background-color: rgb(76 187 191 / 32%);">
+                    <h3>ANYSec</h3>
+                    <div><a id="-execute_gnmic-anysec_toggle-vll" class="anysec-vll link-button">VLL</a></div>
+                    <div><a id="-execute_gnmic-anysec_toggle-vpls" class="anysec-vpls link-button">VPLS</a></div>
+                    <div><a id="-execute_gnmic-anysec_toggle-vprn" class="anysec-vprn link-button">VPRN</a></div>
+                </fieldset>
+            </div>
+        </div>
+        <div id="Right" class="child right">
+            <iframe src="http://{{host}}:3000/d/kawVPD-Gk/anysec-telemetry?orgId=1&refresh=5s" width="100%" height="100%"></iframe>
+        </div>
+    </div>
 </body>
 </html>
