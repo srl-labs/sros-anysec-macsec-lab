@@ -58,7 +58,8 @@ targets:
       - sros_port_stats
       - sros_port_traffic_rate
       - sros_if_stats
-
+      - sros_macsec_config
+      - sros_macsec_if_stats
       - sros_epipe_instance_oper_state
 
   ce6:57400:
@@ -67,7 +68,8 @@ targets:
       - sros_port_stats
       - sros_port_traffic_rate
       - sros_if_stats
-
+      - sros_macsec_config
+      - sros_macsec_if_stats
       - sros_epipe_instance_oper_state
 
 
