@@ -118,14 +118,12 @@ subscriptions:
     stream-mode: sample
     sample-interval: 2s 
   
-  # General
   sros_anysec_encryption_group:
     paths:
       - /configure/anysec/tunnel-encryption/encryption-group[group-name=*]
     mode: stream
-    stream-mode: target-defined
+    stream-mode: sample
     sample-interval: 2s
-
 
   sros_anysec_peer_config:
     paths:
