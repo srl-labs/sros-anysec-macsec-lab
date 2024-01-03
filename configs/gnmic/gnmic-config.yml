@@ -18,10 +18,13 @@ targets:
       - sros_port_traffic_rate
       - sros_if_stats
       - sros_anysec_peer
+      - sros_anysec_encryption_group
       - sros_anysec_peer_config
       - sros_anysec_sec_termination_policy
+      - sros_anysec_mka_over_ip
       - sros_macsec_config
       - sros_macsec_if_stats
+      - sros_macsec_connectivity_association
       - sros_epipe_instance_oper_state
       - sros_vpls_instance_oper_state
       - sros_vprn_instance_oper_state
@@ -32,13 +35,16 @@ targets:
       - sros_port_traffic_rate
       - sros_if_stats
       - sros_anysec_peer
+      - sros_anysec_encryption_group
       - sros_anysec_peer_config
       - sros_anysec_sec_termination_policy
+      - sros_anysec_mka_over_ip
       - sros_macsec_config
       - sros_macsec_if_stats
+      - sros_macsec_connectivity_association
       - sros_epipe_instance_oper_state
       - sros_vpls_instance_oper_state
-      - sros_vprn_instance_oper_state      
+      - sros_vprn_instance_oper_state
   p3:57400:
       subscriptions:
       - sros_port_oper_state
@@ -60,6 +66,7 @@ targets:
       - sros_if_stats
       - sros_macsec_config
       - sros_macsec_if_stats
+      - sros_macsec_connectivity_association
       - sros_epipe_instance_oper_state
 
   ce6:57400:
@@ -70,6 +77,7 @@ targets:
       - sros_if_stats
       - sros_macsec_config
       - sros_macsec_if_stats
+      - sros_macsec_connectivity_association
       - sros_epipe_instance_oper_state
 
 
@@ -110,6 +118,15 @@ subscriptions:
     stream-mode: sample
     sample-interval: 2s 
   
+  # General
+  sros_anysec_encryption_group:
+    paths:
+      - /configure/anysec/tunnel-encryption/encryption-group[group-name=*]
+    mode: stream
+    stream-mode: target-defined
+    sample-interval: 2s 
+
+
   sros_anysec_peer_config:
     paths:
       - /configure/anysec/tunnel-encryption/encryption-group[group-name=*]/peer[peer-ip-address=*]
@@ -124,6 +141,13 @@ subscriptions:
     stream-mode: sample
     sample-interval: 2s 
 
+  sros_anysec_mka_over_ip:
+    paths:
+      - /configure/anysec/mka-over-ip
+    mode: stream
+    stream-mode: sample
+    sample-interval: 2s 
+
   sros_macsec_config:
     paths:
       - /configure/macsec
@@ -134,6 +158,13 @@ subscriptions:
   sros_macsec_if_stats:
     paths:
       - /state/port[port-id=*]/ethernet/dot1x/macsec/sub-port/statistics
+    mode: stream
+    stream-mode: target-defined
+    sample-interval: 2s 
+
+  sros_macsec_connectivity_association:
+    paths:
+      - /configure/macsec/connectivity-association[ca-name=*]
     mode: stream
     stream-mode: target-defined
     sample-interval: 2s 
