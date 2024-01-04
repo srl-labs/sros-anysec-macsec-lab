@@ -150,7 +150,7 @@ subscriptions:
     paths:
       - /configure/macsec
     mode: stream
-    stream-mode: target-defined
+    stream-mode: sample
     sample-interval: 5s
 
   sros_macsec_if_stats:
