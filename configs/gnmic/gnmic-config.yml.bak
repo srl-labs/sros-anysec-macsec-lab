@@ -220,7 +220,6 @@ processors:
     event-strings:
       value-names:
         - oper-state
-        - admin-state
       transforms:
         - replace:
             apply-on: "value"
@@ -229,12 +228,4 @@ processors:
         - replace:
             apply-on: "value"
             old: "down"
-            new: "0"
-        - replace:
-            apply-on: "value"
-            old: "enable"
-            new: "1"
-        - replace:
-            apply-on: "value"
-            old: "disable"
             new: "0"
