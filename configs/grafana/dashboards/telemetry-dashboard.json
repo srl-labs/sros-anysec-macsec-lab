@@ -6819,7 +6819,7 @@
             ],
             "order": 49,
             "overlayIcon": false,
-            "pattern": "any_sec:pe1:57400:10.0.0.2",
+            "pattern": "any_sec:pe1:57400",
             "rangeData": [],
             "reduce": true,
             "refId": "A",
@@ -6947,7 +6947,7 @@
             ],
             "order": 50,
             "overlayIcon": false,
-            "pattern": "any_sec:pe2:57400:10.0.0.1",
+            "pattern": "any_sec:pe2:57400",
             "rangeData": [],
             "reduce": true,
             "refId": "A",
@@ -7287,18 +7287,6 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "gnmic_sros_anysec_peer_config_admin_state",
-          "hide": false,
-          "legendFormat": "any_sec:{{source}}:{{peer_peer_ip_address}}",
-          "range": true,
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "editorMode": "code",
           "expr": "rate(gnmic_sros_anysec_peer_octets_encrypted[10s])*8",
           "hide": false,
           "legendFormat": "encrypted_packets:{{source}}:{{peer_peer_ip_address}}:out",
@@ -7352,6 +7340,30 @@
           "legendFormat": "macsec:{{source}}:{{connectivity_association_ca_name}}",
           "range": true,
           "refId": "I"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "gnmic_sros_anysec_encryption_group_admin_state{encryption_group_group_name=\"$Encryption_Group\", source=\"pe1:57400\",peer_peer_ip_address=~\"10\\\\.0\\\\.0\\\\.2|10\\\\.0\\\\.0\\\\.21|10\\\\.0\\\\.0\\\\.22\"}",
+          "hide": false,
+          "legendFormat": "any_sec:pe1:57400",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "gnmic_sros_anysec_encryption_group_admin_state{encryption_group_group_name=\"$Encryption_Group\", source=\"pe2:57400\",peer_peer_ip_address=~\"10\\\\.0\\\\.0\\\\.1|10\\\\.0\\\\.0\\\\.11|10\\\\.0\\\\.0\\\\.12\"}",
+          "hide": false,
+          "legendFormat": "any_sec:pe2:57400",
+          "range": true,
+          "refId": "J"
         }
       ],
       "title": "Link Bandwidth",
@@ -8045,7 +8057,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -8130,7 +8143,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -8215,7 +8229,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -8309,7 +8324,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -8401,7 +8417,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -8480,7 +8497,8 @@
             "mode": "percentage",
             "steps": [
               {
-                "color": "blue"
+                "color": "blue",
+                "value": null
               },
               {
                 "color": "blue",
@@ -8502,7 +8520,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green"
+                      "color": "green",
+                      "value": null
                     }
                   ]
                 }
@@ -8521,7 +8540,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "red"
+                      "color": "red",
+                      "value": null
                     }
                   ]
                 }
@@ -8587,7 +8607,8 @@
             "mode": "percentage",
             "steps": [
               {
-                "color": "blue"
+                "color": "blue",
+                "value": null
               },
               {
                 "color": "blue",
@@ -8609,7 +8630,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green"
+                      "color": "green",
+                      "value": null
                     }
                   ]
                 }
@@ -8628,7 +8650,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "red"
+                      "color": "red",
+                      "value": null
                     }
                   ]
                 }
@@ -8702,7 +8725,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue"
+                "color": "blue",
+                "value": null
               }
             ]
           }
@@ -8792,7 +8816,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -8884,7 +8909,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -8949,7 +8975,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           }
@@ -9019,7 +9046,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -9164,6 +9192,6 @@
   "timezone": "",
   "title": "AnySec Telemetry",
   "uid": "kawVPD-Gk",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }
