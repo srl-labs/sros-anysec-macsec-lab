@@ -88,105 +88,105 @@ subscriptions:
       - /state/port[port-id=*]/oper-state
     mode: stream
     stream-mode: sample
-    sample-interval: 5s
+    sample-interval: 2s
 
   sros_port_stats:
     paths:
       - /state/port[port-id=*]/statistics
     mode: stream
     stream-mode: sample
-    sample-interval: 5s
+    sample-interval: 2s
 
   sros_port_traffic_rate:
     paths:
       - /state/port[port-id=*]/ethernet/oper-speed
     mode: stream
     stream-mode: sample
-    sample-interval: 5s
+    sample-interval: 2s
 
   sros_if_stats:
     paths:
       - /state/router[router-name=Base]/interface[interface-name=*]/statistics
     mode: stream
     stream-mode: sample
-    sample-interval: 5s
+    sample-interval: 2s
 
   sros_anysec_peer:
     paths:
       - /state/anysec/tunnel-encryption/encryption-group[group-name=*]/peer[peer-ip-address=*]
     mode: stream
     stream-mode: target-defined
-    sample-interval: 5s 
+    sample-interval: 2s 
   
   sros_anysec_encryption_group:
     paths:
       - /configure/anysec/tunnel-encryption/encryption-group[group-name=*]
     mode: stream
     stream-mode: sample
-    sample-interval: 5s
+    sample-interval: 2s
 
   sros_anysec_peer_config:
     paths:
       - /configure/anysec/tunnel-encryption/encryption-group[group-name=*]/peer[peer-ip-address=*]
     mode: stream
     stream-mode: target-defined
-    sample-interval: 5s 
+    sample-interval: 2s 
 
   sros_anysec_sec_termination_policy:
     paths:
       - /state/anysec/tunnel-encryption/security-termination-policy[policy-name=*]
     mode: stream
     stream-mode: sample
-    sample-interval: 5s 
+    sample-interval: 2s 
 
   sros_anysec_mka_over_ip:
     paths:
       - /configure/anysec/mka-over-ip
     mode: stream
     stream-mode: sample
-    sample-interval: 5s
+    sample-interval: 2s
 
   sros_macsec_config:
     paths:
       - /configure/macsec
     mode: stream
     stream-mode: target-defined
-    sample-interval: 5s
+    sample-interval: 2s
 
   sros_macsec_if_stats:
     paths:
       - /state/port[port-id=*]/ethernet/dot1x/macsec/sub-port/statistics
     mode: stream
     stream-mode: target-defined
-    sample-interval: 5s
+    sample-interval: 2s
 
   sros_macsec_connectivity_association:
     paths:
       - /configure/macsec/connectivity-association[ca-name=*]
     mode: stream
     stream-mode: sample
-    sample-interval: 5s 
+    sample-interval: 2s 
 
   sros_epipe_instance_oper_state:
     paths:
       - /state/service/epipe[service-name=*]/oper-state
     mode: stream
     stream-mode: sample
-    sample-interval: 5s
+    sample-interval: 2s
 
   sros_vpls_instance_oper_state:
     paths:
       - /state/service/vpls[service-name=*]/oper-state
     mode: stream
     stream-mode: sample
-    sample-interval: 5s
+    sample-interval: 2s
 
   sros_vprn_instance_oper_state:
     paths:
       - /state/service/vprn[service-name=*]/oper-state
     mode: stream
     stream-mode: sample
-    sample-interval: 5s
+    sample-interval: 2s
 
 
 outputs:
