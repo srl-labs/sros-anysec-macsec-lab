@@ -115,7 +115,7 @@ subscriptions:
     paths:
       - /state/anysec/tunnel-encryption/encryption-group[group-name=*]/peer[peer-ip-address=*]
     mode: stream
-    stream-mode: sample
+    stream-mode: target-defined
     sample-interval: 5s 
   
   sros_anysec_encryption_group:
@@ -220,7 +220,6 @@ processors:
     event-strings:
       value-names:
         - oper-state
-        - admin-state
       transforms:
         - replace:
             apply-on: "value"
@@ -229,12 +228,4 @@ processors:
         - replace:
             apply-on: "value"
             old: "down"
-            new: "0"
-        - replace:
-            apply-on: "value"
-            old: "enable"
-            new: "1"
-        - replace:
-            apply-on: "value"
-            old: "disable"
             new: "0"
