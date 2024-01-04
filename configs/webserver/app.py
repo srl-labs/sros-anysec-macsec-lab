@@ -75,7 +75,7 @@ class Telemetry():
         self.icmp_request["vll"] = True
         if icmp_type in icmp_types:
             icmp_ip=icmp_types[icmp_type]
-            p = subprocess.Popen('ping -i 0.1 '+icmp_ip, stdout=subprocess.PIPE, shell=True)
+            p = subprocess.Popen('ping -s 2000 -i 0.01 '+icmp_ip, stdout=subprocess.PIPE, shell=True)
             while p.poll() is None:
                 self.icmp_status[icmp_type] = "enabled"
                 if self.icmp_request[icmp_type] == False:

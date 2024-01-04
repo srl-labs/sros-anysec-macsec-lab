@@ -12,8 +12,6 @@ encoding: json_ietf
 
 targets:
   pe1:57400:
-    insecure: true
-    password: admin
     subscriptions:
       - sros_port_oper_state
       - sros_port_stats
@@ -31,8 +29,6 @@ targets:
       - sros_vpls_instance_oper_state
       - sros_vprn_instance_oper_state
   pe2:57400:
-    insecure: true
-    password: admin
     subscriptions:
       - sros_port_oper_state
       - sros_port_stats
@@ -50,16 +46,12 @@ targets:
       - sros_vpls_instance_oper_state
       - sros_vprn_instance_oper_state
   p3:57400:
-    insecure: true
-    password: admin
       subscriptions:
       - sros_port_oper_state
       - sros_port_stats
       - sros_port_traffic_rate
       - sros_if_stats
   p4:57400:
-    insecure: true
-    password: admin
     subscriptions:
       - sros_port_oper_state
       - sros_port_stats
@@ -67,8 +59,6 @@ targets:
       - sros_if_stats
 
   ce5:57400:
-    insecure: true
-    password: admin
     subscriptions:
       - sros_port_oper_state
       - sros_port_stats
@@ -80,8 +70,6 @@ targets:
       - sros_epipe_instance_oper_state
 
   ce6:57400:
-    insecure: true
-    password: admin
     subscriptions:
       - sros_port_oper_state
       - sros_port_stats
@@ -232,6 +220,7 @@ processors:
     event-strings:
       value-names:
         - oper-state
+        - admin-state
       transforms:
         - replace:
             apply-on: "value"
@@ -240,4 +229,12 @@ processors:
         - replace:
             apply-on: "value"
             old: "down"
+            new: "0"
+        - replace:
+            apply-on: "value"
+            old: "enable"
+            new: "1"
+        - replace:
+            apply-on: "value"
+            old: "disable"
             new: "0"
