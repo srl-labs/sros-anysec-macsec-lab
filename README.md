@@ -13,25 +13,19 @@ For tests it was added an automation panel using Flask/Python and gNMIc to start
 
 
 ## ANYSec Overview
-ANYSec is a Nokia network encryption solution available with the new FP5 models in SROS 23.10R2. 
+ANYSec is a Nokia network encryption solution available with the new FP5 models in SROS 23.10R1. 
 It is low-latency line-rate encryption, scalable, flexible and ensures a quantum-safe network encryption solution for the industry.
 It is a simple concept, based on MACSec standards as the foundation and introduces the flexibility to offset the authentication and encription to allow L2, L2.5 and L3 encryption.
 
 
 
-## Clone the git lab to your server
-
-To deploy this lab, you must clone it to your server with "git clone".
-
-```bash
-# change to your working directory
-cd /home/user/
-# Clone the lab to your server
-git clone https://github.com/tiago-amado/sros-anysec-macsec-lab.git
-```
 
 
-## SROS Image and License file
+## Requirements 
+
+To deploy this lab you need a server with Docker and CLAB and Internet connectivity.
+You also need SROS 23.10R1+ Image and a valid License file.
+
 
 ### SROS Image
 
@@ -76,6 +70,20 @@ vi r23_license.key
 
 
 
+## Clone and deploy the git lab on your server
+
+To deploy this lab, you must clone it to your server with "git clone".
+
+```bash
+# change to your working directory
+cd /home/user/
+# Clone the lab to your server
+git clone https://github.com/srl-labs/sros-anysec-macsec-lab.git
+```
+
+
+
+
 ## ANYSec setup
 
 
@@ -93,28 +101,19 @@ The physical setup is ilustrated below:
 
 The setup contains six SROS FP5 routers with 23.10R2 and 2 linux hosts. The network contains 2 P routers, 2 PEs running ANYSec and MACSec, 2 CEs with MACSec, and 2 Linux Clients with 3 interfaces for 3 distinct services. 
 Only the PEs have ANYSec configured:
-   - P Routers
-
-		•	sr-2se
-
-		•	sr-7s
-
-   - PE Routers with ANYSec and MACSec
-
-		•	sr-1x-92s 
-
-		•	sr-1se
-
-   - CE Routers with MACSec
-
-		•	sr-1-24d
-
-		•	sr-1-46s
-    
-   - Clients are Linux hosts (https://github.com/hellt/Network-MultiTool)
-		•	Note: Client7 is also running Flask and hosting the automation Tool
+* P Routers
+**sr-2se
+**sr-7s
+*PE Routers with ANYSec and MACSec
+**sr-1x-92s 
+**sr-1se
+*CE Routers with MACSec
+**sr-1-24d
+**sr-1-46s
+*Clients are Linux hosts (https://github.com/hellt/Network-MultiTool)
 
 
+•	Note: Client7 is also running Flask and hosting the automation Tool
 
 
 
@@ -134,15 +133,11 @@ The logical setup with the services is the following:
 
 The setup has:
 
-•	ANYSec between PE1 and PE2
-
-•	MACSec between PEs and CEs
-
-•	ISIS instances 0, 1 and 2 with SR-ISIS and Flex-Algo
-
-•	iBGP (P3 and P4 as RR)
-
-•	Services: VLL 1001, VPLS 1002 and VPRN 1003
+* ANYSec between PE1 and PE2
+* MACSec between PEs and CEs
+* ISIS instances 0, 1 and 2 with SR-ISIS and Flex-Algo
+* iBGP (P3 and P4 as RR)
+* Services: VLL 1001, VPLS 1002 and VPRN 1003
 
 
 
@@ -152,33 +147,28 @@ The setup has:
 
 ANYSec slicing is possible within 20.10R1 with 2 options:
 
-•	Multi-Instance SR IGP instance
-
-•	Flex-Algo
+* Multi-Instance SR IGP instance
+* Flex-Algo
 
 
 
 To demonstrate both options, 3 ISIS instance are configured:
 
-•	ISIS 0 – Flex-Algo with TE-Metrics (other constraints are possible)
-
-•	ISIS 1- IGP metrics to prefer TOP LINK
-
-•	ISIS 2 – IGP metrics to prefer BOTTOM LINK
+* ISIS 0 – Flex-Algo with TE-Metrics (other constraints are possible)
+* ISIS 1- IGP metrics to prefer TOP LINK
+* ISIS 2 – IGP metrics to prefer BOTTOM LINK
 
 
 
 There are 3 distinct services, each mapped to a distinct slice:
 
-•	VLL 1001 – ISIS 1 => TOP LINK
-
-•	VPLS 1002 – ISIS 2 => BOTTOM LINK
-
-•	VPRN 1003 – ISIS 0 => Flex-Algo 
+* VLL 1001 – ISIS 1 => TOP LINK
+* VPLS 1002 – ISIS 2 => BOTTOM LINK
+* VPRN 1003 – ISIS 0 => Flex-Algo 
 
 
 
-Note: Each of the 3 client interfaces is mapped to a distinct service. Its possible to start iPerf or ICMP on every interface to test the distinct topologies.
+•	Note: Each of the 3 client interfaces is mapped to a distinct service. Its possible to start iPerf or ICMP on every interface to test the distinct topologies.
 
 
 
@@ -187,7 +177,7 @@ The 3 SR-ISIS topologies are illustrated bellow:
 
 
 <p align="center">
-  <img width="900" height="400" src="https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/isis-topology.jpg?raw=true">
+  <img width="900" height="300" src="https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/isis-topology.jpg?raw=true">
 </p>
 
 
@@ -200,7 +190,7 @@ The 3 SR-ISIS topologies are illustrated bellow:
 
 Use the comand below to deploy the lab:
 
-Note: If you imported the SROS image to docker then first edit the yml file with the correct image location as explained above.
+•	Note: If you imported the SROS image to docker then first edit the yml file with the correct image location as explained above.
 
 ```bash
 # deploy a lab
@@ -279,11 +269,11 @@ https://github.com/srl-labs/srl-sros-telemetry-lab
 
 It also includes Automation for the tests using gNMIC invoked through python from Flask webserver. There are 3 main set of tests:
 
-1 - Start/Stop ICMP traffic for each service.
+1. Start/Stop ICMP traffic for each service.
 
-2 - Disable/enable the top link (between PE1 and P3) or the bottom link (between PE1 and P4) to see ANYSec packets flowing through the other link.
+2. Disable/enable the top link (between PE1 and P3) or the bottom link (between PE1 and P4) to see ANYSec packets flowing through the other link.
 
-3 - Disable/enable ANYSec for each of the 3 services to see packets being sent in clear or encrypted on demand.
+3. Disable/enable ANYSec for each of the 3 services to see packets being sent in clear or encrypted on demand.
 
  
 
