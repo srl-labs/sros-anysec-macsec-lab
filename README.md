@@ -107,19 +107,19 @@ Only the PEs have ANYSec configured:
 
 •	sr-7s
 
-*PE Routers with ANYSec and MACSec
+* PE Routers with ANYSec and MACSec
 
 •	sr-1x-92s 
 
 •	sr-1se
 
-*CE Routers with MACSec
+* CE Routers with MACSec
 
 •	sr-1-24d
 
 •	sr-1-46s
 
-*Clients are Linux hosts (https://github.com/hellt/Network-MultiTool)
+* Clients are Linux hosts (https://github.com/hellt/Network-MultiTool)
 
 
 •	Note: Client7 is also running Flask and hosting the automation Tool
