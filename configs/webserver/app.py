@@ -71,11 +71,11 @@ class Telemetry():
                 
     
     @threaded
-    def start_icmp_trafic_red(self,icmp_type):
+    def start_icmp_trafic_red(self,icmp_type,icmp_size,icmp_interval):
         self.icmp_request["vll"] = True
         if icmp_type in icmp_types:
             icmp_ip=icmp_types[icmp_type]
-            p = subprocess.Popen('ping -s 2000 -i 0.01 '+icmp_ip+' 1>/dev/null', stdout=subprocess.PIPE, shell=True)
+            p = subprocess.Popen('ping -s '+icmp_size+' -i '+icmp_interval+' '+icmp_ip+' 1>/dev/null', stdout=subprocess.PIPE, shell=True)
             while p.poll() is None:
                 self.icmp_status[icmp_type] = "enabled"
                 if self.icmp_request[icmp_type] == False:
@@ -297,15 +297,15 @@ def execute_gnmic_anysec_toggle(anysec_name):
         result = '{status:"failed", message:"'+e.stderr+'"}'
         return result
         
-@app.route('/icmp_toggle/<icmp_type>')
-def icmp_toggle(icmp_type):
+@app.route('/icmp_toggle/<icmp_type>/<icmp_size>/<icmp_interval>')
+def icmp_toggle(icmp_type,icmp_size,icmp_interval):
     try:
         # Execute gnmic command directly for enabling links
         if icmp_type not in telemetry.icmp_status:
             return '{status:"failed", message:"The '+icmp_type+' icmp is not configured"}'
         action=""
         if telemetry.icmp_status[icmp_type]== "disabled":
-            telemetry.start_icmp_trafic_red(icmp_type)
+            telemetry.start_icmp_trafic_red(icmp_type,icmp_size,icmp_interval)
             action="enable"
         else:
             telemetry.icmp_request[icmp_type] = False
