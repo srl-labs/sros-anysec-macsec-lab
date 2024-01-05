@@ -102,14 +102,23 @@ The physical setup is ilustrated below:
 The setup contains six SROS FP5 routers with 23.10R2 and 2 linux hosts. The network contains 2 P routers, 2 PEs running ANYSec and MACSec, 2 CEs with MACSec, and 2 Linux Clients with 3 interfaces for 3 distinct services. 
 Only the PEs have ANYSec configured:
 * P Routers
-**sr-2se
-**sr-7s
+
+•	sr-2se
+
+•	sr-7s
+
 *PE Routers with ANYSec and MACSec
-**sr-1x-92s 
-**sr-1se
+
+•	sr-1x-92s 
+
+•	sr-1se
+
 *CE Routers with MACSec
-**sr-1-24d
-**sr-1-46s
+
+•	sr-1-24d
+
+•	sr-1-46s
+
 *Clients are Linux hosts (https://github.com/hellt/Network-MultiTool)
 
 
@@ -417,7 +426,7 @@ The tests bellow can be executed in multiple ways: flask demo page, gnmic script
 
 Upon shut/no shut verify ANYSec is still working but using a new SR-ISIS tunnel
 ```bash
-show router "1003" route-table
+show router 1003 route-table
 show router 1003 route-table 10.0.0.2/32 extensive
 show router 1003 route-table 10.0.0.2/32 extensive
 show router bgp routes 10.0.0.2/32 vpn-ipv4 hunt   
