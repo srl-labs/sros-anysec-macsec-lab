@@ -108,33 +108,33 @@ anysecs = {
             "vll":
                     {
                     "pe1": {
-                            "group_name": "EG_Anysec1",
+                            "group_name": "EG_VLL-1001",
                             "peer": "10.0.0.21",
                             },
                     "pe2": {
-                            "group_name": "EG_Anysec1",
+                            "group_name": "EG_VLL-1001",
                             "peer": "10.0.0.11",
                             }
                     },
             "vpls":
                     {
                     "pe1": {
-                            "group_name": "EG_Anysec2",
+                            "group_name": "EG_VPLS-1002",
                             "peer": "10.0.0.22",
                             },
                     "pe2": {
-                            "group_name": "EG_Anysec2",
+                            "group_name": "EG_VPLS-1002",
                             "peer": "10.0.0.12",
                             }
                     },
             "vprn":
                     {
                     "pe1": {
-                            "group_name": "EG_Anysec0",
+                            "group_name": "EG_VPRN-1003",
                             "peer": "10.0.0.2",
                             },
                     "pe2": {
-                            "group_name": "EG_Anysec0",
+                            "group_name": "EG_VPRN-1003",
                             "peer": "10.0.0.1",
                             }
                     }

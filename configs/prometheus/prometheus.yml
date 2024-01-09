@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 global:
-  scrape_interval: 5s
+  scrape_interval: 2s
 
 # metrics_path defaults to '/metrics'
 # scheme defaults to 'http'.
