@@ -8,6 +8,8 @@ from pygnmi.client import gNMIclient, telemetryParser, gNMIException
 import subprocess
 import signal
 
+
+
 def threaded(fn):
     def wrapper(*args, **kwargs):
         thread = threading.Thread(target=fn, args=args, kwargs=kwargs)
@@ -25,7 +27,7 @@ class Telemetry():
         self.anysecs = {"vll":"enabled", "vpls":"enabled", "vprn":"enabled"}
         self.icmp_request = {"vll": None, "vpls": None, "vprn": None}
         self.icmp_status = {"vll": "disabled", "vpls": "disabled", "vprn": "disabled"}
-        
+
     
     @threaded
     def monitor_links(self):
@@ -45,8 +47,8 @@ class Telemetry():
                     self.links[link]="enabled"
                 else:
                     self.links[link]="disabled"
-                    
-                
+    
+    
     @threaded
     def monitor_anysecs(self):
         while True:
@@ -67,8 +69,7 @@ class Telemetry():
                     self.anysecs[anysec]="enabled"
                 else:
                     self.anysecs[anysec]="disabled"
-                    
-                
+    
     
     @threaded
     def start_icmp_trafic_red(self,icmp_type,icmp_size,icmp_interval):
@@ -82,6 +83,7 @@ class Telemetry():
                     p.send_signal(signal.SIGINT)
                     self.icmp_request[icmp_type] = None
         self.icmp_status[icmp_type] = "disabled"
+    
     
     @threaded
     def sub_telemetry(self, host_entry):
@@ -115,6 +117,7 @@ class Telemetry():
                 #print(self.routers)
                 #print(host_entry["hostname"]+' - '+telemetry_entry_json)
     
+    
     def update_port_status(self,host_entry):
         paths = ['/configure/port/admin-state']
         with gNMIclient(target=(host_entry["hostname"], host_entry["port"]),username=host_entry["username"], password=host_entry["password"], insecure=True) as gc:
@@ -129,6 +132,7 @@ class Telemetry():
                 if port not in self.routers[host_entry["hostname"]]["ports"]:
                     self.routers[host_entry["hostname"]]["ports"][port]={}
                 self.routers[host_entry["hostname"]]["ports"][port]["admin-state"]=port_result["val"]
+    
     
     def update_anysec_status(self,host_entry):
         paths = ['/configure/anysec/tunnel-encryption/encryption-group/peer/admin-state']
@@ -148,8 +152,7 @@ class Telemetry():
             except gNMIException as e:
                 print(host_entry['hostname'])
                 print(e)
-                
-            
+    
     
     def run(self):
         for host_entry in hosts:
@@ -161,89 +164,14 @@ class Telemetry():
 
 app = Flask(__name__)
 telemetry = Telemetry()
+
+
 @app.route('/')
 def index():
     host, port=request.environ['HTTP_HOST'].split(':')
     return render_template('index.html', host=host)
 
 
-@app.route('/execute_python')
-def execute_python_script():
-    try:
-        result = subprocess.check_output(['python', '/flask_app/hello.py'], stderr=subprocess.STDOUT, text=True)
-        return f"Python Script Execution Result: {result}"
-    except subprocess.CalledProcessError as e:
-        #return f"Error executing Python script: {e.output}"
-        result = '{status:"failed", message:"'+e.output+'"}'
-        return result
-
-@app.route('/execute_shell')
-def execute_shell_script():
-    try:
-        result = subprocess.check_output(['bash', '/flask_app/hello.sh'], stderr=subprocess.STDOUT, text=True)
-        return f"Shell Script Execution Result: {result}"
-    except subprocess.CalledProcessError as e:
-        #return f"Error executing Shell script: {e.output}"
-        result = '{status:"failed", message:"'+e.output+'"}'
-        return result
-
-
-@app.route('/execute_gnmic/link_enable_top')
-def execute_gnmic_link_enable_top():
-    try:
-        # Execute gnmic command directly for enabling links
-        result1 = subprocess.run('gnmic -a pe1:57400 -u admin -p admin --insecure set --update-path /configure/port[port-id=1/1/c1/1]/admin-state --update-value enable', shell=True, capture_output=True, text=True)
-        
-        result2 = subprocess.run('gnmic -a p3:57400 -u admin -p admin --insecure set --update-path /configure/port[port-id=1/1/c2/1]/admin-state --update-value enable', shell=True, capture_output=True, text=True)
-
-        return f"gNMIc Commands Execution Result (Enable Links): {result1.stdout}\n{result2.stdout}"
-    except subprocess.CalledProcessError as e:
-        #return f"Error executing gNMIc commands (Enable Links): {e.stderr}"
-        result = '{status:"failed", message:"'+e.stderr+'"}'
-        return result
-
-@app.route('/execute_gnmic/top_link_toggle')
-def execute_gnmic_top_link_toggle():
-    try:
-        # Execute gnmic command directly for enabling links
-        action=""
-        if telemetry.links["top"]=="disabled":
-            action="enable"
-        else:
-            action="disable"
-        
-        result1 = subprocess.run('gnmic -a pe1:57400 -u admin -p admin --insecure set --update-path /configure/port[port-id=1/1/c1/1]/admin-state --update-value '+action, shell=True, capture_output=True, text=True)
-        
-        result2 = subprocess.run('gnmic -a p3:57400 -u admin -p admin --insecure set --update-path /configure/port[port-id=1/1/c2/1]/admin-state --update-value '+action, shell=True, capture_output=True, text=True)
-        for host_entry in hosts:
-            telemetry.update_port_status(host_entry)
-        return f"gNMIc Commands Execution Result (Enable Links): {result1.stdout}\n{result2.stdout}"
-    except subprocess.CalledProcessError as e:
-        #return f"Error executing gNMIc commands (Enable Links): {e.stderr}"
-        result = '{status:"failed", message:"'+e.stderr+'"}'
-        return result
-
-@app.route('/execute_gnmic/bottom_link_toggle')
-def execute_gnmic_bottom_link_toggle():
-    try:
-        # Execute gnmic command directly for enabling links
-        action=""
-        if telemetry.links["bottom"]=="disabled":
-            action="enable"
-        else:
-            action="disable"
-        
-        result1 = subprocess.run('gnmic -a pe1:57400 -u admin -p admin --insecure set --update-path /configure/port[port-id=1/1/c2/1]/admin-state --update-value '+action, shell=True, capture_output=True, text=True)
-        
-        result2 = subprocess.run('gnmic -a p4:57400 -u admin -p admin --insecure set --update-path /configure/port[port-id=1/1/c2/1]/admin-state --update-value '+action, shell=True, capture_output=True, text=True)
-        for host_entry in hosts:
-            telemetry.update_port_status(host_entry)
-        return f"gNMIc Commands Execution Result (Enable Links): {result1.stdout}\n{result2.stdout}"
-    except subprocess.CalledProcessError as e:
-        #return f"Error executing gNMIc commands (Enable Links): {e.stderr}"
-        result = '{status:"failed", message:"'+e.stderr+'"}'
-        return result
-        
 @app.route('/execute_gnmic/link_toggle/<link_name>')
 def execute_gnmic_link_toggle(link_name):
     try:
@@ -268,7 +196,8 @@ def execute_gnmic_link_toggle(link_name):
         #return f"Error executing gNMIc commands (Enable Links): {e.stderr}"
         result = '{status:"failed", message:"'+e.stderr+'"}'
         return result
-        
+
+
 @app.route('/execute_gnmic/anysec_toggle/<anysec_name>')
 def execute_gnmic_anysec_toggle(anysec_name):
     try:
@@ -318,18 +247,6 @@ def icmp_toggle(icmp_type,icmp_size,icmp_interval):
         return result
 
 
-@app.route('/execute_gnmic/link_disable_top')
-def execute_gnmic_link_disable_top():
-    try:
-        # Execute gnmic command directly for disabling links
-        result1 = subprocess.run('gnmic -a pe1:57400 -u admin -p admin --insecure set --update-path /configure/port[port-id=1/1/c1/1]/admin-state --update-value disable', shell=True, capture_output=True, text=True)
-        
-        result2 = subprocess.run('gnmic -a p3:57400 -u admin -p admin --insecure set --update-path /configure/port[port-id=1/1/c2/1]/admin-state --update-value disable', shell=True, capture_output=True, text=True)
-
-        return f"gNMIc Commands Execution Result (Disable Links): {result1.stdout}\n{result2.stdout}"
-    except subprocess.CalledProcessError as e:
-        return f"Error executing gNMIc commands (Disable Links): {e.stderr}"
-
 @app.route('/execute_gnmic/get_port_status/<element>/<card>/<mda>/<conector>/<port>')
 def execute_gnmic_get_port_status(element, card, mda, conector, port='1'):
     try:
@@ -361,9 +278,7 @@ def get_icmp_status():
 @app.route('/get_server_info')
 def get_server_info():
     return jsonify(request.environ)
-
-#def update_port_status:
-#    
+  
 
 if __name__ == 'app':
     #print(__name__)
