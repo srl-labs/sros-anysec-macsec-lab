@@ -7959,7 +7959,7 @@
           "refId": "A"
         }
       ],
-      "title": "Tunnel Label",
+      "title": "Tunnel ID",
       "type": "gauge"
     },
     {
