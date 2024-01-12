@@ -8,33 +8,16 @@ bash -c "$(curl -sL https://get-gnmic.openconfig.net)"
 echo "END gNMIc Install script execution!"
 
 
-#echo ""
-#echo "Start set permissions !"
-### set Exec permissions for the html dir
-#chmod +x /usr/share/nginx/html/
-## Set full permissions for script files
-## Convert all scripts to unix EOL
-#cd /tmp
-#chmod -R 777 *
-#apk add dos2unix 
-#wait
-#dos2unix /tmp/*
-#wait
-#echo "END set permissions !"
-
-
+### Install other SW
 echo ""
 echo "Install Sw!"
-### Install lsof to view and kill Flask PID
-#apk add lsof
 apk add python3
 #apk add python3-venv
 wait
 echo "END Install Sw !"
 
 
-
-
+### Start Flask and Python installation Install 
 echo ""
 echo "Start Flask and Python installation Install script execution!"
 cd /
@@ -60,9 +43,10 @@ sleep 5
 echo "END Flask and Python installation Install script execution!"
 
 
+Start Flask and Python installation Install 
 echo ""
 echo "Flask Web Server is running at port 5000."
-#lsof -n | grep flask | grep ESTABLISHED
+#ps -ef
 #wait
 echo "Try http://<SERVER-IP>:5000/"
 echo "Script execution Done!"
