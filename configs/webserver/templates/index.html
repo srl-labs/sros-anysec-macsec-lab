@@ -1,264 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SROS ANYSec Lab - Automation Panel</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <style>
-    fieldset {
-        border: none;
-        border-radius: 3px;
-        margin: 10px 7px 10px 0px;
-    }
-    h2 {
-        color: rgb(0 90 255);
-        text-align: center;
-        
-    }
-    h3 {
-        color: rgb(0 90 255);
-        text-align: center;
-    }
-    .main-container {
-        display: flex;
-        min-width: 100%;
-        min-height: 100%;
-    }
-    #Left {
-        min-width: 13vw;
-    }
-    #Right {
-        min-width: 85vw;
-        min-height: 98vh;
-    }
-    .main-container.child {
-        flex: 1;
-    }
-    .main-container.child::first-child {
-        margin-right: 20px;
-    }
-    a.link-button {
-        font-weight: normal;
-        font-size: 1.0em;
-        padding: 5px 5px;
-        margin: 5px 3px;
-        text-align: center;
-        min-width: 90%;
-    }
-    a.link-button {
-        font-weight: bold;
-        color: #fff !important;
-    }
-    .link-button {
-        cursor: pointer;
-        font-size: 1.1em;
-        padding: 5px 12px;
-        display: inline-block;
-        text-decoration: none;
-    }
-    .link-button {
-        border-radius: 3px;
-        -moz-border-radius: 3px;
-        -webkit-border-radius: 3px;
-    }
-    .link-button.enabled {
-        background: #5C8621;
-        background-image: linear-gradient(-90deg,rgb(92,134,33) 0%,rgb(72,105,27) 100%);
-        background-image: -o-linear-gradient(-90deg,rgb(92,134,33) 0%,rgb(72,105,27) 100%);
-        background-image: -moz-linear-gradient(-90deg,rgb(92,134,33) 0%,rgb(72,105,27) 100%);
-        background-image: -ms-linear-gradient(-90deg,rgb(92,134,33) 0%,rgb(72,105,27) 100%);
-        background-image: -webkit-gradient(linear,50% 0%,50% 100%,color-stop(0, rgb(92,134,33)),color-stop(1, rgb(72,105,27)));
-        background-image: -webkit-linear-gradient(-90deg,rgb(92,134,33) 0%,rgb(72,105,27) 100%);
-        background-image: -webkit-linear-gradient(-90deg,rgb(92,134,33) 0%,rgb(72,105,27) 100%);
-    }
-    .link-button.disabled {
-        background: #8C2323;
-        background-image: linear-gradient(-90deg,rgb(140,35,35) 0%,rgb(112,29,29) 100%);
-        background-image: -o-linear-gradient(-90deg,rgb(140,35,35) 0%,rgb(112,29,29) 100%);
-        background-image: -moz-linear-gradient(50% 0% -90deg,rgb(140,35,35) 0%,rgb(112,29,29) 100%);
-        background-image: -ms-linear-gradient(-90deg,rgb(140,35,35) 0%,rgb(112,29,29) 100%);
-        background-image: -webkit-gradient(linear,50% 0%,50% 100%,color-stop(0, rgb(140,35,35)),color-stop(1, rgb(112,29,29)));
-        background-image: -webkit-linear-gradient(-90deg,rgb(140,35,35) 0%,rgb(112,29,29) 100%);
-    }
-    </style>
 </head>
+
 <body>
-    <script type=text/javascript>
-        $(function() {
-            $('.main-container .left a').on('click', function(e) {
-                e.preventDefault();
-                id=e.currentTarget.id;
-                path=id.replace(/-/g,'/');
-		message="";
-                if(id.startsWith('-icmp'))
-                    {
-                    icmp_size=$('#icmp-size')[0].value;
-                    if (icmp_size>8000)
-                        {
-                        message+="The ICMP size range must be between 0 and 8000 bytes\n";
-                        $('#icmp-size')[0].value="8000";
-                        }
-                    
-                    if (icmp_size<0)
-                        {
-                        message+="The ICMP size range must be between 0 and 8000 bytes\n";
-                        $('#icmp-size')[0].value="0";
-                        }
-                    path+='/'+icmp_size
-                    icmp_interval=$('#icmp-interval')[0].value;
-                    if (icmp_interval>1)
-                        {
-                        message+="The ICMP interval range must be between 0.01 and 1 second\n";
-                        $('#icmp-interval')[0].value="1";
-                        }
-                    
-                    if (icmp_interval<0.01)
-                        {
-                        message+="The ICMP interval range must be between 0.01 and 1 second\n";
-                        $('#icmp-interval')[0].value="0.01";
-                        }
-                    path+='/'+icmp_interval
-                    }
-                console.log(path);
-                if (message!="")
-                    {
-                    alert(message);
-                    }
-                else
-                    {
-                    $.get(path,
-                        function(data) {
-                            //do nothing
-                            console.log(data);
-                            }
-                        );
-                    }
-                return false;
-            });
-        });
-    
-        function update_link_buttons()
-            {
-            path='/get_links/data';
-            $.get(path,
-                function(data) {
-                    //do nothing
-                    //console.log(data);
-                    Object.keys(data).forEach(key => {
-                            if($('.link-'+key).hasClass('disabled'))
-                                {
-                                $('.link-'+key).removeClass('disabled');
-                                }
-                            if($('.link-'+key).hasClass('enabled'))
-                                {
-                                $('.link-'+key).removeClass('enabled');
-                                }
-                            $('.link-'+key).addClass(data[key]);
-                        });
-                    
-                    }
-                );
-            }
-    
-        function update_anysec_buttons()
-            {
-            path='/get_anysecs/data';
-            $.get(path,
-                function(data) {
-                    //do nothing
-                    //console.log(data);
-                    Object.keys(data).forEach(key => {
-                            if($('.anysec-'+key).hasClass('disabled'))
-                                {
-                                $('.anysec-'+key).removeClass('disabled');
-                                }
-                            if($('.anysec-'+key).hasClass('enabled'))
-                                {
-                                $('.anysec-'+key).removeClass('enabled');
-                                }
-                            $('.anysec-'+key).addClass(data[key]);
-                        });
-                    
-                    }
-                );
-            }
-        function update_icmp_buttons()
-            {
-            path='/get_icmp_status';
-            $.get(path,
-                function(data) {
-                    //do nothing
-                    //console.log(data);
-                    Object.keys(data).forEach(key => {
-                            if($('.icmp-'+key).hasClass('disabled'))
-                                {
-                                $('.icmp-'+key).removeClass('disabled');
-                                }
-                            if($('.icmp-'+key).hasClass('enabled'))
-                                {
-                                $('.icmp-'+key).removeClass('enabled');
-                                }
-                            $('.icmp-'+key).addClass(data[key]);
-                        });
-                    
-                    }
-                );
-            }
-        $(document).ready(function(){ 
-          setInterval(update_link_buttons,1000); 
-          setInterval(update_anysec_buttons,1000); 
-          setInterval(update_icmp_buttons,1000); 
-        });
-    </script>
-    
-    <div class="main-container">
-        <div id="Left" class="child left" style="min.withd: 300px">
-            <div>
-                <div>
-                    <div align="center">
-                        <img src="static/clab.png" width="100" height="80" align="left">
-                    </div>
-                    <div align="center">
-                        <br />
-                        <img src="static/nokia.png" width="100" height="20" align="middle">
+    <script src="../js/script.js"></script>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-3">
+                <div class="text-center">
+                    <img src="static/clab.png" class="img-fluid" alt="clab">
+                    <img src="static/nokia.png" class="img-fluid" alt="nokia">
+                </div>
+                <h2 class="text-center">ANYSec Lab Automation Panel</h2>
+                <div class="card mb-3">
+                    <div class="card-header">ICMP Start/Stop</div>
+                    <div class="card-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="icmp-size">Size:</label>
+                                <input type="number" class="form-control" id="icmp-size" min="0" max="8000" step="100"
+                                    value="2000">
+                            </div>
+                            <div class="form-group">
+                                <label for="icmp-interval">Interval:</label>
+                                <input type="number" class="form-control" id="icmp-interval" min="0.01" max="1"
+                                    step="0.01" value="0.01">
+                            </div>
+                        </form>
+                        <button class="btn btn-primary mb-1 w-100">VLL</button>
+                        <button class="btn btn-primary mb-1 w-100">VPLS</button>
+                        <button class="btn btn-primary w-100">VPRN</button>
                     </div>
                 </div>
-                <br />
-                <br />
-                <h2>ANYSec Lab</br>Automation Panel</h2>
-                <fieldset style="background-color: rgb(0 17 53 / 32%);">
-                    <h3>ICMP Start/Stop</h3>
-                    <div style="display: table;min-width: 100%;">
-                        <div style="display: table-row;">
-                            <div style="display: table-cell;">size:</div>
-                            <div style="display: table-cell;"><input id="icmp-size" type="number" min="0" max="8000" step="100" value="2000"></div>
-                        </div>
-                        <div style="display: table-row;">
-                            <div style="display: table-cell;">interval:</div>
-                            <div style="display: table-cell;"><input id="icmp-interval" type="number" min="0.01" max="1" step="0.01" value="0.01"></div>
-                        </div>
+                <div class="card mb-3">
+                    <div class="card-header">Link Shut/No shut</div>
+                    <div class="card-body">
+                        <button class="btn btn-primary mb-1 w-100">Top Link<br />( pe1--p3 )</button>
+                        <button class="btn btn-primary w-100">Bottom Link<br />( pe1--p4 )</button>
                     </div>
-                    <div><a id="-icmp_toggle-vll" class="icmp-vll link-button">VLL</a></div>
-                    <div><a id="-icmp_toggle-vpls" class="icmp-vpls link-button">VPLS</a></div>
-                    <div><a id="-icmp_toggle-vprn" class="icmp-vprn link-button">VPRN</a></div>
-                </fieldset>
-                <fieldset style="background-color: rgb(0 17 53 / 32%);">
-                    <h3>Link Shut/No shut</h3>
-                    <div><a id="-execute_gnmic-link_toggle-top" class="link-top link-button">Top Link ( pe1--p3 )</a></div>
-                    <div><a id="-execute_gnmic-link_toggle-bottom" class="link-bottom link-button">Bottom Link ( pe1--p4 )</a></div>
-                </fieldset>
-                <fieldset style="background-color: rgb(0 17 53 / 32%);">
-                    <h3>ANYSec Enable/Disable</h3>
-                    <div><a id="-execute_gnmic-anysec_toggle-vll" class="anysec-vll link-button">VLL</a></div>
-                    <div><a id="-execute_gnmic-anysec_toggle-vpls" class="anysec-vpls link-button">VPLS</a></div>
-                    <div><a id="-execute_gnmic-anysec_toggle-vprn" class="anysec-vprn link-button">VPRN</a></div>
-                </fieldset>
+                </div>
+                <div class="card mb-3">
+                    <div class="card-header">ANYSec Enable/Disable</div>
+                    <div class="card-body">
+                        <button class="btn btn-primary d-block mb-1 w-100">VLL</button>
+                        <button class="btn btn-primary d-block mb-1 w-100">VPLS</button>
+                        <button class="btn btn-primary d-block w-100">VPRN</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-9">
+                <iframe src="http://{{host}}:3000/d/kawVPD-Gk/anysec-telemetry?orgId=1&refresh=5s" width="100%"
+                    height="100%"></iframe>
             </div>
         </div>
-        <div id="Right" class="child right">
-            <iframe src="http://{{host}}:3000/d/kawVPD-Gk/anysec-telemetry?orgId=1&refresh=5s" width="100%" height="100%"></iframe>
-        </div>
     </div>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>
