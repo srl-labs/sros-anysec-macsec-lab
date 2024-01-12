@@ -30,7 +30,7 @@
     }
     #Right {
         min-width: 85vw;
-        min-height: 90vh;
+        min-height: 98vh;
     }
     .main-container.child {
         flex: 1;
@@ -90,20 +90,50 @@
                 e.preventDefault();
                 id=e.currentTarget.id;
                 path=id.replace(/-/g,'/');
+		message="";
                 if(id.startsWith('-icmp'))
                     {
                     icmp_size=$('#icmp-size')[0].value;
+                    if (icmp_size>8000)
+                        {
+                        message+="The ICMP size range must be between 0 and 8000 bytes\n";
+                        $('#icmp-size')[0].value="8000";
+                        }
+                    
+                    if (icmp_size<0)
+                        {
+                        message+="The ICMP size range must be between 0 and 8000 bytes\n";
+                        $('#icmp-size')[0].value="0";
+                        }
                     path+='/'+icmp_size
                     icmp_interval=$('#icmp-interval')[0].value;
+                    if (icmp_interval>1)
+                        {
+                        message+="The ICMP interval range must be between 0.01 and 1 second\n";
+                        $('#icmp-interval')[0].value="1";
+                        }
+                    
+                    if (icmp_interval<0.01)
+                        {
+                        message+="The ICMP interval range must be between 0.01 and 1 second\n";
+                        $('#icmp-interval')[0].value="0.01";
+                        }
                     path+='/'+icmp_interval
                     }
                 console.log(path);
-                $.get(path,
-                    function(data) {
-                        //do nothing
-                        console.log(data);
+                if (message!="")
+                    {
+                    alert(message);
                     }
-                );
+                else
+                    {
+                    $.get(path,
+                        function(data) {
+                            //do nothing
+                            console.log(data);
+                            }
+                        );
+                    }
                 return false;
             });
         });
@@ -185,11 +215,18 @@
     <div class="main-container">
         <div id="Left" class="child left" style="min.withd: 300px">
             <div>
-				<tr>
-					<td><div align="center"><img src="static/clab.png" width="100" height="80" align="left"></div></td>
-					<td width="10%" height="10%"> <div align="center"> <br> <img src="static/nokia.png" width="100" height="20" align="middle"></div></td>
-				</tr>
-                <tr><br><br><h2>ANYSec Lab</br>Automation Panel</h2></tr>
+                <div>
+                    <div align="center">
+                        <img src="static/clab.png" width="100" height="80" align="left">
+                    </div>
+                    <div align="center">
+                        <br />
+                        <img src="static/nokia.png" width="100" height="20" align="middle">
+                    </div>
+                </div>
+                <br />
+                <br />
+                <h2>ANYSec Lab</br>Automation Panel</h2>
                 <fieldset style="background-color: rgb(0 17 53 / 32%);">
                     <h3>ICMP Start/Stop</h3>
                     <div style="display: table;min-width: 100%;">
