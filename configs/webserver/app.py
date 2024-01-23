@@ -187,9 +187,6 @@ def execute_gnmic_link_toggle(link_name):
         results={}
         for router, port in thislink.items():
             results[router] = subprocess.run('gnmic -a '+router+':57400 -u admin -p admin --insecure set --update-path /configure/port[port-id='+port+']/admin-state --update-value '+action, shell=True, capture_output=True, text=True).stdout
-        for host_entry in hosts:
-            if host_entry["hostname"] in thislink:
-                telemetry.update_port_status(host_entry)
         return jsonify(results)
         #return f"gNMIc Commands Execution Result (Enable Links): {result1.stdout}\n{result2.stdout}"
     except subprocess.CalledProcessError as e:
@@ -215,10 +212,6 @@ def execute_gnmic_anysec_toggle(anysec_name):
             anysec_group=anysec_data["group_name"]
             anysec_peer=anysec_data["peer"]
             results[router] = subprocess.run('gnmic -a '+router+':57400 -u admin -p admin --insecure set --update-path /configure/anysec/tunnel-encryption/encryption-group[group-name='+anysec_group+']/peer[peer-ip-address='+anysec_peer+']/admin-state --update-value '+action, shell=True, capture_output=True, text=True).stdout
-        for host_entry in hosts:
-            if host_entry["hostname"] in thisanysec:
-                telemetry.update_anysec_status(host_entry)
-        
         return jsonify(results)
         #return f"gNMIc Commands Execution Result (Enable Links): {result1.stdout}\n{result2.stdout}"
     except subprocess.CalledProcessError as e:
