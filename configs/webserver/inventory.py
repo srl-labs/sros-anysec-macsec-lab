@@ -10,13 +10,11 @@ hosts = [
                           'subscription': [
                             {
                                 'path': '/configure/port/admin-state',
-                                'mode': 'sample',
-                                'sample_interval': 10000000000
+                                'mode': 'on_change'
                             },
                             {
                                 'path': '/configure/anysec/tunnel-encryption/encryption-group/peer/admin-state',
-                                'mode': 'sample',
-                                'sample_interval': 10000000000
+                                'mode': 'on_change'
                             }
                         ],
                         'use_aliases': False,
@@ -35,13 +33,11 @@ hosts = [
                           'subscription': [
                             {
                                 'path': '/configure/port/admin-state',
-                                'mode': 'sample',
-                                'sample_interval': 10000000000
+                                'mode': 'on_change'
                             },
                             {
                                 'path': '/configure/anysec/tunnel-encryption/encryption-group/peer/admin-state',
-                                'mode': 'sample',
-                                'sample_interval': 10000000000
+                                'mode': 'on_change'
                             }
                         ],
                         'use_aliases': False,
@@ -60,8 +56,7 @@ hosts = [
                           'subscription': [
                             {
                                 'path': '/configure/port/admin-state',
-                                'mode': 'sample',
-                                'sample_interval': 10000000000
+                                'mode': 'on_change'
                             }
                         ],
                         'use_aliases': False,
@@ -80,8 +75,7 @@ hosts = [
                           'subscription': [
                             {
                                 'path': '/configure/port/admin-state',
-                                'mode': 'sample',
-                                'sample_interval': 10000000000
+                                'mode': 'on_change'
                             }
                         ],
                         'use_aliases': False,
