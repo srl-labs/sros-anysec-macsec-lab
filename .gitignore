@@ -3,3 +3,4 @@ clab-anysec-macsec/
 *.log
 configs/webserver/__pycache__/
 *.bak
+containerlab
