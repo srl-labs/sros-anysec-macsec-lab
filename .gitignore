@@ -2,3 +2,4 @@ clab-anysec-macsec/
 *.key
 *.log
 configs/webserver/__pycache__/
+*.bak
