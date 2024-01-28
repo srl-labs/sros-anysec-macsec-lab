@@ -85,7 +85,7 @@ topology:
       group: server
       ports:
         - 9080:80
-        - 5000:5000
+        - 35000:5000
 
     client8:
       kind: linux
