@@ -100,24 +100,19 @@ The physical setup is ilustrated below:
 
 
 The setup contains six SROS FP5 & FP4 routers with 23.10R2 and 2 linux hosts. The network contains 2 P routers, 2 PEs running ANYSec and MACSec, 2 CEs with MACSec, and 2 Linux Clients with 3 interfaces for 3 distinct services. 
-Only the PEs have ANYSec configured:
-* P Routers
-
-  * SR-1x-48d
+Only the PEs have ANYSec configured. The models are:
+* P Routers 
 
   * SR-1 FP4
 
 * PE Routers with ANYSec and MACSec
 
-  * SR-1x-92s 
-
-  * SR-1se
+  * sr-1x-48d FP5
 
 * CE Routers with MACSec
 
-  * SR-1-24d
-
-  * SR-1-46s
+  * sr-1x-48d FP5
+  
 
 
 Note 1: Clients are Linux hosts (https://github.com/hellt/Network-MultiTool)
