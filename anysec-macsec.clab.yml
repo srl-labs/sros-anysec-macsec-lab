@@ -8,63 +8,51 @@ mgmt:
 topology:
   kinds:
     nokia_sros:
+      type: sr-1x-48d
       image: registry.srlinux.dev/pub/vr-sros:23.10.R1
       license: /opt/nokia/sros/r23_license.key
     linux:
       image: ghcr.io/hellt/network-multitool
 
   nodes:
-    ### CORE ###
-    # SR-1x-92s FP5
+    ### CORE FP5 and FP4###
+    # FP5
     pe1:
       kind: nokia_sros
       mgmt-ipv4: 172.50.50.11
-      type: >-
-        cp: cpu=2 ram=4 chassis=sr-1x-92s slot=A card=cpm-1x/i80-200g-sfpdd+12-800g-qsfpdd-1x ___ 
-        lc: cpu=2 ram=4 max_nics=10 chassis=sr-1x-92s slot=1 card=i80-200g-sfpdd+12-800g-qsfpdd-1x mda/1=m80-200g-sfpdd+12-800g-qsfpdd-1x
       startup-config: configs/core/pe1.partial.cfg
 
-    # SR-1se FP5
+    # FP5
     pe2:
       kind: nokia_sros
       mgmt-ipv4: 172.50.50.12
-      type: >-
-        cp: cpu=4 ram=6 chassis=sr-1se slot=A card=cpm-1se ___ 
-        lc: cpu=4 ram=6 max_nics=10 chassis=SR-1se slot=1 card=imm36-800g-qsfpdd mda/1=ms36-800g-qsfpdd
       startup-config: configs/core/pe2.partial.cfg
 
-    # SR-1x-48d FP5
+    # FP4
     p3:
       kind: nokia_sros
       mgmt-ipv4: 172.50.50.13
-      type: >-
-        cp: cpu=2 ram=4 chassis=sr-1x-48d slot=A card=cpm-1x ___ 
-        lc: cpu=2 ram=4 max_nics=34 chassis=sr-1x-48d slot=1 card=i48-800g-qsfpdd-1x mda/1=m48-800g-qsfpdd-1x
+      type: SR-1
       startup-config: configs/core/p3.partial.cfg
 
-    # SR-1 FP4
+    # FP4
     p4:
       kind: nokia_sros
       mgmt-ipv4: 172.50.50.14
-      type: >-
-        cp: cpu=2 ram=4 chassis=sr-1 max_nics=34 slot=A card=cpm-1 slot=1 card=iom-1 mda/1=me6-400gb-qsfpdd
+      type: SR-1
       startup-config: configs/core/p4.partial.cfg
 
     ### CEs ###
+    # FP5
     ce5:
       kind: nokia_sros
       mgmt-ipv4: 172.50.50.51
-      type: >-
-        cp: cpu=2 ram=4 chassis=sr-1-24d slot=A card=cpm-1x ___ 
-        lc: cpu=2 ram=4 max_nics=34 chassis=sr-1-24d slot=1 card=i24-800g-qsfpdd-1 mda/1=m24-800g-qsfpdd-1
       startup-config: configs/core/ce5.partial.cfg
 
+    # FP5
     ce6:
       kind: nokia_sros
       mgmt-ipv4: 172.50.50.52
-      type: >-
-        cp: cpu=2 ram=4 chassis=sr-1-46s slot=A card=cpm-1x/i40-200g-sfpdd+6-800g-qsfpdd-1 ___ 
-        lc: cpu=2 ram=4 max_nics=34 chassis=sr-1-46s slot=1 card=i40-200g-sfpdd+6-800g-qsfpdd-1 mda/1=m40-200g-sfpdd+6-800g-qsfpdd-1
       startup-config: configs/core/ce6.partial.cfg
 
     ### CLIENTS & Automation Stack###
