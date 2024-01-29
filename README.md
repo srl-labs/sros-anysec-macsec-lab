@@ -99,30 +99,31 @@ The physical setup is ilustrated below:
 
 
 
-The setup contains six SROS FP5 routers with 23.10R2 and 2 linux hosts. The network contains 2 P routers, 2 PEs running ANYSec and MACSec, 2 CEs with MACSec, and 2 Linux Clients with 3 interfaces for 3 distinct services. 
+The setup contains six SROS FP5 & FP4 routers with 23.10R2 and 2 linux hosts. The network contains 2 P routers, 2 PEs running ANYSec and MACSec, 2 CEs with MACSec, and 2 Linux Clients with 3 interfaces for 3 distinct services. 
 Only the PEs have ANYSec configured:
 * P Routers
 
-•	sr-2se
+  * SR-1x-48d
 
-•	sr-7s
+  * SR-1 FP4
 
 * PE Routers with ANYSec and MACSec
 
-•	sr-1x-92s 
+  * SR-1x-92s 
 
-•	sr-1se
+  * SR-1se
 
 * CE Routers with MACSec
 
-•	sr-1-24d
+  * SR-1-24d
 
-•	sr-1-46s
-
-* Clients are Linux hosts (https://github.com/hellt/Network-MultiTool)
+  * SR-1-46s
 
 
-•	Note: Client7 is also running Flask and hosting the automation Tool
+Note 1: Clients are Linux hosts (https://github.com/hellt/Network-MultiTool)
+
+
+Note 2 : Client7 is also running Flask and hosting the automation Tool
 
 
 
@@ -224,6 +225,76 @@ docker exec -it client7 bash
 ```
 
 
+
+## SROS Streaming Telemetry and Automation
+
+This lab was enhanced with Streaming Telemetry by adding gNIMc, Prometheus and Grafana.
+
+For details please refer to: 
+https://github.com/srl-labs/srl-sros-telemetry-lab
+
+
+It also includes Automation for the tests using gNMIC invoked through python from Flask webserver. There are 3 main set of tests:
+
+1. Start/Stop ICMP traffic for each service.
+
+2. Disable/enable the top link (between PE1 and P3) or the bottom link (between PE1 and P4) to see ANYSec packets flowing through the other link.
+
+3. Disable/enable ANYSec for each of the 3 services to see packets being sent in clear or encrypted on demand.
+
+ 
+
+
+
+### Telemetry and automation stack
+
+The following stack of software solutions has been chosen for this lab:
+
+| Role                | Software                                            | Port               | Link                               | Credentials        |
+| ------------------- | --------------------------------------------------- |------------------- | ---------------------------------- |------------------- |
+| Telemetry collector | [gnmic](https://gnmic.openconfig.net)               | 57400              |                                    |                    |
+| Time-Series DB      | [prometheus](https://prometheus.io)                 | 9090               | http://localhost:9090/graph        |                    |
+| Visualization       | [grafana](https://grafana.com)                      | 3000               | http://localhost:3000              | admin/admin        |
+| Automation          | [flask](https://flask.palletsprojects.com/en/3.0.x/)| 35000              | http://localhost:35000/            |                    |
+
+
+
+
+The following picture picture ilustrates the Telemetry and Automation stack:
+
+
+
+<p align="center">
+  <img width="900" height="400" src="https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/telemetry-automation.jpg?raw=true">
+</p>
+
+
+
+
+### Access details
+
+If you are accessing from a remote host, then replace localhost by the CLAB Server IP address
+* Grafana: <http://localhost:3000>. Built-in user credentials: `admin/admin`
+* Prometheus: <http://localhost:9090/graph>
+* Flask Automation Page: <http://localhost:35000/>   
+
+
+
+
+
+## Verify the setup
+
+Verify that you're able to access all nodes (Routers and clients) and the platforms (Grafana, Prometheus and Flask Demo Page).
+
+Start a Tcpdump/wireshark capture as explained bellow and start traffic between Client7 and Client8 using Flask Control Panel. 
+
+You may shut the link between PE1 and P3 and see that ANYSec SR-ISIS traffic uses the bottom link.
+
+You may also disable ANYSec to view packets in clear.
+
+
+
+
 ## Wireshark
 
 For details about Packet capture & Wireshark at containerlab refer to:
@@ -265,74 +336,6 @@ ssh root@10.82.182.179 "ip netns exec pe1 tcpdump -U -nni eth1 -w -" | /mnt/c/Pr
 Windows example:
 ssh root@10.82.182.179 "ip netns exec pe1 tcpdump -U -nni eth1 -w -" | "c:\Program Files\Wireshark\Wireshark.exe" -k -i -
 ```
-
-
-
-## SROS Streaming Telemetry and Automation
-
-This lab was enhanced with Streaming Telemetry by adding gNIMc, Prometheus and Grafana.
-
-For details please refer to: 
-https://github.com/srl-labs/srl-sros-telemetry-lab
-
-
-It also includes Automation for the tests using gNMIC invoked through python from Flask webserver. There are 3 main set of tests:
-
-1. Start/Stop ICMP traffic for each service.
-
-2. Disable/enable the top link (between PE1 and P3) or the bottom link (between PE1 and P4) to see ANYSec packets flowing through the other link.
-
-3. Disable/enable ANYSec for each of the 3 services to see packets being sent in clear or encrypted on demand.
-
- 
-
-
-
-### Telemetry and automation stack
-
-The following stack of software solutions has been chosen for this lab:
-
-| Role                | Software                                            | Port               | Link                               | Credentials        |
-| ------------------- | --------------------------------------------------- |------------------- | ---------------------------------- |------------------- |
-| Telemetry collector | [gnmic](https://gnmic.openconfig.net)               | 57400              |                                    |                    |
-| Time-Series DB      | [prometheus](https://prometheus.io)                 | 9090               | http://localhost:9090/graph        |                    |
-| Visualization       | [grafana](https://grafana.com)                      | 3000               | http://localhost:3000              | admin/admin        |
-| Automation          | [flask](https://flask.palletsprojects.com/en/3.0.x/)| 5000               | http://localhost:5000/             |                    |
-
-
-
-
-The following picture picture ilustrates the Telemetry and Automation stack:
-
-
-
-<p align="center">
-  <img width="900" height="400" src="https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/telemetry-automation.jpg?raw=true">
-</p>
-
-
-
-
-### Access details
-
-If you are accessing from a remote host, then replace localhost by the CLAB Server IP address
-* Grafana: <http://localhost:3000>. Built-in user credentials: `admin/admin`
-* Prometheus: <http://localhost:9090/graph>
-* Flask Automation Page: <http://localhost:5000/>   
-
-
-
-
-
-## Verify the setup
-
-Verify that you're able to access all nodes (Routers and clients) and the platforms (Grafana, Prometheus and Flask Demo Page).
-
-Start a Tcpdump/wireshark capture as explained above and start traffic between Client7 and Client8 using Flask. 
-
-You may shut the link between PE1 and P3 and see that ANYSec SR-ISIS traffic uses the bottom link.
-
-You may also disable ANYSec to view packets in clear.
 
 
 
@@ -394,10 +397,14 @@ tshark -D
 ```
 
 
+
 From your Windows laptop prompt execute Tshark an pipe the output to Wireshark:
 ```bash
+### Example! Replace IP and windows path
+ssh root@<IP> "ip netns exec <CONTAINER> tshark -l -i <IF1> [-i <IF2>] [-i <IFN>] -w -" | "<WIRESHARK PATH>" -k -i -
 ssh root@10.82.182.179 "ip netns exec pe1 tshark -l -i eth3 -i eth1 -i eth2 -w -" | "c:\Program Files\Wireshark\Wireshark.exe" -k -i -
 ```
+
 
 
 ## Outputs
@@ -442,6 +449,9 @@ show router bgp routes 10.0.0.2/32 vpn-ipv4 hunt
 
 
 ### Test 2 - Disable ANYSec at PE1 and PE2 
+
+
+Note: Use the VPRN service for this test. Wireshark correctly decodes ICMP for VPRN but not for L2 Services. You can still use VLL and VPLS and see packet in clear but ICMP Header will not be decoded.
 
 Upon Disable ANYSec verify ping is still working but unecripted.
 Re-enable ANYSec and verify traffic is encrypted again.

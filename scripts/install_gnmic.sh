@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ### Install gnmic
-echo ""
+echo "..."
 echo "Start gNMIc Install script execution!"
 bash -c "$(curl -sL https://get-gnmic.openconfig.net)"
 #wait
@@ -9,7 +9,7 @@ echo "END gNMIc Install script execution!"
 
 
 ### Install other SW
-echo ""
+echo "..."
 echo "Install Sw!"
 apk add python3
 #apk add python3-venv
@@ -18,7 +18,7 @@ echo "END Install Sw !"
 
 
 ### Start Flask and Python installation Install 
-echo ""
+echo "..."
 echo "Start Flask and Python installation Install script execution!"
 cd /
 mkdir flask_app && cd flask_app
@@ -44,13 +44,13 @@ echo "END Flask and Python installation Install script execution!"
 
 
 Start Flask and Python installation Install 
-echo ""
-echo "Flask Web Server is running at port 5000."
+echo "..."
+echo "Flask Web Server is running at port 35000."
 #ps -ef
 #wait
-echo "Try http://<SERVER-IP>:5000/"
+echo "Try http://<SERVER-IP>:35000/"
 echo "Script execution Done!"
-echo ""
+echo "..."
 
 
 

@@ -15,6 +15,7 @@ topology:
 
   nodes:
     ### CORE ###
+    # SR-1x-92s FP5
     pe1:
       kind: nokia_sros
       mgmt-ipv4: 172.50.50.11
@@ -23,6 +24,7 @@ topology:
         lc: cpu=2 ram=4 max_nics=10 chassis=sr-1x-92s slot=1 card=i80-200g-sfpdd+12-800g-qsfpdd-1x mda/1=m80-200g-sfpdd+12-800g-qsfpdd-1x
       startup-config: configs/core/pe1.partial.cfg
 
+    # SR-1se FP5
     pe2:
       kind: nokia_sros
       mgmt-ipv4: 172.50.50.12
@@ -31,20 +33,21 @@ topology:
         lc: cpu=4 ram=6 max_nics=10 chassis=SR-1se slot=1 card=imm36-800g-qsfpdd mda/1=ms36-800g-qsfpdd
       startup-config: configs/core/pe2.partial.cfg
 
+    # SR-1x-48d FP5
     p3:
       kind: nokia_sros
       mgmt-ipv4: 172.50.50.13
       type: >-
-        cp: cpu=2 min_ram=4 chassis=sr-2se slot=A sfm=sfm-2se card=cpm-2se ___
-        lc: cpu=4 min_ram=8 max_nics=10 chassis=sr-2se slot=1 sfm=sfm-2se card=xcm-2se mda/1=x2-s36-800g-qsfpdd-18.0t
+        cp: cpu=2 ram=4 chassis=sr-1x-48d slot=A card=cpm-1x ___ 
+        lc: cpu=2 ram=4 max_nics=34 chassis=sr-1x-48d slot=1 card=i48-800g-qsfpdd-1x mda/1=m48-800g-qsfpdd-1x
       startup-config: configs/core/p3.partial.cfg
 
+    # SR-1 FP4
     p4:
       kind: nokia_sros
       mgmt-ipv4: 172.50.50.14
       type: >-
-        cp: cpu=4 ram=6 chassis=sr-7s slot=A sfm=sfm2-s card=cpm2-s ___ 
-        lc: cpu=4 ram=8 max_nics=10 chassis=sr-7s slot=1 sfm=sfm2-s card=xcm2-7s mda/1=x2-s36-800g-qsfpdd-18.0t
+        cp: cpu=2 ram=4 chassis=sr-1 max_nics=34 slot=A card=cpm-1 slot=1 card=iom-1 mda/1=me6-400gb-qsfpdd
       startup-config: configs/core/p4.partial.cfg
 
     ### CEs ###
@@ -64,8 +67,8 @@ topology:
         lc: cpu=2 ram=4 max_nics=34 chassis=sr-1-46s slot=1 card=i40-200g-sfpdd+6-800g-qsfpdd-1 mda/1=m40-200g-sfpdd+6-800g-qsfpdd-1
       startup-config: configs/core/ce6.partial.cfg
 
-    ### CLIENTS ###
-    ### Automation STACK ###
+    ### CLIENTS & Automation Stack###
+    ### Automation STACK / Flask - Hosted at Client7 ###
     client7:
       kind: linux
       mgmt-ipv4: 172.50.50.31
