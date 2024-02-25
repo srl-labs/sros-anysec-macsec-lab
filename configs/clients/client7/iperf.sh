@@ -28,4 +28,3 @@ iperf3 -c 2002::192:168:1:8 -t 10000 -i 1 -p 5201 -B 2002::192:168:1:7 -P 32 -b 
 #        - ip address add 192.168.2.8/24 dev eth2
 #        - ip address add 1.1.1.8/24 dev eth3
 #        - route add default gw 1.1.1.1/24 eth3
-
