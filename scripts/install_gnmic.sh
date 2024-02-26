@@ -4,7 +4,6 @@
 echo "..."
 echo "Start gNMIc Install script execution!"
 bash -c "$(curl -sL https://get-gnmic.openconfig.net)"
-#wait
 echo "END gNMIc Install script execution!"
 
 
@@ -17,9 +16,9 @@ wait
 echo "END Install Sw !"
 
 
-### Start Flask and Python installation Install 
+### Start Flask and Python installation 
 echo "..."
-echo "Start Flask and Python installation Install script execution!"
+echo "Start Flask and Python installation script execution!"
 cd /
 mkdir flask_app && cd flask_app
 python3 -m venv venv
@@ -31,8 +30,7 @@ apk add python3-dev
 apk add musl-dev
 apk add libffi-dev
 /venv/bin/python3 -m pip install --upgrade pip
-pip install pygnmi
-pip install flask
+pip install -r requirements 
 #pip install pygnmi
 #pip install gunicorn 
 #python -m flask --version
@@ -40,10 +38,10 @@ pip install flask
 #flask run &
 flask run --host=0.0.0.0 &
 sleep 5
-echo "END Flask and Python installation Install script execution!"
+echo "END Flask and Python installation script execution!"
 
 
-Start Flask and Python installation Install 
+### Finish installation script 
 echo "..."
 echo "Flask Web Server is running at port 35000."
 #ps -ef
