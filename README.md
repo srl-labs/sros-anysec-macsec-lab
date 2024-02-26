@@ -3,7 +3,7 @@
 
 ANYSec is a Nokia technology that provides low-latency and line-rate native encryption for any transport (IP, MPLS, segment routing, Ethernet or VLAN), on any service, at any time and for any load conditions without impacting performance.
 
-This lab is an ANYSec demo using Nokia SROS FP5 (https://www.nokia.com/networks/technologies/fp5/) vSIMs running at CLAB (https://containerlab.dev/).
+This lab is an ANYSec demo using [Nokia SROS FP5](https://www.nokia.com/networks/technologies/fp5/) vSIMs running at [CLAB](https://containerlab.dev/).
 It combines ANYSec with MACSec and ilustrates ANYSec slicing for distinct services with multi-instance SR-ISIS and FLEX-Algo. 
 
 It also provides a visualization dashboard using a Telemetry stack with gNMIc, Prometheus and Grafana.
@@ -30,7 +30,7 @@ You also need SROS 23.10R1+ Image and a valid License file.
 ### SROS Image
 
 The SROS vSIM image file used is 23.10R2, and is available under Nokia's internal registry. 
-If you don't have access to it, then you must get the SROS image and manually import it to CLAB following the instructions here: https://containerlab.dev/manual/vrnetlab/#vrnetlab
+If you don't have access to it, then you must get the SROS image and manually import it to CLAB following the instructions at [VRNETLAB](https://containerlab.dev/manual/vrnetlab/#vrnetlab).
 
 The stepts are:
 ```bash
@@ -115,7 +115,7 @@ Only the PEs have ANYSec configured. The models are:
   
 
 
-Note 1: Clients are Linux hosts (https://github.com/hellt/Network-MultiTool)
+Note 1: Clients are Linux hosts using [Network-MultiTool](https://github.com/hellt/Network-MultiTool)
 
 
 Note 2 : Client7 is also running Flask and hosting the automation Tool
@@ -225,8 +225,7 @@ docker exec -it client7 bash
 
 This lab was enhanced with Streaming Telemetry by adding gNIMc, Prometheus and Grafana.
 
-For details please refer to: 
-https://github.com/srl-labs/srl-sros-telemetry-lab
+For details please refer to [SR Linux/SROS Streaming Telemetry Lab](https://github.com/srl-labs/srl-sros-telemetry-lab).
 
 
 It also includes Automation for the tests using gNMIC invoked through python from Flask webserver. There are 3 main set of tests:
@@ -292,8 +291,7 @@ You may also disable ANYSec to view packets in clear.
 
 ## Wireshark
 
-For details about Packet capture & Wireshark at containerlab refer to:
-https://containerlab.dev/manual/wireshark/#capturing-with-tcpdumpwireshark
+For details about packet capture & Wireshark at containerlab refer to [CLAB Packet capture & Wireshark](https://containerlab.dev/manual/wireshark/#capturing-with-tcpdumpwireshark).
 
 
 You may found a pcap file with ANYSec packets in the files above in this project. 
@@ -362,6 +360,12 @@ The picture below provides an example of the ANYSec label stack between PE1 and 
 
 ![pic1](https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/anysec-stack.jpg?raw=true)
 
+
+
+### Wireshark capture with EdgeShark
+
+To start and view the ANYSec captured packets you may use EdgeShark. 
+Refer to [CLAB and EdgeShark integration](https://containerlab.dev/manual/wireshark/#edgeshark-integration) for details.
 
 
 
