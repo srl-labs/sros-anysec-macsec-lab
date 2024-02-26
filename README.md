@@ -30,7 +30,7 @@ You also need SROS 23.10R1+ Image and a valid License file.
 ### SROS Image
 
 The SROS vSIM image file used is 23.10R2, and is available under Nokia's internal registry. 
-If you don't have access to it, then you must get the SROS image and manually import it to CLAB following the instructions [VRNETLAB](https://containerlab.dev/manual/vrnetlab/#vrnetlab).
+If you don't have access to it, then you must get the SROS image and manually import it to CLAB following the instructions at [VRNETLAB](https://containerlab.dev/manual/vrnetlab/#vrnetlab).
 
 The stepts are:
 ```bash
@@ -291,7 +291,7 @@ You may also disable ANYSec to view packets in clear.
 
 ## Wireshark
 
-For details about packet capture & Wireshark at containerlab refer to [CLAB Packet capture & Wireshark](https://containerlab.dev/manual/wireshark/#capturing-with-tcpdumpwireshark)
+For details about packet capture & Wireshark at containerlab refer to [CLAB Packet capture & Wireshark](https://containerlab.dev/manual/wireshark/#capturing-with-tcpdumpwireshark).
 
 
 You may found a pcap file with ANYSec packets in the files above in this project. 
