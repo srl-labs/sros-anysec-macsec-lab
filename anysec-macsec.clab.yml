@@ -61,18 +61,12 @@ topology:
       kind: linux
       mgmt-ipv4: 172.50.50.31
       binds:
-        - configs/clients/client7/eth1.sh:/config/eth1.sh
-        - scripts/install_gnmic.sh:/tmp/install_gnmic.sh:rw
+        - configs/clients/client7/setup-client7.sh:/config/setup-client7.sh
+        - scripts/requirements.txt:/config/requirements.txt
+        - scripts/install_gnmic.sh:/config/install_gnmic.sh:rw
         - configs/webserver/:/flask_app/
       exec:
-        - bash /config/eth1.sh
-        - ip -6 address add 2002::192:168:1:7/96 dev eth1
-        - ip address add 192.168.1.7/24 dev eth1
-        - ip address add 192.168.2.7/24 dev eth2
-        - ip address add 192.168.3.7/24 dev eth3
-        - ip route add 1.1.1.0/24 via 192.168.3.1
-        - echo "Install Automation tools - gnmic, python3 and flask "
-        - /bin/bash /tmp/install_gnmic.sh
+        - bash /config/setup-client7.sh
       group: server
       ports:
         - 9080:80
@@ -82,14 +76,9 @@ topology:
       kind: linux
       mgmt-ipv4: 172.50.50.32
       binds:
-        - configs/clients/client8:/config
+        - configs/clients/client8/setup-client8.sh:/config/setup-client8.sh
       exec:
-        - bash /config/eth1.sh
-        - ip -6 address add 2002::192:168:1:8/96 dev eth1
-        - ip address add 192.168.1.8/24 dev eth1
-        - ip address add 192.168.2.8/24 dev eth2
-        - ip address add 1.1.1.8/24 dev eth3
-        - ip route add 192.168.3.0/24 via 1.1.1.1
+        - bash /config/setup-client8.sh
       group: server
 
     ### TELEMETRY STACK ###
@@ -149,7 +138,7 @@ topology:
     - endpoints: ["client8:eth1", "ce6:eth1"]
     - endpoints: ["client8:eth2", "ce6:eth2"]
     - endpoints: ["client8:eth3", "ce6:eth3"]
-    # Mirror
+    # Mirror - For Advanced TShoot, disabled by default
     - endpoints: ["pe1:eth6", "ce6:eth6"]
     - endpoints: ["pe2:eth5", "ce6:eth5"]
-    - endpoints: ["ce6:eth10", "ce6:eth11"] ### mirror dest is eth10
+    - endpoints: ["ce6:eth10", "ce6:eth11"] ### mirror dest is eth10 to allow single point of capture
