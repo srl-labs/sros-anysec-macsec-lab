@@ -62,7 +62,8 @@ topology:
       mgmt-ipv4: 172.50.50.31
       binds:
         - configs/clients/client7/setup-client7.sh:/config/setup-client7.sh
-        - scripts/install_gnmic.sh:/tmp/install_gnmic.sh:rw
+        - scripts/requirements.txt:/config/requirements.txt
+        - scripts/install_gnmic.sh:/config/install_gnmic.sh:rw
         - configs/webserver/:/flask_app/
       exec:
         - bash /config/setup-client7.sh
