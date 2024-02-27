@@ -30,7 +30,7 @@ apk add python3-dev
 apk add musl-dev
 apk add libffi-dev
 /venv/bin/python3 -m pip install --upgrade pip
-pip install -r requirements.txt
+pip install -r /config/requirements.txt
 #pip install pygnmi
 #pip install gunicorn 
 #python -m flask --version
