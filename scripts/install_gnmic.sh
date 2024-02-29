@@ -19,8 +19,7 @@ echo "END Install Sw !"
 ### Start Flask and Python installation 
 echo "..."
 echo "Start Flask and Python installation script execution!"
-cd /
-mkdir flask_app && cd flask_app
+cd /flask_app
 python3 -m venv venv
 source venv/bin/activate
 export FLASK_APP=/flask_app/app.py
@@ -36,7 +35,7 @@ pip install -r /config/requirements.txt
 #python -m flask --version
 #apt-get install gunicorn
 #flask run &
-flask run --host=0.0.0.0 &
+HTTPS_PROXY= HTTP_PROXY= http_proxy= https_proxy= flask run --host=0.0.0.0 &
 sleep 5
 echo "END Flask and Python installation script execution!"
 
