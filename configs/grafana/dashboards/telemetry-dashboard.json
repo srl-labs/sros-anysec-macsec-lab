@@ -3326,288 +3326,6 @@
           },
           {
             "aggregation": "current",
-            "alias": "ce5_decrypt_packets",
-            "column": "Time",
-            "dateColumn": "Time",
-            "dateFormat": "YYYY-MM-DD HH:mm:ss",
-            "dateTHData": [
-              {
-                "color": "rgba(245, 54, 54, 0.9)",
-                "comparator": "ge",
-                "level": 0,
-                "value": "0d"
-              },
-              {
-                "color": "rgba(237, 129, 40, 0.89)",
-                "comparator": "ge",
-                "level": 0,
-                "value": "-1d"
-              },
-              {
-                "color": "rgba(50, 172, 45, 0.97)",
-                "comparator": "ge",
-                "level": 0,
-                "value": "-1w"
-              }
-            ],
-            "decimals": 1,
-            "gradient": true,
-            "hidden": false,
-            "invert": true,
-            "mappingType": 1,
-            "mapsDat": {
-              "events": {
-                "dataList": [],
-                "options": {
-                  "enableRegEx": false,
-                  "identByProp": "id",
-                  "metadata": ""
-                }
-              },
-              "links": {
-                "dataList": [],
-                "options": {
-                  "enableRegEx": true,
-                  "identByProp": "id",
-                  "metadata": ""
-                }
-              },
-              "shapes": {
-                "dataList": [],
-                "options": {
-                  "enableRegEx": false,
-                  "identByProp": "id",
-                  "metadata": ""
-                }
-              },
-              "texts": {
-                "dataList": [
-                  {
-                    "hidden": false,
-                    "pattern": "310",
-                    "textOn": "wmd",
-                    "textPattern": "/.*/",
-                    "textReplace": "content"
-                  }
-                ],
-                "options": {
-                  "enableRegEx": false,
-                  "identByProp": "id",
-                  "metadata": ""
-                }
-              }
-            },
-            "metricType": "serie",
-            "newRule": false,
-            "numberTHData": [
-              {
-                "color": "#abbbbb",
-                "comparator": "ge",
-                "level": 0
-              },
-              {
-                "color": "#4bdd33",
-                "comparator": "ge",
-                "level": 0,
-                "value": 500000
-              },
-              {
-                "color": "#ff8000",
-                "comparator": "gt",
-                "level": 0,
-                "value": 2000000
-              },
-              {
-                "color": "rgba(245, 54, 54, 0.9)",
-                "comparator": "ge",
-                "level": 0,
-                "value": 5000000
-              }
-            ],
-            "order": 23,
-            "overlayIcon": false,
-            "pattern": "macsec_decrypted_packets:ce5:57400:1/1/c7/1:in",
-            "rangeData": [],
-            "reduce": true,
-            "refId": "A",
-            "sanitize": false,
-            "stringTHData": [
-              {
-                "color": "rgba(50, 172, 45, 0.97)",
-                "comparator": "eq",
-                "level": 0,
-                "value": "/.*/"
-              },
-              {
-                "color": "rgba(237, 129, 40, 0.89)",
-                "comparator": "eq",
-                "level": 0,
-                "value": "/.*warning.*/"
-              },
-              {
-                "color": "rgba(245, 54, 54, 0.9)",
-                "comparator": "eq",
-                "level": 0,
-                "value": "/.*(success|ok).*/"
-              }
-            ],
-            "tooltip": false,
-            "tooltipColors": false,
-            "tooltipLabel": "",
-            "tooltipOn": "a",
-            "tpDirection": "v",
-            "tpGraph": false,
-            "tpGraphScale": "linear",
-            "tpGraphSize": "100%",
-            "tpGraphType": "line",
-            "tpMetadata": false,
-            "type": "number",
-            "unit": "bps",
-            "valueData": []
-          },
-          {
-            "aggregation": "current",
-            "alias": "ce6_decrypt_packets",
-            "column": "Time",
-            "dateColumn": "Time",
-            "dateFormat": "YYYY-MM-DD HH:mm:ss",
-            "dateTHData": [
-              {
-                "color": "rgba(245, 54, 54, 0.9)",
-                "comparator": "ge",
-                "level": 0,
-                "value": "0d"
-              },
-              {
-                "color": "rgba(237, 129, 40, 0.89)",
-                "comparator": "ge",
-                "level": 0,
-                "value": "-1d"
-              },
-              {
-                "color": "rgba(50, 172, 45, 0.97)",
-                "comparator": "ge",
-                "level": 0,
-                "value": "-1w"
-              }
-            ],
-            "decimals": 1,
-            "gradient": true,
-            "hidden": false,
-            "invert": true,
-            "mappingType": 1,
-            "mapsDat": {
-              "events": {
-                "dataList": [],
-                "options": {
-                  "enableRegEx": false,
-                  "identByProp": "id",
-                  "metadata": ""
-                }
-              },
-              "links": {
-                "dataList": [],
-                "options": {
-                  "enableRegEx": true,
-                  "identByProp": "id",
-                  "metadata": ""
-                }
-              },
-              "shapes": {
-                "dataList": [],
-                "options": {
-                  "enableRegEx": false,
-                  "identByProp": "id",
-                  "metadata": ""
-                }
-              },
-              "texts": {
-                "dataList": [
-                  {
-                    "hidden": false,
-                    "pattern": "318",
-                    "textOn": "wmd",
-                    "textPattern": "/.*/",
-                    "textReplace": "content"
-                  }
-                ],
-                "options": {
-                  "enableRegEx": false,
-                  "identByProp": "id",
-                  "metadata": ""
-                }
-              }
-            },
-            "metricType": "serie",
-            "newRule": false,
-            "numberTHData": [
-              {
-                "color": "#abbbbb",
-                "comparator": "ge",
-                "level": 0
-              },
-              {
-                "color": "#4bdd33",
-                "comparator": "ge",
-                "level": 0,
-                "value": 500000
-              },
-              {
-                "color": "#ff8000",
-                "comparator": "gt",
-                "level": 0,
-                "value": 2000000
-              },
-              {
-                "color": "rgba(245, 54, 54, 0.9)",
-                "comparator": "ge",
-                "level": 0,
-                "value": 5000000
-              }
-            ],
-            "order": 24,
-            "overlayIcon": false,
-            "pattern": "macsec_decrypted_packets:ce6:57400:1/1/c7/1:in",
-            "rangeData": [],
-            "reduce": true,
-            "refId": "A",
-            "sanitize": false,
-            "stringTHData": [
-              {
-                "color": "rgba(50, 172, 45, 0.97)",
-                "comparator": "eq",
-                "level": 0,
-                "value": "/.*/"
-              },
-              {
-                "color": "rgba(237, 129, 40, 0.89)",
-                "comparator": "eq",
-                "level": 0,
-                "value": "/.*warning.*/"
-              },
-              {
-                "color": "rgba(245, 54, 54, 0.9)",
-                "comparator": "eq",
-                "level": 0,
-                "value": "/.*(success|ok).*/"
-              }
-            ],
-            "tooltip": false,
-            "tooltipColors": false,
-            "tooltipLabel": "",
-            "tooltipOn": "a",
-            "tpDirection": "v",
-            "tpGraph": false,
-            "tpGraphScale": "linear",
-            "tpGraphSize": "100%",
-            "tpGraphType": "line",
-            "tpMetadata": false,
-            "type": "number",
-            "unit": "bps",
-            "valueData": []
-          },
-          {
-            "aggregation": "current",
             "alias": "pe1_encrypt_packets",
             "column": "Time",
             "dateColumn": "Time",
@@ -3706,7 +3424,7 @@
                 "value": 5000000
               }
             ],
-            "order": 25,
+            "order": 23,
             "overlayIcon": false,
             "pattern": "anysec_encrypted_packets:pe1:57400:out",
             "rangeData": [],
@@ -3847,9 +3565,291 @@
                 "value": 5000000
               }
             ],
-            "order": 26,
+            "order": 24,
             "overlayIcon": false,
             "pattern": "anysec_encrypted_packets:pe2:57400:out",
+            "rangeData": [],
+            "reduce": true,
+            "refId": "A",
+            "sanitize": false,
+            "stringTHData": [
+              {
+                "color": "rgba(50, 172, 45, 0.97)",
+                "comparator": "eq",
+                "level": 0,
+                "value": "/.*/"
+              },
+              {
+                "color": "rgba(237, 129, 40, 0.89)",
+                "comparator": "eq",
+                "level": 0,
+                "value": "/.*warning.*/"
+              },
+              {
+                "color": "rgba(245, 54, 54, 0.9)",
+                "comparator": "eq",
+                "level": 0,
+                "value": "/.*(success|ok).*/"
+              }
+            ],
+            "tooltip": false,
+            "tooltipColors": false,
+            "tooltipLabel": "",
+            "tooltipOn": "a",
+            "tpDirection": "v",
+            "tpGraph": false,
+            "tpGraphScale": "linear",
+            "tpGraphSize": "100%",
+            "tpGraphType": "line",
+            "tpMetadata": false,
+            "type": "number",
+            "unit": "bps",
+            "valueData": []
+          },
+          {
+            "aggregation": "current",
+            "alias": "ce5_decrypt_packets",
+            "column": "Time",
+            "dateColumn": "Time",
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "dateTHData": [
+              {
+                "color": "rgba(245, 54, 54, 0.9)",
+                "comparator": "ge",
+                "level": 0,
+                "value": "0d"
+              },
+              {
+                "color": "rgba(237, 129, 40, 0.89)",
+                "comparator": "ge",
+                "level": 0,
+                "value": "-1d"
+              },
+              {
+                "color": "rgba(50, 172, 45, 0.97)",
+                "comparator": "ge",
+                "level": 0,
+                "value": "-1w"
+              }
+            ],
+            "decimals": 1,
+            "gradient": true,
+            "hidden": false,
+            "invert": true,
+            "mappingType": 1,
+            "mapsDat": {
+              "events": {
+                "dataList": [],
+                "options": {
+                  "enableRegEx": false,
+                  "identByProp": "id",
+                  "metadata": ""
+                }
+              },
+              "links": {
+                "dataList": [],
+                "options": {
+                  "enableRegEx": true,
+                  "identByProp": "id",
+                  "metadata": ""
+                }
+              },
+              "shapes": {
+                "dataList": [],
+                "options": {
+                  "enableRegEx": false,
+                  "identByProp": "id",
+                  "metadata": ""
+                }
+              },
+              "texts": {
+                "dataList": [
+                  {
+                    "hidden": false,
+                    "pattern": "310",
+                    "textOn": "wmd",
+                    "textPattern": "/.*/",
+                    "textReplace": "content"
+                  }
+                ],
+                "options": {
+                  "enableRegEx": false,
+                  "identByProp": "id",
+                  "metadata": ""
+                }
+              }
+            },
+            "metricType": "serie",
+            "newRule": false,
+            "numberTHData": [
+              {
+                "color": "#abbbbb",
+                "comparator": "ge",
+                "level": 0
+              },
+              {
+                "color": "#4bdd33",
+                "comparator": "ge",
+                "level": 0,
+                "value": 500000
+              },
+              {
+                "color": "#ff8000",
+                "comparator": "gt",
+                "level": 0,
+                "value": 2000000
+              },
+              {
+                "color": "rgba(245, 54, 54, 0.9)",
+                "comparator": "ge",
+                "level": 0,
+                "value": 5000000
+              }
+            ],
+            "order": 25,
+            "overlayIcon": false,
+            "pattern": "macsec_decrypted_packets:ce5:57400:1/1/c7/1:in",
+            "rangeData": [],
+            "reduce": true,
+            "refId": "A",
+            "sanitize": false,
+            "stringTHData": [
+              {
+                "color": "rgba(50, 172, 45, 0.97)",
+                "comparator": "eq",
+                "level": 0,
+                "value": "/.*/"
+              },
+              {
+                "color": "rgba(237, 129, 40, 0.89)",
+                "comparator": "eq",
+                "level": 0,
+                "value": "/.*warning.*/"
+              },
+              {
+                "color": "rgba(245, 54, 54, 0.9)",
+                "comparator": "eq",
+                "level": 0,
+                "value": "/.*(success|ok).*/"
+              }
+            ],
+            "tooltip": false,
+            "tooltipColors": false,
+            "tooltipLabel": "",
+            "tooltipOn": "a",
+            "tpDirection": "v",
+            "tpGraph": false,
+            "tpGraphScale": "linear",
+            "tpGraphSize": "100%",
+            "tpGraphType": "line",
+            "tpMetadata": false,
+            "type": "number",
+            "unit": "bps",
+            "valueData": []
+          },
+          {
+            "aggregation": "current",
+            "alias": "ce6_decrypt_packets",
+            "column": "Time",
+            "dateColumn": "Time",
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "dateTHData": [
+              {
+                "color": "rgba(245, 54, 54, 0.9)",
+                "comparator": "ge",
+                "level": 0,
+                "value": "0d"
+              },
+              {
+                "color": "rgba(237, 129, 40, 0.89)",
+                "comparator": "ge",
+                "level": 0,
+                "value": "-1d"
+              },
+              {
+                "color": "rgba(50, 172, 45, 0.97)",
+                "comparator": "ge",
+                "level": 0,
+                "value": "-1w"
+              }
+            ],
+            "decimals": 1,
+            "gradient": true,
+            "hidden": false,
+            "invert": true,
+            "mappingType": 1,
+            "mapsDat": {
+              "events": {
+                "dataList": [],
+                "options": {
+                  "enableRegEx": false,
+                  "identByProp": "id",
+                  "metadata": ""
+                }
+              },
+              "links": {
+                "dataList": [],
+                "options": {
+                  "enableRegEx": true,
+                  "identByProp": "id",
+                  "metadata": ""
+                }
+              },
+              "shapes": {
+                "dataList": [],
+                "options": {
+                  "enableRegEx": false,
+                  "identByProp": "id",
+                  "metadata": ""
+                }
+              },
+              "texts": {
+                "dataList": [
+                  {
+                    "hidden": false,
+                    "pattern": "318",
+                    "textOn": "wmd",
+                    "textPattern": "/.*/",
+                    "textReplace": "content"
+                  }
+                ],
+                "options": {
+                  "enableRegEx": false,
+                  "identByProp": "id",
+                  "metadata": ""
+                }
+              }
+            },
+            "metricType": "serie",
+            "newRule": false,
+            "numberTHData": [
+              {
+                "color": "#abbbbb",
+                "comparator": "ge",
+                "level": 0
+              },
+              {
+                "color": "#4bdd33",
+                "comparator": "ge",
+                "level": 0,
+                "value": 500000
+              },
+              {
+                "color": "#ff8000",
+                "comparator": "gt",
+                "level": 0,
+                "value": 2000000
+              },
+              {
+                "color": "rgba(245, 54, 54, 0.9)",
+                "comparator": "ge",
+                "level": 0,
+                "value": 5000000
+              }
+            ],
+            "order": 26,
+            "overlayIcon": false,
+            "pattern": "macsec_decrypted_packets:ce6:57400:1/1/c7/1:in",
             "rangeData": [],
             "reduce": true,
             "refId": "A",
@@ -7288,10 +7288,10 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "rate(gnmic_sros_anysec_peer_octets_encrypted{encryption_group_group_name=\"$Encryption_Group\"}[30s])*8",
+          "expr": "sum(rate(gnmic_sros_anysec_peer_octets_encrypted{source=\"pe1:57400\"}[30s])*8)",
           "hide": false,
           "instant": true,
-          "legendFormat": "anysec_encrypted_packets:{{source}}:out",
+          "legendFormat": "anysec_encrypted_packets:pe1:57400:out",
           "range": false,
           "refId": "B"
         },
@@ -7302,12 +7302,40 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "rate(gnmic_sros_anysec_peer_octets_decrypted{encryption_group_group_name=\"$Encryption_Group\"}[30s])*8",
+          "expr": "sum(rate(gnmic_sros_anysec_peer_octets_encrypted{source=\"pe2:57400\"}[30s])*8)",
           "hide": false,
           "instant": true,
-          "legendFormat": "anysec_decrypted_packets:{{source}}:in",
+          "legendFormat": "anysec_encrypted_packets:pe2:57400:out",
+          "range": false,
+          "refId": "K"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(rate(gnmic_sros_anysec_peer_octets_decrypted{source=\"pe1:57400\"}[30s])*8)",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "anysec_decrypted_packets:pe1:57400:in",
           "range": false,
           "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(rate(gnmic_sros_anysec_peer_octets_decrypted{source=\"pe2:57400\"}[30s])*8)",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "anysec_decrypted_packets:pe2:57400:in",
+          "range": false,
+          "refId": "L"
         },
         {
           "datasource": {
@@ -7410,7 +7438,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue"
+                "color": "blue",
+                "value": null
               }
             ]
           }
@@ -7474,7 +7503,8 @@
             "mode": "percentage",
             "steps": [
               {
-                "color": "blue"
+                "color": "blue",
+                "value": null
               },
               {
                 "color": "blue",
@@ -7496,7 +7526,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green"
+                      "color": "green",
+                      "value": null
                     }
                   ]
                 }
@@ -7515,7 +7546,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "red"
+                      "color": "red",
+                      "value": null
                     }
                   ]
                 }
@@ -7589,7 +7621,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue"
+                "color": "blue",
+                "value": null
               }
             ]
           }
@@ -7661,7 +7694,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue"
+                "color": "blue",
+                "value": null
               }
             ]
           }
@@ -7753,7 +7787,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -7791,7 +7826,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "rate(gnmic_sros_anysec_peer_octets_encrypted{source=\"$AnySec_EndPoints\"}[30s])*8",
+          "expr": "sum(rate(gnmic_sros_anysec_peer_octets_encrypted{source=\"$AnySec_EndPoints\"}[30s])*8)",
           "legendFormat": "Encrypted Packets",
           "range": true,
           "refId": "A"
@@ -7845,7 +7880,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -7883,7 +7919,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "rate(gnmic_sros_anysec_peer_octets_decrypted{source=\"$AnySec_EndPoints\"}[30s])*8",
+          "expr": "sum(rate(gnmic_sros_anysec_peer_octets_decrypted{source=\"$AnySec_EndPoints\"}[30s])*8)",
           "legendFormat": "Decrypted Packets",
           "range": true,
           "refId": "A"
@@ -7910,7 +7946,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue"
+                "color": "blue",
+                "value": null
               }
             ]
           }
@@ -7983,7 +8020,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue"
+                "color": "blue",
+                "value": null
               }
             ]
           }
@@ -8055,7 +8093,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -8136,7 +8175,8 @@
             "mode": "percentage",
             "steps": [
               {
-                "color": "blue"
+                "color": "blue",
+                "value": null
               },
               {
                 "color": "blue",
@@ -8158,7 +8198,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green"
+                      "color": "green",
+                      "value": null
                     }
                   ]
                 }
@@ -8177,7 +8218,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "red"
+                      "color": "red",
+                      "value": null
                     }
                   ]
                 }
@@ -8243,7 +8285,8 @@
             "mode": "percentage",
             "steps": [
               {
-                "color": "blue"
+                "color": "blue",
+                "value": null
               },
               {
                 "color": "blue",
@@ -8265,7 +8308,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green"
+                      "color": "green",
+                      "value": null
                     }
                   ]
                 }
@@ -8284,7 +8328,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "red"
+                      "color": "red",
+                      "value": null
                     }
                   ]
                 }
@@ -8358,7 +8403,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue"
+                "color": "blue",
+                "value": null
               }
             ]
           }
@@ -8450,7 +8496,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -8542,7 +8589,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -8607,7 +8655,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           }
@@ -8677,7 +8726,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -8775,7 +8825,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -8860,7 +8911,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -8945,7 +8997,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -9040,7 +9093,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -9100,7 +9154,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "2s",
+  "refresh": "5s",
   "schemaVersion": 38,
   "style": "dark",
   "tags": [],
@@ -9161,8 +9215,8 @@
       {
         "current": {
           "selected": false,
-          "text": "ce5:57400",
-          "value": "ce5:57400"
+          "text": "pe1:57400",
+          "value": "pe1:57400"
         },
         "datasource": {
           "type": "prometheus",
@@ -9209,6 +9263,6 @@
   "timezone": "",
   "title": "AnySec Telemetry",
   "uid": "kawVPD-Gk",
-  "version": 1,
+  "version": 3,
   "weekStart": ""
 }
