@@ -2,5 +2,7 @@ clab-anysec-macsec/
 *.key
 *.log
 configs/webserver/__pycache__/
+configs/webserver/venv
 *.bak
 containerlab
+
