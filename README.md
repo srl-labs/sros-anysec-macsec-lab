@@ -471,8 +471,8 @@ Re-enable ANYSec and verify traffic is encrypted again.
 
 The Demo Video shows the Grafana Dashboard, the Automation Panel to execute and observe different tasks in the network as well as monitoring traffic with Edgeshark.
 
+[![Watch the video](https://github.com/srl-labs/sros-anysec-macsec-lab/assets/86619221/c23956d3-f766-4cc5-8261-189ca765e4d7)](https://www.youtube.com/watch?v=pAKnSQR694g&t=2s&pp=ygULcm9tYW4gZG9kaW4%3D)
 
-[![Watch the video](https://private-user-images.githubusercontent.com/86619221/309602303-97a77d15-3e2f-4674-b110-0448214e71ed.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MDk1MTYxMzcsIm5iZiI6MTcwOTUxNTgzNywicGF0aCI6Ii84NjYxOTIyMS8zMDk2MDIzMDMtOTdhNzdkMTUtM2UyZi00Njc0LWIxMTAtMDQ0ODIxNGU3MWVkLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNDAzMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjQwMzA0VDAxMzAzN1omWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWMzNGY0M2RjOTJjMzk1MWM0OTc2NzExMzBkOTUwMTEzYWIzYWY5NjIwOTkxZWU5MzczZTZiZDU1ZWIxYmYxOTEmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.EDaqDuMZxnS5c8lmKfaOSsM-OLsSeSFiab_6rsRHgGM)](https://www.youtube.com/watch?v=pAKnSQR694g&t=2s&pp=ygULcm9tYW4gZG9kaW4%3D)
 
 
 
