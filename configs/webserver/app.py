@@ -103,20 +103,70 @@ class Telemetry:
         # print(host_entry["hostname"])
         subscribe = host_entry["subscribe"]
         # print(subscribe)
-        with gNMIclient(
-            target=(host_entry["hostname"], host_entry["port"]),
-            username=host_entry["username"],
-            password=host_entry["password"],
-            insecure=True,
-        ) as gc:
-            telemetry_stream = gc.subscribe_stream(subscribe=subscribe)
-            for telemetry_entry in telemetry_stream:
-                # telemetry_entry_json = json.dumps(telemetry_entry)
-                # if telemetry_entry["update"]["update"][0]["path"] == "admin-state":
-                if "port-id" in telemetry_entry["update"]["prefix"]:
+        try:
+            with gNMIclient(
+                target=(host_entry["hostname"], host_entry["port"]),
+                username=host_entry["username"],
+                password=host_entry["password"],
+                insecure=True,
+            ) as gc:
+                telemetry_stream = gc.subscribe_stream(subscribe=subscribe)
+                for telemetry_entry in telemetry_stream:
+                    # telemetry_entry_json = json.dumps(telemetry_entry)
+                    # if telemetry_entry["update"]["update"][0]["path"] == "admin-state":
+                    if "port-id" in telemetry_entry["update"]["prefix"]:
+                        port = re.findall(
+                            "port-id=(.*)",
+                            re.findall("\[(.*?)\]", telemetry_entry["update"]["prefix"])[0],
+                        )[0]
+                        if host_entry["hostname"] not in self.routers:
+                            self.routers[host_entry["hostname"]] = {}
+                        if "ports" not in self.routers[host_entry["hostname"]]:
+                            self.routers[host_entry["hostname"]]["ports"] = {}
+                        if port not in self.routers[host_entry["hostname"]]["ports"]:
+                            self.routers[host_entry["hostname"]]["ports"][port] = {}
+                        self.routers[host_entry["hostname"]]["ports"][port][
+                            "admin-state"
+                        ] = telemetry_entry["update"]["update"][0]["val"]
+                    if "anysec" in telemetry_entry["update"]["prefix"]:
+                        anysec_group = re.findall(
+                            "group-name=(.*)",
+                            re.findall("\[(.*?)\]", telemetry_entry["update"]["prefix"])[0],
+                        )[0]
+                        if host_entry["hostname"] not in self.routers:
+                            self.routers[host_entry["hostname"]] = {}
+                        if "anysec_group" not in self.routers[host_entry["hostname"]]:
+                            self.routers[host_entry["hostname"]]["anysec_group"] = {}
+                        if (
+                            anysec_group
+                            not in self.routers[host_entry["hostname"]]["anysec_group"]
+                        ):
+                            self.routers[host_entry["hostname"]]["anysec_group"][
+                                anysec_group
+                            ] = {}
+                        self.routers[host_entry["hostname"]]["anysec_group"][anysec_group][
+                            "admin-state"
+                        ] = telemetry_entry["update"]["update"][0]["val"]
+    
+                    # print(self.routers)
+                    # print(host_entry["hostname"]+' - '+telemetry_entry_json)
+        except gNMIException as e:
+            print(host_entry["hostname"])
+            print(e)
+
+    def update_port_status(self, host_entry):
+        paths = ["/configure/port/admin-state"]
+        try:
+            with gNMIclient(
+                target=(host_entry["hostname"], host_entry["port"]),
+                username=host_entry["username"],
+                password=host_entry["password"],
+                insecure=True,
+            ) as gc:
+                result = gc.get(path=paths, encoding="json")
+                for port_result in result["notification"][0]["update"]:
                     port = re.findall(
-                        "port-id=(.*)",
-                        re.findall("\[(.*?)\]", telemetry_entry["update"]["prefix"])[0],
+                        "port-id=(.*)", re.findall("\[(.*?)\]", port_result["path"])[0]
                     )[0]
                     if host_entry["hostname"] not in self.routers:
                         self.routers[host_entry["hostname"]] = {}
@@ -126,52 +176,10 @@ class Telemetry:
                         self.routers[host_entry["hostname"]]["ports"][port] = {}
                     self.routers[host_entry["hostname"]]["ports"][port][
                         "admin-state"
-                    ] = telemetry_entry["update"]["update"][0]["val"]
-                if "anysec" in telemetry_entry["update"]["prefix"]:
-                    anysec_group = re.findall(
-                        "group-name=(.*)",
-                        re.findall("\[(.*?)\]", telemetry_entry["update"]["prefix"])[0],
-                    )[0]
-                    if host_entry["hostname"] not in self.routers:
-                        self.routers[host_entry["hostname"]] = {}
-                    if "anysec_group" not in self.routers[host_entry["hostname"]]:
-                        self.routers[host_entry["hostname"]]["anysec_group"] = {}
-                    if (
-                        anysec_group
-                        not in self.routers[host_entry["hostname"]]["anysec_group"]
-                    ):
-                        self.routers[host_entry["hostname"]]["anysec_group"][
-                            anysec_group
-                        ] = {}
-                    self.routers[host_entry["hostname"]]["anysec_group"][anysec_group][
-                        "admin-state"
-                    ] = telemetry_entry["update"]["update"][0]["val"]
-
-                # print(self.routers)
-                # print(host_entry["hostname"]+' - '+telemetry_entry_json)
-
-    def update_port_status(self, host_entry):
-        paths = ["/configure/port/admin-state"]
-        with gNMIclient(
-            target=(host_entry["hostname"], host_entry["port"]),
-            username=host_entry["username"],
-            password=host_entry["password"],
-            insecure=True,
-        ) as gc:
-            result = gc.get(path=paths, encoding="json")
-            for port_result in result["notification"][0]["update"]:
-                port = re.findall(
-                    "port-id=(.*)", re.findall("\[(.*?)\]", port_result["path"])[0]
-                )[0]
-                if host_entry["hostname"] not in self.routers:
-                    self.routers[host_entry["hostname"]] = {}
-                if "ports" not in self.routers[host_entry["hostname"]]:
-                    self.routers[host_entry["hostname"]]["ports"] = {}
-                if port not in self.routers[host_entry["hostname"]]["ports"]:
-                    self.routers[host_entry["hostname"]]["ports"][port] = {}
-                self.routers[host_entry["hostname"]]["ports"][port][
-                    "admin-state"
-                ] = port_result["val"]
+                    ] = port_result["val"]
+        except gNMIException as e:
+            print(host_entry["hostname"])
+            print(e)
 
     def update_anysec_status(self, host_entry):
         paths = [
