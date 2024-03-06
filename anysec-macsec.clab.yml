@@ -13,6 +13,10 @@ topology:
       license: /opt/nokia/sros/r23_license.key
     linux:
       image: ghcr.io/srl-labs/network-multitool
+      env:
+        http_proxy: ${https_proxy}
+        https_proxy: ${http_proxy}
+        no_proxy: pe1,pe2,p3,p4,ce5,ce6,client7,client8,gnmic,prometheus,grafana,localhost,172.50.50.0/24
 
   nodes:
     ### CORE FP5 and FP4###
