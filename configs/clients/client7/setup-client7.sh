@@ -17,4 +17,4 @@ ip route add 1.1.1.0/24 via 192.168.3.1
 
 # Install Automation tools - gnmic, python3 and flask
 echo "Install Automation tools - gnmic, python3 and flask "
-/bin/bash /config/install_gnmic.sh
+source /config/install_gnmic.sh
