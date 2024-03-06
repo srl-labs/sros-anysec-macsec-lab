@@ -32,7 +32,7 @@ You also need SROS 23.10R1+ Image and a valid License file.
 The SROS vSIM image file used is 23.10R2, and is available under Nokia's internal registry. 
 If you don't have access to it, then you must get the SROS image and manually import it to CLAB following the instructions at [VRNETLAB](https://containerlab.dev/manual/vrnetlab/#vrnetlab).
 
-The stepts are:
+The steps are:
 ```bash
 # Clone vrnetlab
 git clone https://github.com/hellt/vrnetlab && cd vrnetlab

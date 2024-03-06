@@ -3,7 +3,7 @@
 ### Install gnmic
 echo "..."
 echo "Start gNMIc Install script execution!"
-bash -c "$(curl -sL https://get-gnmic.openconfig.net)"
+bash -c "$(curl -sL https://get-gnmic.openconfig.net)" -- -v 0.36.1
 echo "END gNMIc Install script execution!"
 
 
@@ -18,7 +18,7 @@ echo "END Install Sw !"
 
 ### Start Flask and Python installation 
 echo "..."
-echo "Start Flask and Python installation script execution!"
+echo "Start Flask and Python installation script execution!" 
 cd /flask_app
 python3 -m venv venv
 source venv/bin/activate
@@ -36,15 +36,15 @@ pip install -r /config/requirements.txt
 #apt-get install gunicorn
 #flask run &
 HTTPS_PROXY= HTTP_PROXY= http_proxy= https_proxy= flask run --host=0.0.0.0 &
-sleep 5
+sleep 3
 echo "END Flask and Python installation script execution!"
 
 
 ### Finish installation script 
 echo "..."
+ps -ef
+sleep 2
 echo "Flask Web Server is running at port 35000."
-#ps -ef
-#wait
 echo "Try http://<SERVER-IP>:35000/"
 echo "Script execution Done!"
 echo "..."
