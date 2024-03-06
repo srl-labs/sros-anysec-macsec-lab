@@ -73,7 +73,6 @@ topology:
         - bash /config/setup-client7.sh
       group: server
       ports:
-        - 9080:80
         - 35000:5000
 
     client8:
