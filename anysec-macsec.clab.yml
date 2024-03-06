@@ -65,8 +65,24 @@ topology:
         - scripts/requirements.txt:/config/requirements.txt
         - scripts/install_gnmic.sh:/config/install_gnmic.sh:rw
         - configs/webserver/:/flask_app/
-      exec:
-        - bash /config/setup-client7.sh
+      stages:
+        configure:
+          wait-for:
+            - node: pe1
+              stage: healthy
+            - node: pe2
+              stage: healthy
+            - node: p3
+              stage: healthy
+            - node: p4
+              stage: healthy
+            - node: ce5
+              stage: healthy
+            - node: ce6
+              stage: healthy
+          exec:
+            on-exit:
+              - bash /config/setup-client7.sh
       group: server
       ports:
         - 9080:80
