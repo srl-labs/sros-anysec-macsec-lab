@@ -7,6 +7,7 @@ import threading
 from flask import Flask, jsonify, render_template, request
 from inventory import anysecs, hosts, icmp_types, links
 from pygnmi.client import gNMIclient, gNMIException
+import grpc
 
 
 def threaded(fn):
@@ -153,6 +154,9 @@ class Telemetry:
         except gNMIException as e:
             print(host_entry["hostname"])
             print(e)
+        except grpc.FutureTimeoutError as e:
+            print(host_entry["hostname"])
+            print(e)
 
     def update_port_status(self, host_entry):
         paths = ["/configure/port/admin-state"]
@@ -178,6 +182,9 @@ class Telemetry:
                         "admin-state"
                     ] = port_result["val"]
         except gNMIException as e:
+            print(host_entry["hostname"])
+            print(e)
+        except grpc.FutureTimeoutError as e:
             print(host_entry["hostname"])
             print(e)
 
@@ -216,6 +223,9 @@ class Telemetry:
             except gNMIException as e:
                 print(host_entry["hostname"])
                 print(e)
+        except grpc.FutureTimeoutError as e:
+            print(host_entry["hostname"])
+            print(e)
 
     def run(self):
         for host_entry in hosts:
