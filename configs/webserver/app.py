@@ -223,9 +223,9 @@ class Telemetry:
             except gNMIException as e:
                 print(host_entry["hostname"])
                 print(e)
-        except grpc.FutureTimeoutError as e:
-            print(host_entry["hostname"])
-            print(e)
+            except grpc.FutureTimeoutError as e:
+                print(host_entry["hostname"])
+                print(e)
 
     def run(self):
         for host_entry in hosts:
