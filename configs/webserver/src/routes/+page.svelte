@@ -50,9 +50,9 @@
 </nav>
 
 <!-- SIDEBAR -->
-<div class="relative md:flex h-screen overflow-hidden">
-  <aside id="sidebar" class="text-sm font-nunito pb-4 overflow-y-auto scroll-light dark:scroll-dark z-20 w-[300px] transition-transform -translate-x-0 h-screen sticky bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700">
-    <div class="px-4 space-y-4 pt-[87px] md:pt-[72px] ">
+<div class="fixed h-screen overflow-hidden">
+  <aside id="sidebar" class="text-sm font-nunito pb-4 overflow-y-auto scroll-light dark:scroll-dark z-20 w-[300px] transition-transform -translate-x-0 h-screen bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700">
+    <div class="px-4 space-y-4 pt-[87px] md:pt-[72px]">
       <div class="rounded-lg border border-gray-200 dark:border-gray-600">
         <p class="px-4 py-2 text-center rounded-t-lg font-bold text-gray-900 dark:text-white bg-gray-200 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">ICMP State</p>
         <div class="py-3 space-y-3">
@@ -90,4 +90,9 @@
       </div>
     </div>
   </aside>
+</div>
+
+<div class="pt-[55px]">
+  <!-- svelte-ignore a11y-missing-attribute -->
+  <iframe class="h-[calc(100vh-55px)] w-screen" src="https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752641776%2C0.00030577182769775396%2C51.478569861898606&layer=mapnik"></iframe>
 </div>
