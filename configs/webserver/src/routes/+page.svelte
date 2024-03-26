@@ -18,6 +18,11 @@
     { "name": "size", "label": "Size (bytes)", "min": 0, "max": 8000, "step": 1, "default": 2000 },
     { "name": "interval", "label": "Interval (secs)", "min": 0.01, "max": 1, "step": 0.01, "default": 0.01 }
   ]
+
+  const linkState = {"bottom":"enabled", "top":"enabled"}
+  const anysec = {"vll":"enabled", "vpls":"enabled", "vprn":"enabled"}
+  const icmp = {"vll":"disabled", "vpls":"disabled", "vprn":"disabled"}
+
 </script>
 
 <!-- NAVBAR -->
@@ -60,7 +65,7 @@
             <Form entry={entry} />
           {/each}
           <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
-          <Services services={serviceOptions}/>
+          <Services key="icmp" services={serviceOptions}/>
         </div>
       </div>
       <div class="rounded-lg border border-gray-200 dark:border-gray-600 md:min-w-40">
@@ -85,7 +90,7 @@
       <div class="rounded-lg border border-gray-200 dark:border-gray-600 md:min-w-40">
         <p class="px-4 py-2 text-center rounded-t-lg font-bold text-gray-900 dark:text-white bg-gray-200 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">ANYSec State</p>
         <div class="py-3 space-y-3">
-          <Services services={serviceOptions}/>
+          <Services key="anysec" services={serviceOptions}/>
         </div>
       </div>
     </div>
@@ -94,5 +99,6 @@
 
 <div class="pt-[55px]">
   <!-- svelte-ignore a11y-missing-attribute -->
-  <iframe class="h-[calc(100vh-55px)] w-screen" src="https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752641776%2C0.00030577182769775396%2C51.478569861898606&layer=mapnik"></iframe>
+  <!--<iframe class="h-[calc(100vh-55px)] w-screen" src="https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752641776%2C0.00030577182769775396%2C51.478569861898606&layer=mapnik"></iframe>-->
+  <iframe class="h-[calc(100vh-55px)] w-screen" src="http://138.203.19.247:3000/"></iframe>
 </div>
