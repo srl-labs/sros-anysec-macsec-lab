@@ -35,7 +35,7 @@ pip install -r /config/requirements.txt
 #python -m flask --version
 #apt-get install gunicorn
 #flask run &
-HTTPS_PROXY= HTTP_PROXY= http_proxy= https_proxy= flask run --host=0.0.0.0 &
+HTTPS_PROXY= HTTP_PROXY= http_proxy= https_proxy= flask run --host=0.0.0.0 > /dev/pts/0 2>&1 &
 sleep 5
 echo "END Flask and Python installation script execution!"
 
