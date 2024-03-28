@@ -3,11 +3,14 @@ import re
 import signal
 import subprocess
 import threading
+import traceback 
+import sys
 
 from flask import Flask, jsonify, render_template, request
 from inventory import anysecs, hosts, icmp_types, links
 from pygnmi.client import gNMIclient, gNMIException
-import grpc
+import grpc, io
+from pprint import pprint
 
 
 def threaded(fn):
@@ -104,128 +107,197 @@ class Telemetry:
         # print(host_entry["hostname"])
         subscribe = host_entry["subscribe"]
         # print(subscribe)
-        try:
-            with gNMIclient(
-                target=(host_entry["hostname"], host_entry["port"]),
-                username=host_entry["username"],
-                password=host_entry["password"],
-                insecure=True,
-            ) as gc:
+        gc = gNMIclient(
+                    target=(host_entry["hostname"], host_entry["port"]),
+                    username=host_entry["username"],
+                    password=host_entry["password"],
+                    insecure=True,
+                )
+        while True:
+            try:
+                gc.connect()
                 telemetry_stream = gc.subscribe_stream(subscribe=subscribe)
                 for telemetry_entry in telemetry_stream:
                     # telemetry_entry_json = json.dumps(telemetry_entry)
                     # if telemetry_entry["update"]["update"][0]["path"] == "admin-state":
-                    if "port-id" in telemetry_entry["update"]["prefix"]:
-                        port = re.findall(
-                            "port-id=(.*)",
-                            re.findall("\[(.*?)\]", telemetry_entry["update"]["prefix"])[0],
-                        )[0]
-                        if host_entry["hostname"] not in self.routers:
-                            self.routers[host_entry["hostname"]] = {}
-                        if "ports" not in self.routers[host_entry["hostname"]]:
-                            self.routers[host_entry["hostname"]]["ports"] = {}
-                        if port not in self.routers[host_entry["hostname"]]["ports"]:
-                            self.routers[host_entry["hostname"]]["ports"][port] = {}
-                        self.routers[host_entry["hostname"]]["ports"][port][
-                            "admin-state"
-                        ] = telemetry_entry["update"]["update"][0]["val"]
-                    if "anysec" in telemetry_entry["update"]["prefix"]:
-                        anysec_group = re.findall(
-                            "group-name=(.*)",
-                            re.findall("\[(.*?)\]", telemetry_entry["update"]["prefix"])[0],
-                        )[0]
-                        if host_entry["hostname"] not in self.routers:
-                            self.routers[host_entry["hostname"]] = {}
-                        if "anysec_group" not in self.routers[host_entry["hostname"]]:
-                            self.routers[host_entry["hostname"]]["anysec_group"] = {}
-                        if (
-                            anysec_group
-                            not in self.routers[host_entry["hostname"]]["anysec_group"]
-                        ):
-                            self.routers[host_entry["hostname"]]["anysec_group"][
-                                anysec_group
-                            ] = {}
-                        self.routers[host_entry["hostname"]]["anysec_group"][anysec_group][
-                            "admin-state"
-                        ] = telemetry_entry["update"]["update"][0]["val"]
-    
+                    if "update" in telemetry_entry:
+                        if "prefix" in telemetry_entry["update"]:
+                            if "port-id" in telemetry_entry["update"]["prefix"]:
+                                try:
+                                    port = re.findall(
+                                        "port-id=(.*)",
+                                        re.findall("\[(.*?)\]", telemetry_entry["update"]["prefix"])[0],
+                                    )[0]
+                                except IndexError as e:
+                                    raise grpc.FutureTimeoutError()
+                                if host_entry["hostname"] not in self.routers:
+                                    self.routers[host_entry["hostname"]] = {}
+                                if "ports" not in self.routers[host_entry["hostname"]]:
+                                    self.routers[host_entry["hostname"]]["ports"] = {}
+                                if port not in self.routers[host_entry["hostname"]]["ports"]:
+                                    self.routers[host_entry["hostname"]]["ports"][port] = {}
+                                self.routers[host_entry["hostname"]]["ports"][port][
+                                    "admin-state"
+                                ] = telemetry_entry["update"]["update"][0]["val"]
+                            if "anysec" in telemetry_entry["update"]["prefix"]:
+                                try:
+                                    anysec_group = re.findall(
+                                        "group-name=(.*)",
+                                        re.findall("\[(.*?)\]", telemetry_entry["update"]["prefix"])[0],
+                                    )[0]
+                                except IndexError as e:
+                                    raise grpc.FutureTimeoutError()
+                                if host_entry["hostname"] not in self.routers:
+                                    self.routers[host_entry["hostname"]] = {}
+                                if "anysec_group" not in self.routers[host_entry["hostname"]]:
+                                    self.routers[host_entry["hostname"]]["anysec_group"] = {}
+                                if (
+                                    anysec_group
+                                    not in self.routers[host_entry["hostname"]]["anysec_group"]
+                                ):
+                                    self.routers[host_entry["hostname"]]["anysec_group"][
+                                        anysec_group
+                                    ] = {}
+                                self.routers[host_entry["hostname"]]["anysec_group"][anysec_group][
+                                    "admin-state"
+                                ] = telemetry_entry["update"]["update"][0]["val"]
+                        else:
+                            raise grpc.FutureTimeoutError()
+                    else:
+                        raise grpc.FutureTimeoutError()
+        
                     # print(self.routers)
                     # print(host_entry["hostname"]+' - '+telemetry_entry_json)
-        except gNMIException as e:
-            print(host_entry["hostname"])
-            print(e)
-        except grpc.FutureTimeoutError as e:
-            print(host_entry["hostname"])
-            print(e)
+                print("[Flask] - [Debug] - sub_telemetry - before break")
+                break
+            except gNMIException as e:
+                print(host_entry["hostname"])
+                #traceback.print_exception(*sys.exc_info())
+                print(e)
+            except grpc.FutureTimeoutError as e:
+                print("[Flask] - sub_telemetry - unable to connect to the host "+str(host_entry["hostname"])+" will try agrain in "+str(self.timeout)+" seconds")
+                #traceback.print_exception(*sys.exc_info())
+                #raise
+                try:
+                    gc.close()
+                except grpc._channel._MultiThreadedRendezvous as e2:
+                    print(e2)
+                sleep(self.timeout)
+                #self.sub_telemetry(host_entry)
+                #print(e)
 
+    @threaded
     def update_port_status(self, host_entry):
         paths = ["/configure/port/admin-state"]
-        try:
-            with gNMIclient(
-                target=(host_entry["hostname"], host_entry["port"]),
-                username=host_entry["username"],
-                password=host_entry["password"],
-                insecure=True,
-            ) as gc:
+        gc = gNMIclient(
+                    target=(host_entry["hostname"], host_entry["port"]),
+                    username=host_entry["username"],
+                    password=host_entry["password"],
+                    insecure=True,
+                )
+        while True:
+            try:
+                gc.connect()
                 result = gc.get(path=paths, encoding="json")
-                for port_result in result["notification"][0]["update"]:
-                    port = re.findall(
-                        "port-id=(.*)", re.findall("\[(.*?)\]", port_result["path"])[0]
-                    )[0]
-                    if host_entry["hostname"] not in self.routers:
-                        self.routers[host_entry["hostname"]] = {}
-                    if "ports" not in self.routers[host_entry["hostname"]]:
-                        self.routers[host_entry["hostname"]]["ports"] = {}
-                    if port not in self.routers[host_entry["hostname"]]["ports"]:
-                        self.routers[host_entry["hostname"]]["ports"][port] = {}
-                    self.routers[host_entry["hostname"]]["ports"][port][
-                        "admin-state"
-                    ] = port_result["val"]
-        except gNMIException as e:
-            print(host_entry["hostname"])
-            print(e)
-        except grpc.FutureTimeoutError as e:
-            print(host_entry["hostname"])
-            print(e)
+                if "notification" in result:
+                    if "update" in result["notification"][0]:
+                        for port_result in result["notification"][0]["update"]:
+                            try:
+                                port = re.findall(
+                                    "port-id=(.*)", re.findall("\[(.*?)\]", port_result["path"])[0]
+                                )[0]
+                            except IndexError as e:
+                                raise grpc.FutureTimeoutError()
+                            if host_entry["hostname"] not in self.routers:
+                                self.routers[host_entry["hostname"]] = {}
+                            if "ports" not in self.routers[host_entry["hostname"]]:
+                                self.routers[host_entry["hostname"]]["ports"] = {}
+                            if port not in self.routers[host_entry["hostname"]]["ports"]:
+                                self.routers[host_entry["hostname"]]["ports"][port] = {}
+                            self.routers[host_entry["hostname"]]["ports"][port][
+                                "admin-state"
+                            ] = port_result["val"]
+                        print("[Flask] - [Debug] - update_port_status - before break")
+                        break
+                    else:
+                        raise grpc.FutureTimeoutError()
+                else:
+                    raise grpc.FutureTimeoutError()
+            except gNMIException as e:
+                print(host_entry["hostname"])
+                #traceback.print_exception(*sys.exc_info())
+                print(e)
+            except grpc.FutureTimeoutError as e:
+                print("[Flask] - update_port_status - unable to connect to the host "+str(host_entry["hostname"])+" will try agrain in "+str(self.timeout)+" seconds")
+                #traceback.print_exception(*sys.exc_info())
+                try:
+                    gc.close()
+                except grpc._channel._MultiThreadedRendezvous as e2:
+                    print(e2)
+                sleep(self.timeout)
+                #self.update_port_status(host_entry)
+                #print(e)
 
+    @threaded
     def update_anysec_status(self, host_entry):
         paths = [
             "/configure/anysec/tunnel-encryption/encryption-group/peer/admin-state"
         ]
         if host_entry["has_anysec"]:
-            try:
-                with gNMIclient(
-                    target=(host_entry["hostname"], host_entry["port"]),
-                    username=host_entry["username"],
-                    password=host_entry["password"],
-                    insecure=True,
-                ) as gc:
+            gc = gNMIclient(
+                        target=(host_entry["hostname"], host_entry["port"]),
+                        username=host_entry["username"],
+                        password=host_entry["password"],
+                        insecure=True,
+                    )
+            while True:
+                try:
+                    gc.connect()
                     result = gc.get(path=paths, encoding="json")
-                    for anysec_result in result["notification"][0]["update"]:
-                        anysec_group = re.findall(
-                            "group-name=(.*)",
-                            re.findall("\[(.*?)\]", anysec_result["path"])[0],
-                        )[0]
-                        if host_entry["hostname"] not in self.routers:
-                            self.routers[host_entry["hostname"]] = {}
-                        if "anysec_group" not in self.routers[host_entry["hostname"]]:
-                            self.routers[host_entry["hostname"]]["anysec_group"] = {}
-                        if (
-                            anysec_group
-                            not in self.routers[host_entry["hostname"]]["anysec_group"]
-                        ):
-                            self.routers[host_entry["hostname"]]["anysec_group"][
-                                anysec_group
-                            ] = {}
-                        self.routers[host_entry["hostname"]]["anysec_group"][
-                            anysec_group
-                        ]["admin-state"] = anysec_result["val"]
-            except gNMIException as e:
-                print(host_entry["hostname"])
-                print(e)
-            except grpc.FutureTimeoutError as e:
-                print(host_entry["hostname"])
-                print(e)
+                    if "notification" in result:
+                        if "update" in result["notification"][0]:
+                            for anysec_result in result["notification"][0]["update"]:
+                                try:
+                                    anysec_group = re.findall(
+                                        "group-name=(.*)",
+                                        re.findall("\[(.*?)\]", anysec_result["path"])[0],
+                                    )[0]
+                                except IndexError as e:
+                                    raise grpc.FutureTimeoutError()
+                                if host_entry["hostname"] not in self.routers:
+                                    self.routers[host_entry["hostname"]] = {}
+                                if "anysec_group" not in self.routers[host_entry["hostname"]]:
+                                    self.routers[host_entry["hostname"]]["anysec_group"] = {}
+                                if (
+                                    anysec_group
+                                    not in self.routers[host_entry["hostname"]]["anysec_group"]
+                                ):
+                                    self.routers[host_entry["hostname"]]["anysec_group"][
+                                        anysec_group
+                                    ] = {}
+                                self.routers[host_entry["hostname"]]["anysec_group"][
+                                    anysec_group
+                                ]["admin-state"] = anysec_result["val"]
+                            print("[Flask] - [Debug] - update_anysec_status - before break")
+                            break
+                        else:
+                            raise grpc.FutureTimeoutError()
+                    else:
+                        raise grpc.FutureTimeoutError()
+                except gNMIException as e:
+                    print(host_entry["hostname"])
+                    #traceback.print_exception(*sys.exc_info())
+                    print(e)
+                except grpc.FutureTimeoutError as e:
+                    print("[Flask] - update_anysec_status - unable to connect to the host "+str(host_entry["hostname"])+" will try agrain in "+str(self.timeout)+" seconds")
+                    #traceback.print_exception(*sys.exc_info())
+                    try:
+                        gc.close()
+                    except grpc._channel._MultiThreadedRendezvous as e2:
+                        print(e2)
+                    sleep(self.timeout)
+                    #self.update_anysec_status(host_entry)
+                    #print(e)
 
     def run(self):
         for host_entry in hosts:
