@@ -35,7 +35,7 @@ apk add libffi-dev
 python -m flask --version
 #apt-get install gunicorn
 #flask run &
-#HTTPS_PROXY="http://10.158.101.16:8080" HTTP_PROXY="http://10.158.101.16:8080" http_proxy="http://10.158.101.16:8080" https_proxy="http://10.158.101.16:8080" 
+#HTTPS_PROXY= HTTP_PROXY= http_proxy= https_proxy=
 flask run --host=0.0.0.0 > /dev/pts/0 2>&1 &
 sleep 5
 echo "END Flask and Python installation script execution!"
