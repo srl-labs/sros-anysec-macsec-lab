@@ -11,7 +11,7 @@ echo "END gNMIc Install script execution!"
 echo "..."
 echo "Install Sw!"
 apk add python3
-#apk add python3-venv
+apk add python3-venv
 wait
 echo "END Install Sw !"
 
@@ -28,15 +28,16 @@ apk add gcc
 apk add python3-dev
 apk add musl-dev
 apk add libffi-dev
-/venv/bin/python3 -m pip install --upgrade pip
-pip install -r /config/requirements.txt
+./venv/bin/python3 -m pip install --upgrade pip
+#pip install -r /config/requirements.txt
 #pip install pygnmi
 #pip install gunicorn 
-#python -m flask --version
+python -m flask --version
 #apt-get install gunicorn
 #flask run &
-HTTPS_PROXY= HTTP_PROXY= http_proxy= https_proxy= flask run --host=0.0.0.0 &
-sleep 3
+#HTTPS_PROXY="http://10.158.101.16:8080" HTTP_PROXY="http://10.158.101.16:8080" http_proxy="http://10.158.101.16:8080" https_proxy="http://10.158.101.16:8080" 
+flask run --host=0.0.0.0 > /dev/pts/0 2>&1 &
+sleep 5
 echo "END Flask and Python installation script execution!"
 
 
@@ -44,8 +45,8 @@ echo "END Flask and Python installation script execution!"
 echo "..."
 ps -ef
 sleep 2
-echo "Flask Web Server is running at port 35000."
-echo "Try http://<SERVER-IP>:35000/"
+echo "Flask Web Server is running at port 8443."
+echo "Try http://<SERVER-IP>:8443/"
 echo "Script execution Done!"
 echo "..."
 

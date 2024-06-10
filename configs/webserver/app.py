@@ -21,6 +21,7 @@ def threaded(fn):
 class Telemetry:
     def __init__(self):
         threading.Thread.__init__(self)
+        self.timeout = 10
         self.routers = {}
         self.links = {"top": "enabled", "bottom": "enabled"}
         self.anysecs = {"vll": "enabled", "vpls": "enabled", "vprn": "enabled"}

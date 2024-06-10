@@ -16,5 +16,5 @@ ip address add 192.168.53.7/24 dev eth3
 ip route add 192.168.63.0/24 via 192.168.53.1
 
 # Install Automation tools - gnmic, python3 and flask
-echo "Install Automation tools - gnmic, python3 and flask "
-/bin/bash /config/install_gnmic.sh
+echo "Install Automation tools - gnmic, python3 and flask source"
+source /config/install_gnmic.sh
