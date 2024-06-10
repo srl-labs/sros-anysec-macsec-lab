@@ -15,6 +15,8 @@ topology:
     linux:
       image: ghcr.io/srl-labs/network-multitool
       env:
+        http_proxy: ${http_proxy}
+        https_proxy: ${https_proxy}
         no_proxy: pe1,pe2,p3,p4,ce5,ce6,client7,client8,gnmic,prometheus,grafana,localhost,172.50.50.0/24
 
   nodes:
@@ -120,7 +122,7 @@ topology:
       ports:
         - 3000:3000
       env:
-        HTTPS_PROXY: "http://10.158.101.16:8080"
+        HTTPS_PROXY: ${http_proxy}
         GF_INSTALL_PLUGINS: https://algenty.github.io/flowcharting-repository/archives/agenty-flowcharting-panel-1.0.0d.220606199-SNAPSHOT.zip;agenty-flowcharting-panel,https://github.com/cloudspout/cloudspout-button-panel/releases/download/7.0.23/cloudspout-button-panel.zip;cloudspout-button-panel
         GF_ORG_ROLE: "Editor"
         GF_ORG_NAME: "Main Org."
