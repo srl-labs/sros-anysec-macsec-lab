@@ -61,20 +61,14 @@ topology:
       startup-config: configs/core/ce6.partial.cfg
 
     ### CLIENTS & Automation Stack###
-    ### Automation STACK / Flask - Hosted at Client7 ###
     client7:
       kind: linux
       mgmt-ipv4: 172.50.50.31
       binds:
         - configs/clients/client7/setup-client7.sh:/config/setup-client7.sh
-        - scripts/requirements.txt:/config/requirements.txt
-        - scripts/install_gnmic.sh:/config/install_gnmic.sh:rw
-        - configs/webserver/:/flask_app/
       exec:
         - bash /config/setup-client7.sh
       group: server
-      ports:
-        - 8443:5000
       stages:
         create:
           wait-for:
@@ -89,6 +83,25 @@ topology:
       exec:
         - bash /config/setup-client8.sh
       group: server
+
+    backend:
+      kind: linux
+      mgmt-ipv4: 172.50.50.33
+      image: anysec-backend:latest
+      ports:
+        - 8080:8080
+      stages:
+        create:
+          wait-for:
+            - node: ce6
+              stage: healthy
+
+    frontend:
+      kind: linux
+      mgmt-ipv4: 172.50.50.34
+      image: anysec-frontend:latest
+      ports:
+        - 80:4173
 
     ### TELEMETRY STACK ###
     gnmic:
