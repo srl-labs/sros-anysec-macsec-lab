@@ -79,6 +79,10 @@
 
 </script>
 
+<svelte:head>
+	<title>SROS ANYSec Lab - Automation Panel</title>
+</svelte:head>
+
 <!-- NAVBAR -->
 <nav class="fixed top-0 z-30 px-3 py-4 w-screen select-none text-sm font-nunito bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
 	<div class="flex justify-between">
