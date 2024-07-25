@@ -80,7 +80,7 @@ topology:
     backend:
       kind: linux
       mgmt-ipv4: 172.50.50.33
-      image: anysec-backend:latest
+      image: ghcr.io/srl-labs/sros-anysec-macsec-lab/backend
       stages:
         create:
           wait-for:
@@ -90,7 +90,7 @@ topology:
     frontend:
       kind: linux
       mgmt-ipv4: 172.50.50.34
-      image: anysec-frontend:latest
+      image: ghcr.io/srl-labs/sros-anysec-macsec-lab/frontend
       ports:
         - 4173:4173 # production port
         - 5173:5173 # development port
