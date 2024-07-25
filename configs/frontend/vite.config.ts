@@ -5,5 +5,16 @@ export default defineConfig({
 	plugins: [sveltekit()],
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}']
+	},
+
+	server: {
+		proxy: {
+			// svelte uses the relative /api path to reach the backend
+			// can be substituted with the actual proxy like nginx
+			'/api': {
+				target: 'http://backend:8080',
+				rewrite: (path) => path.replace(/^\/api/, ''),
+			}
+		}
 	}
 });

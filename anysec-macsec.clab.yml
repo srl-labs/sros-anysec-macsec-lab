@@ -81,8 +81,6 @@ topology:
       kind: linux
       mgmt-ipv4: 172.50.50.33
       image: anysec-backend:latest
-      ports:
-        - 8080:8080
       stages:
         create:
           wait-for:
@@ -94,7 +92,12 @@ topology:
       mgmt-ipv4: 172.50.50.34
       image: anysec-frontend:latest
       ports:
-        - 80:4173
+        - 4173:4173 # production port
+        - 5173:5173 # development port
+      binds:
+        # to allow the frontend to resolve the public hostname
+        # of the hosting server
+        - /etc/hosts:/etc/hosts:ro
 
     ### TELEMETRY STACK ###
     gnmic:
