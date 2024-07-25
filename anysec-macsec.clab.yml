@@ -77,28 +77,6 @@ topology:
         - bash /config/setup-client8.sh
       group: server
 
-    backend:
-      kind: linux
-      mgmt-ipv4: 172.50.50.33
-      image: ghcr.io/srl-labs/sros-anysec-macsec-lab/backend
-      stages:
-        create:
-          wait-for:
-            - node: ce6
-              stage: healthy
-
-    frontend:
-      kind: linux
-      mgmt-ipv4: 172.50.50.34
-      image: ghcr.io/srl-labs/sros-anysec-macsec-lab/frontend
-      ports:
-        - 4173:4173 # production port
-        - 5173:5173 # development port
-      binds:
-        # to allow the frontend to resolve the public hostname
-        # of the hosting server
-        - /etc/hosts:/etc/hosts:ro
-
     ### TELEMETRY STACK ###
     gnmic:
       kind: linux
@@ -140,6 +118,24 @@ topology:
         GF_SECURITY_ALLOW_EMBEDDING: "true"
         GF_DASHBOARDS_MIN_REFRESH_INTERVAL: 2s
       group: "10"
+
+    ### AUTOMATION PANEL ###
+    panel:
+      kind: linux
+      mgmt-ipv4: 172.50.50.33
+      image: ghcr.io/srl-labs/sros-anysec-macsec-lab/panel
+      ports:
+        - 4173:4173 # prod port
+        - 5173:5173 # dev port
+      binds:
+        # to allow the frontend to resolve the public hostname
+        # of the hosting server (e.g. tailscale machine name)
+        - /etc/hosts:/etc/hosts:ro
+      stages:
+        create:
+          wait-for:
+            - node: ce6
+              stage: healthy
 
   links:
     - endpoints: ["ce5:eth7", "pe1:eth3"]
