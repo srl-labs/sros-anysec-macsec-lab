@@ -219,7 +219,7 @@ If you are accessing from a remote host, then replace localhost by the CLAB Serv
 
 * Grafana: <http://localhost:3000>. Built-in user credentials: `admin/admin`
 * Prometheus: <http://localhost:9090/graph>
-* Flask Automation Page: <http://localhost:35000/>
+* Automation Panel: <http://localhost:4173/>
 
 ## Verify the setup
 
