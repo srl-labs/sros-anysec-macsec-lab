@@ -21,16 +21,7 @@ COPY ./frontend .
 RUN npm install
 RUN npm run build
 
-# FROM --platform=linux/amd64 gcr.io/distroless/static-debian12:nonroot
-
-# WORKDIR /automation_panel
-
-# COPY --from=builder --chown=nonroot:nonroot /build/server /automation_panel/server
-
-# EXPOSE 8080
-
-# CMD ["./server"]
-
+# Resulting container image
 FROM node:21-alpine
 
 WORKDIR /app
