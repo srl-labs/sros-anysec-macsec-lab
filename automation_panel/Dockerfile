@@ -1,8 +1,6 @@
-FROM golang:1.22-bookworm AS be-builder
+FROM golang:1.22-alpine AS be-builder
 
 WORKDIR /build
-
-RUN apt-get update && apt-get install --no-install-recommends -y iputils-ping
 
 COPY backend .
 RUN go mod download
