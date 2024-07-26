@@ -1,4 +1,4 @@
-FROM golang:1.22-bookworm as be-builder
+FROM golang:1.22-bookworm AS be-builder
 
 WORKDIR /build
 
@@ -14,7 +14,7 @@ RUN CGO_ENABLED=0 \
     -o server \
     .
 
-FROM node:21-alpine as fe-builder
+FROM node:21-alpine AS fe-builder
 
 WORKDIR /build
 
