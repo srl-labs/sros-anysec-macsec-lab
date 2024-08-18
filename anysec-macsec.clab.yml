@@ -1,6 +1,5 @@
 name: anysec-macsec
 prefix: ""
-
 mgmt:
   network: anysec
   ipv4-subnet: 172.50.50.0/24
@@ -9,8 +8,8 @@ topology:
   kinds:
     nokia_sros:
       type: sr-1x-48d
-      image: registry.srlinux.dev/pub/vr-sros:23.10.R1
-      license: /opt/nokia/sros/r23_license.key
+      image: registry.srlinux.dev/pub/vr-sros:24.3.R2-1
+      license: ${SROS_LIC_PATH:-/opt/nokia/sros/r24_license.key}
     linux:
       image: ghcr.io/srl-labs/network-multitool
       env:
@@ -59,21 +58,15 @@ topology:
       mgmt-ipv4: 172.50.50.52
       startup-config: configs/core/ce6.partial.cfg
 
-    ### CLIENTS & Automation Stack###
-    ### Automation STACK / Flask - Hosted at Client7 ###
+    ### CLIENTS & Automation Stack ###
     client7:
       kind: linux
       mgmt-ipv4: 172.50.50.31
       binds:
         - configs/clients/client7/setup-client7.sh:/config/setup-client7.sh
-        - scripts/requirements.txt:/config/requirements.txt
-        - scripts/install_gnmic.sh:/config/install_gnmic.sh:rw
-        - configs/webserver/:/flask_app/
       exec:
         - bash /config/setup-client7.sh
       group: server
-      ports:
-        - 35000:5000
 
     client8:
       kind: linux
@@ -88,7 +81,7 @@ topology:
     gnmic:
       kind: linux
       mgmt-ipv4: 172.50.50.21
-      image: ghcr.io/openconfig/gnmic:0.29.0
+      image: ghcr.io/openconfig/gnmic:0.38.1
       binds:
         - configs/gnmic/gnmic-config.yml:/gnmic-config.yml:ro
       cmd: --config /gnmic-config.yml --log subscribe
@@ -97,7 +90,7 @@ topology:
     prometheus:
       kind: linux
       mgmt-ipv4: 172.50.50.22
-      image: prom/prometheus:v2.35.0
+      image: prom/prometheus:v2.51.2
       binds:
         - configs/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       cmd: --config.file=/etc/prometheus/prometheus.yml
@@ -108,7 +101,7 @@ topology:
     grafana:
       kind: linux
       mgmt-ipv4: 172.50.50.23
-      image: grafana/grafana:9.5.2
+      image: grafana/grafana:10.3.5
       binds:
         - configs/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yaml:ro
         - configs/grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yaml:ro
@@ -116,6 +109,7 @@ topology:
       ports:
         - 3000:3000
       env:
+        HTTPS_PROXY: ${http_proxy}
         GF_INSTALL_PLUGINS: https://algenty.github.io/flowcharting-repository/archives/agenty-flowcharting-panel-1.0.0d.220606199-SNAPSHOT.zip;agenty-flowcharting-panel,https://github.com/cloudspout/cloudspout-button-panel/releases/download/7.0.23/cloudspout-button-panel.zip;cloudspout-button-panel
         GF_ORG_ROLE: "Editor"
         GF_ORG_NAME: "Main Org."
@@ -124,6 +118,24 @@ topology:
         GF_SECURITY_ALLOW_EMBEDDING: "true"
         GF_DASHBOARDS_MIN_REFRESH_INTERVAL: 2s
       group: "10"
+
+    ### AUTOMATION PANEL ###
+    panel:
+      kind: linux
+      mgmt-ipv4: 172.50.50.33
+      image: ghcr.io/srl-labs/sros-anysec-macsec-lab/panel
+      ports:
+        - 4173:4173 # prod port
+        - 5173:5173 # dev port
+      binds:
+        # to allow the frontend to resolve the public hostname
+        # of the hosting server (e.g. tailscale machine name)
+        - /etc/hosts:/etc/hosts:ro
+      stages:
+        create:
+          wait-for:
+            - node: ce6
+              stage: healthy
 
   links:
     - endpoints: ["ce5:eth7", "pe1:eth3"]
