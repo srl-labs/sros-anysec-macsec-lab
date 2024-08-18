@@ -1,78 +1,84 @@
 
-# CLAB SROS FP5 ANYSec and MACSec Demo
+# SR OS FP5 ANYSec and MACSec Demo
 
 ANYSec is a Nokia technology that provides low-latency and line-rate native encryption for any transport (IP, MPLS, segment routing, Ethernet or VLAN), on any service, at any time and for any load conditions without impacting performance.
 
-This lab is an ANYSec demo using [Nokia SROS FP5](https://www.nokia.com/networks/technologies/fp5/) vSIMs running at [CLAB](https://containerlab.dev/).
-It combines ANYSec with MACSec and ilustrates ANYSec slicing for distinct services with multi-instance SR-ISIS and FLEX-Algo.
+This lab is an ANYSec demo using [Nokia SR OS FP5](https://www.nokia.com/networks/technologies/fp5/) vSIMs orchestrated by [Containerlab](https://containerlab.dev/).
+It combines ANYSec with MACSec and illustrates ANYSec slicing for distinct network services with multi-instance SR-ISIS and FLEX-Algo.
 
-It also provides a visualization dashboard using a Telemetry stack with gNMIc, Prometheus and Grafana.
-For tests it was added an automation panel using Flask/Python and gNMIc to start/stop traffic, enable/disable links and enable/disable ANYSec.
+Augmented with a visualization dashboard rendering the data received by means of the Streaming Telemetry stack (gNMIc, Prometheus and Grafana).
+
+For enhanced demonstration purposes a web-based automation panel has been added to the lab that allows the presenter to start/stop traffic, enable/disable links and toggle ANYSec services.
 
 ## ANYSec Overview
 
-ANYSec is a Nokia network encryption solution available with the new FP5 models in SROS 23.10R1.
-It is low-latency line-rate encryption, scalable, flexible and ensures a quantum-safe network encryption solution for the industry.
-It is a simple concept, based on MACSec standards as the foundation and introduces the flexibility to offset the authentication and encription to allow L2, L2.5 and L3 encryption.
+ANYSec is a Nokia's proprietary network encryption solution available with the new FP5 models starting with SR OS 23.10R1 release.  
+It is a low-latency line-rate encryption mechanism that is scalable, flexible and quantum-safe.
+
+Based on MACSec standards as the foundation, it introduces the flexibility to offset the authentication and encription to allow L2, L2.5 and L3 encryption.
 
 ## Requirements
 
-To deploy this lab you need a server with Docker and CLAB and Internet connectivity.
-You also need SROS 23.10R1+ Image and a valid License file.
+To deploy this lab you need:
 
-### SROS Image
+1. a server with Docker and Containerlab.
+2. SR OS 23.10.R1+ image and a valid license file.
 
-The SROS vSIM image file used is 23.10R2, and is available under Nokia's internal registry.
-If you don't have access to it, then you must get the SROS image and manually import it to CLAB following the instructions at [VRNETLAB](https://containerlab.dev/manual/vrnetlab/#vrnetlab).
+## Clone the lab on your server
 
-The steps are:
+To deploy this lab, you must clone it to your server with git.
 
 ```bash
-# Clone vrnetlab
-git clone https://github.com/hellt/vrnetlab && cd vrnetlab
-
-# Download qcow2 vSIM image from Nokia Support Portal (https://customer.nokia.com/support/s) or get one from your Nokia contacts. 
-
-# Change name to “sros-vm-<VERSION>.qcow2”   ### must start with "sros-vm-"
-
-# Upload it to ‘vrnetlab/sros’ directory (e.g. /home/vrnetlab/sros)
-
-# Run ‘make docker-image’ to start the build process
-
-# Verify existing docker images
-
-docker images | grep -E "srlinux|vr-sros"
+# change to a working directory of your choice and clone the lab
+git clone https://github.com/srl-labs/SROS-anysec-macsec-lab.git
 ```
 
-Note: After import the image, edit the yml file with the correct location.
+## SR OS Image
+
+The lab file provided with this repository uses the internal Nokia SR OS image, that is not available externally.
+
+To obtain the SR OS image contact your Nokia representative and build a Containerlab-compatible image using the [vrnetlab project](https://containerlab.dev/manual/vrnetlab/#vrnetlab).
+
+To build the container image for SR OS vSIM, follow the steps below:
+
+```bash
+# Clone the vrnetlab repo
+git clone https://github.com/hellt/vrnetlab && cd vrnetlab
+```
+
+Download qcow2 vSIM image from Nokia Support Portal (<https://customer.nokia.com/support/s>) or get one from your Nokia contacts.  
+Change the qcow2 file name to `SR OS-vm-<VERSION>.qcow2`.
+
+Move the qcow2 file to `SR OS` directory of the cloned repository and run `make` command:
+
+The build process should take 1-2 minutes, after which you can list the images matching the `vr-SR OS` pattern to verify the image was built successfully:
+
+```
+docker images | grep vr-SR OS
+```
+
+Note: After you've built the image, edit the `anysec-macsec.clab.yml` file and change the SR OS container image name to match the one you've built.
 
 ```bash
 # replace this 
-      image: registry.srlinux.dev/pub/vr-sros:23.10.R2
-# with this:
-      image: vrnetlab/vr-sros:23.10.R2
+      image: registry.srlinux.dev/pub/vr-SR OS:23.10.R2
+# with this (assuming you've built the 23.10.R2 image):
+      image: vrnetlab/vr-SR OS:23.10.R2
 ```
 
 ### License file
 
-SROS vSIMs require a valid license. You need to get a valid license from Nokia and place it in the "/r23_license.key" file.
+SR OS vSIMs require a valid license. You need to get a valid license from Nokia and save it as `/opt/nokia/SROS/r24_license.key` file on your host machine.
+
+This file is referenced in the clab topology file.
+
+## Deploy the lab
+
+The rest of the images used in this lab are publicly available and will be downloaded automatically by Containerlab when we deploy the lab:
 
 ```bash
-# Copy/paste the license to the "r23_license.key" file
-cd sros-anysec-macsec-lab/
-vi r23_license.key
-# press "i" key for insert mode => paste the license => ctl+x to save and exit 
-```
-
-## Clone and deploy the git lab on your server
-
-To deploy this lab, you must clone it to your server with "git clone".
-
-```bash
-# change to your working directory
-cd /home/user/
-# Clone the lab to your server
-git clone https://github.com/srl-labs/sros-anysec-macsec-lab.git
+# while in the lab directory, run
+sudo containerlab deploy -c
 ```
 
 ## ANYSec setup
@@ -81,13 +87,9 @@ git clone https://github.com/srl-labs/sros-anysec-macsec-lab.git
 
 The physical setup is ilustrated below:
 
-```html
-<p align="center">
-  <img width="900" height="400" src="https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/physical-setup.jpg?raw=true">
-</p>
-```
+![pic](pics/physical-setup.jpg)
 
-The setup contains six SROS FP5 & FP4 routers with 23.10R2 and 2 linux hosts. The network contains 2 P routers, 2 PEs running ANYSec and MACSec, 2 CEs with MACSec, and 2 Linux Clients with 3 interfaces for 3 distinct services.
+The setup contains six SR OS FP5 & FP4 routers with 24.3.R2-1 release and 2 linux hosts. The network contains 2 P routers, 2 PEs running ANYSec and MACSec, 2 CEs with MACSec, and 2 Linux Clients with 3 interfaces for 3 distinct services.
 Only the PEs have ANYSec configured. The models are:
 
 * P Routers
@@ -102,20 +104,16 @@ Only the PEs have ANYSec configured. The models are:
 
   * sr-1x-48d FP5
 
-Note 1: Clients are Linux hosts using [Network-MultiTool](https://github.com/hellt/Network-MultiTool)
+Note 1: Clients are Linux hosts using [Network-MultiTool](https://github.com/srl-labs/network-multitool) container image.
 
-Note 2 : Client7 is also running Flask and hosting the automation Tool
+Note 2: An additional node called "automation-panel", runs the web ui for the automation panel.
 
 ### Logical setup
 
 There are 3 distinct services, each using its own Segment-Routing topology.
 The logical setup with the services is the following:
 
-```html
-<p align="center">
-  <img width="900" height="400" src="https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/logical-setup.jpg?raw=true">
-</p>
-```
+![pic](pics/logical-setup.jpg)
 
 The setup has:
 
@@ -148,45 +146,29 @@ There are 3 distinct services, each mapped to a distinct slice:
 
 The 3 SR-ISIS topologies are illustrated bellow:
 
-```html
-<p align="center">
-  <img width="900" height="300" src="https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/isis-topology.jpg?raw=true">
-</p>
-```
-
-## Deploy the lab setup
-
-Use the comand below to deploy the lab:
-
-• Note: If you imported the SROS image to docker then first edit the yml file with the correct image location as explained above.
-
-```bash
-# deploy a lab
-cd sros-anysec-macsec-lab/
-clab deploy --topo anysec-macsec.yml
-```
+![pic](pics/isis-topology.jpg)
 
 ## Accessing the network elements
 
-Once the lab is deployed, the different SROS nodes can be accessed via SSH through their management IP address, given in the summary displayed after the execution of the deploy command.
+Once the lab is deployed, the different SR OS nodes can be accessed via SSH through their management IP address, given in the summary displayed after the execution of the deploy command.
 It is also possible to reach those nodes directly via their hostname, defined in the topology file.
 
 ```bash
 # List the containers
-clab inspect -a
-# reach a SROS node via SSH
-ssh admin@pe1
-# reach Linux clients via docker
-docker exec -it client7 bash
+sudo clab inspect -a
+# reach a SR OS node via SSH
+ssh pe1
+# reach Linux clients (password: multit00l)
+ssh user@client7
 ```
 
-## SROS Streaming Telemetry and Automation
+## SR OS Streaming Telemetry and Automation
 
-This lab was enhanced with Streaming Telemetry by adding gNIMc, Prometheus and Grafana.
+This lab was enhanced with the Streaming Telemetry stack powered by [gNMIc](https://gnmic.openconfig.net), Prometheus and Grafana.
 
-For details please refer to [SR Linux/SROS Streaming Telemetry Lab](https://github.com/srl-labs/srl-sros-telemetry-lab).
+For details on Streaming Telemetry with Nokia SR OS please refer to [SR Linux/SROS Streaming Telemetry Lab](https://github.com/srl-labs/srl-SROS-telemetry-lab).
 
-It also includes Automation for the tests using gNMIC invoked through python from Flask webserver. There are 3 main set of tests:
+To assist with the demonstration of the ANYSec technology we've integrated an automation panel with this lab. The automation panel is a web service that allows a demo runner to perform the following operations via a GUI:
 
 1. Start/Stop ICMP traffic for each service.
 
@@ -194,24 +176,14 @@ It also includes Automation for the tests using gNMIC invoked through python fro
 
 3. Disable/enable ANYSec for each of the 3 services to see packets being sent in clear or encrypted on demand.
 
-### Telemetry and automation stack
-
 The following stack of software solutions has been chosen for this lab:
 
-| Role                | Software                                            | Port               | Link                               | Credentials        |
-| ------------------- | --------------------------------------------------- |------------------- | ---------------------------------- |------------------- |
-| Telemetry collector | [gnmic](https://gnmic.openconfig.net)               | 57400              |                                    |                    |
-| Time-Series DB      | [prometheus](https://prometheus.io)                 | 9090               | <http://localhost:9090/graph>        |                    |
-| Visualization       | [grafana](https://grafana.com)                      | 3000               | <http://localhost:3000>              | admin/admin        |
-| Automation          | [flask](https://flask.palletsprojects.com/en/3.0.x/)| 35000              | <http://localhost:35000/>            |                    |
-
-The following picture picture ilustrates the Telemetry and Automation stack:
-
-```html
-<p align="center">
-  <img width="900" height="400" src="https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/telemetry-automation.jpg?raw=true">
-</p>
-```
+| Role                | Software                              | Port | Link                          | Credentials |
+| ------------------- | ------------------------------------- | ---- | ----------------------------- | ----------- |
+| Telemetry collector | [gnmic](https://gnmic.openconfig.net) | NA   |                               |             |
+| Time-Series DB      | [prometheus](https://prometheus.io)   | 9090 | <http://localhost:9090/graph> |             |
+| Visualization       | [grafana](https://grafana.com)        | 3000 | <http://localhost:3000>       | admin/admin |
+| Automation          | Go/Svelte                             | 4173 | <http://localhost:4173/>      |             |
 
 ### Access details
 
@@ -225,7 +197,7 @@ If you are accessing from a remote host, then replace localhost by the CLAB Serv
 
 Verify that you're able to access all nodes (Routers and clients) and the platforms (Grafana, Prometheus and Flask Demo Page).
 
-Start a Tcpdump/wireshark capture as explained bellow and start traffic between Client7 and Client8 using Flask Control Panel.
+Start a Tcpdump/wireshark capture as explained bellow and start traffic between Client7 and Client8 using Automation panel.
 
 You may shut the link between PE1 and P3 and see that ANYSec SR-ISIS traffic uses the bottom link.
 
@@ -277,7 +249,7 @@ Wireshark does not have native support for decoding ANYSec MACSec (802.1AE) head
 Nokia has an internal version with a protocol dissector for ANYSec MACSec / 802.1a headers.
 This is the output comparison between the public wireshark and the Nokia's version:
 
-![pic1](https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/anysec-wireshark.jpg)
+![pic1](pics/anysec-wireshark.jpg)
 
 Note: With the public Wireshark, the ANYSec header not decoded but you still be able to validate ANYSec looking into the ANYSec label.
 
@@ -286,7 +258,7 @@ Note: With the public Wireshark, the ANYSec header not decoded but you still be 
 The ANYSec introduces the MACSec Header and the Encryption SID (ES) label between the SR-ISIS transport and VPRN service labels. The VPRN service label is encrypted.
 The picture below provides an example of the ANYSec label stack between PE1 and PE2.
 
-![pic1](https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/anysec-stack.jpg?raw=true)
+![pic2](pics/anysec-stack.jpg?raw=true)
 
 ### Wireshark capture with EdgeShark
 
@@ -298,7 +270,7 @@ Refer to [CLAB and EdgeShark integration](https://containerlab.dev/manual/wiresh
 TCPDUMP on a single interface shows label stack correctly (Ethernet+VLAN+MPLS+ANYSec)
 TCPDUMP on a multiple interfaces (any for all) shows a distinct stack: Linux cooked capture v2 + additional MPLS Label (instead of Ethernet + VLAN)
 
-![pic1](https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/anysec-tcpdump.jpg?raw=true)
+![pic3](pics/anysec-tcpdump.jpg?raw=true)
 
 ### TShark Capture multiple interfaces
 
@@ -326,13 +298,13 @@ ssh root@10.82.182.179 "ip netns exec pe1 tshark -l -i eth3 -i eth1 -i eth2 -w -
 Use the following commands under PE1 or PE2 to retrieve outputs from ANYSec operation:
 
 ```bash
-show macsec connectivity-association "CA_Test_MACSec" detail 
-show anysec tunnel-encryption detail 
-show router 1003 route-table 10.0.0.2/32 extensive 
-show router tunnel-table detail 
-show router mpls-labels summary 
-show router "1003" route-table 
-show router bgp routes 10.0.0.2/32 vpn-ipv4 hunt   
+show macsec connectivity-association "CA_Test_MACSec" detail
+show anysec tunnel-encryption detail
+show router 1003 route-table 10.0.0.2/32 extensive
+show router tunnel-table detail
+show router mpls-labels summary
+show router "1003" route-table
+show router bgp routes 10.0.0.2/32 vpn-ipv4 hunt
 ```
 
 ## Tests
@@ -347,14 +319,10 @@ Upon shut/no shut verify ANYSec is still working but using a new SR-ISIS tunnel
 show router 1003 route-table
 show router 1003 route-table 10.0.0.2/32 extensive
 show router 1003 route-table 10.0.0.2/32 extensive
-show router bgp routes 10.0.0.2/32 vpn-ipv4 hunt   
+show router bgp routes 10.0.0.2/32 vpn-ipv4 hunt
 ```
 
-```html
-<p align="center">
-  <img width="900" height="400" src="https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/link-down.jpg?raw=true">
-</p>
-```
+![pic](pics/link-down.jpg)
 
 ### Test 2 - Disable ANYSec at PE1 and PE2
 
@@ -363,17 +331,13 @@ Note: Use the VPRN service for this test. Wireshark correctly decodes ICMP for V
 Upon Disable ANYSec verify ping is still working but unecripted.
 Re-enable ANYSec and verify traffic is encrypted again.
 
-```html
-<p align="center">
-  <img width="900" height="400" src="https://github.com/tiago-amado/sros-anysec-macsec-lab/blob/main/pics/disable-anysec.jpg?raw=true">
-</p>
-```
+![pic](pics/disable-anysec.jpg)
 
 ## ANYSec Demo Video
 
 The Demo Video shows the Grafana Dashboard, the Automation Panel to execute and observe different tasks in the network as well as monitoring traffic with Edgeshark.
 
-[![Watch the video](https://github.com/srl-labs/sros-anysec-macsec-lab/assets/86619221/c23956d3-f766-4cc5-8261-189ca765e4d7)](https://www.youtube.com/watch?v=pAKnSQR694g&t=2s&pp=ygULcm9tYW4gZG9kaW4%3D)
+[![Watch the video](https://github.com/srl-labs/SROS-anysec-macsec-lab/assets/86619221/c23956d3-f766-4cc5-8261-189ca765e4d7)](https://www.youtube.com/watch?v=pAKnSQR694g&t=2s&pp=ygULcm9tYW4gZG9kaW4%3D)
 
 ## Conclusion
 
