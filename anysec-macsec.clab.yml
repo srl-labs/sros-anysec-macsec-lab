@@ -125,16 +125,24 @@ topology:
       mgmt-ipv4: 172.50.50.33
       image: ghcr.io/srl-labs/sros-anysec-macsec-lab/panel
       ports:
-        - 4173:4173 # prod port
-        - 5173:5173 # dev port
+        - 54173:4173 # prod port
+        - 55173:5173 # dev port
       binds:
         # to allow the frontend to resolve the public hostname
         # of the hosting server (e.g. tailscale machine name)
         - /etc/hosts:/etc/hosts:ro
       stages:
+        # automation panel subscribes to the pe1, pe2, p3, p4 nodes,
+        # thus we want to start the panel node after the above nodes are healthy
         create:
           wait-for:
-            - node: ce6
+            - node: pe1
+              stage: healthy
+            - node: pe2
+              stage: healthy
+            - node: p3
+              stage: healthy
+            - node: p4
               stage: healthy
 
   links:
