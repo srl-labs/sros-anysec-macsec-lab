@@ -178,12 +178,12 @@ To assist with the demonstration of the ANYSec technology we've integrated an au
 
 The following stack of software solutions has been chosen for this lab:
 
-| Role                | Software                              | Port | Link                          | Credentials |
-| ------------------- | ------------------------------------- | ---- | ----------------------------- | ----------- |
-| Telemetry collector | [gnmic](https://gnmic.openconfig.net) | NA   |                               |             |
-| Time-Series DB      | [prometheus](https://prometheus.io)   | 9090 | <http://localhost:9090/graph> |             |
-| Visualization       | [grafana](https://grafana.com)        | 3000 | <http://localhost:3000>       | admin/admin |
-| Automation          | Go/Svelte                             | 4173 | <http://localhost:4173/>      |             |
+| Role                | Software                              | Port  | Link                          | Credentials |
+| ------------------- | ------------------------------------- | ----- | ----------------------------- | ----------- |
+| Telemetry collector | [gnmic](https://gnmic.openconfig.net) | NA    |                               |             |
+| Time-Series DB      | [prometheus](https://prometheus.io)   | 9090  | <http://localhost:9090/graph> |             |
+| Visualization       | [grafana](https://grafana.com)        | 3000  | <http://localhost:3000>       | admin/admin |
+| Automation          | Go/Svelte                             | 54173 | <http://localhost:54173/>     |             |
 
 ### Access details
 
@@ -191,7 +191,7 @@ If you are accessing from a remote host, then replace localhost by the CLAB Serv
 
 * Grafana: <http://localhost:3000>. Built-in user credentials: `admin/admin`
 * Prometheus: <http://localhost:9090/graph>
-* Automation Panel: <http://localhost:4173/>
+* Automation Panel: <http://localhost:54173/>
 
 ## Verify the setup
 
