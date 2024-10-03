@@ -91,9 +91,8 @@
 	}
 
 	onMount(async () => {
-		// commented for testing
-		//fetchState();
-		//setInterval(() => fetchState(), 5000); // update state every 5 seconds
+		fetchState();
+		setInterval(() => fetchState(), 5000); // update state every 5 seconds
 	});
 </script>
 
