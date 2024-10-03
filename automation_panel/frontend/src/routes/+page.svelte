@@ -12,17 +12,18 @@
 	const allState = data.state;
 	const fetchUrl = data.fetchUrl;
 
-	const panelTabs = {
-		state: "State",
-		packet: "Packet Capture"
-	}
-	let currentPanel = "state"
-
 	export const toggleSidebar = () => {
 		document.getElementById('sidebar')?.classList.toggle('-translate-x-full');
 		document.getElementById('open-sidebar')?.classList.toggle('hidden');
 		document.getElementById('close-sidebar')?.classList.toggle('hidden');
 	};
+
+	const panelTabs = {
+		state: "State",
+		packet: "Packet Capture"
+	}
+	let currentPanel = "state"
+	const packetCaptureLinks = ["PE1-eth1", "PE1-eth2"]
 
 	const serviceOptions = ['VLL', 'VPLS', 'VPRN'];
 	const link = [
@@ -33,6 +34,13 @@
 		{ id: 'size', label: 'Size (bytes)', min: 0, max: 8000, step: 1, default: 2000 },
 		{ id: 'interval', label: 'Interval (secs)', min: 0.01, max: 1, step: 0.01, default: 0.01 }
 	];
+
+	function edgesharkLink(link: string) {
+		let [neName, ifcName] = link.split("-")
+		let baseUrl = "packetflix:ws://devbox:5001/capture?"
+		let urlParams = `container={"network-interfaces":["${ifcName}"],"name":"${neName.toLocaleLowerCase()}","type":"docker","prefix":""}&nif=${ifcName}`
+		return baseUrl + urlParams
+	} 
 
 	const updateToggle = (state: AllState) => {
 		const toggle = (section: string, data: ServiceState | LinkState) => {
@@ -164,6 +172,18 @@
 						<div class="py-3 space-y-3">
 							<Services key="anysec" services={serviceOptions} state={allState.anysec} />
 						</div>
+					</div>
+				</div>
+				<div class="p-4 space-y-4 {currentPanel === 'packet' ? '' : 'hidden'}">
+					<div class="flex flex-col space-y-4">
+						{#each packetCaptureLinks as entry}
+							{@const [neName, ifcname] = entry.split("-")}
+							<a href="{edgesharkLink(entry)}" target="_blank" class="px-3 py-2 flex items-center justify-between rounded-lg dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 border dark:border-gray-600">
+								<span>{neName}</span>
+								<span>{ifcname}</span>
+								<span class="w-6"><img src="/images/edgeshark.png" alt="fin"/></span>
+							</a>
+						{/each}
 					</div>
 				</div>
 			</div>
