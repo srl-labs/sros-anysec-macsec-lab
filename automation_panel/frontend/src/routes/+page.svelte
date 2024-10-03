@@ -120,9 +120,9 @@
 	<aside id="sidebar" class="h-screen fixed lg:sticky top-0 left-0 w-[300px] pt-[73px] md:pt-[58px] bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-transform duration-300 -translate-x-full lg:-translate-x-0">
 		<div class="flex flex-col h-full">
 			<div class="flex-shrink-0">
-				<div class="flex space-x-2 px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+				<div class="flex space-x-1 px-4 pt-3 border-b border-gray-200 dark:border-gray-700">
 					{#each Object.entries(panelTabs) as [key, value]}
-						<button class="px-3 py-2 text-nowrap rounded-lg {currentPanel === key ? 'text-blue-600 dark:text-blue-400 bg-gray-200 dark:bg-gray-700' : 'dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700'}" on:click={() => currentPanel = key}>{value}</button>
+						<button class="px-3 py-2 text-nowrap rounded-t-lg {currentPanel === key ? 'text-blue-600 dark:text-blue-400 bg-gray-200 dark:bg-gray-700' : 'dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 border-x border-t border-gray-200 dark:border-gray-700'}" on:click={() => currentPanel = key}>{value}</button>
 					{/each}
 				</div>
 			</div>
