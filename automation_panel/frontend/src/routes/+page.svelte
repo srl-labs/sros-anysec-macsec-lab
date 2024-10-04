@@ -18,13 +18,7 @@
 		document.getElementById('close-sidebar')?.classList.toggle('hidden');
 	};
 
-	const panelTabs = {
-		state: "State",
-		packet: "Packet Capture"
-	}
-	let currentPanel = "state"
 	const packetCaptureLinks = ["PE1-eth1", "PE1-eth2"]
-
 	const serviceOptions = ['VLL', 'VPLS', 'VPRN'];
 	const link = [
 		{ id: 'top', title: 'Top Link', src: 'PE1', dest: 'P3' },
@@ -126,15 +120,8 @@
 <div class="flex text-sm font-nunito">
 	<aside id="sidebar" class="h-screen fixed lg:sticky top-0 left-0 w-[300px] pt-[73px] md:pt-[58px] bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-transform duration-300 -translate-x-full lg:-translate-x-0">
 		<div class="flex flex-col h-full">
-			<div class="flex-shrink-0">
-				<div class="flex space-x-1 px-4 pt-3 border-b border-gray-200 dark:border-gray-700">
-					{#each Object.entries(panelTabs) as [key, value]}
-						<button class="px-3 py-2 text-nowrap rounded-t-lg {currentPanel === key ? 'text-blue-600 dark:text-blue-400 bg-gray-200 dark:bg-gray-700' : 'dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 border-x border-t border-gray-200 dark:border-gray-700'}" on:click={() => currentPanel = key}>{value}</button>
-					{/each}
-				</div>
-			</div>
 			<div class="flex-grow overflow-y-auto scroll-light dark:scroll-dark">
-				<div class="p-4 space-y-4 {currentPanel === 'state' ? '' : 'hidden'}">
+				<div class="p-4 space-y-4">
 					<div class="rounded-lg border border-gray-200 dark:border-gray-600">
 						<p class="px-4 py-2 text-center rounded-t-lg font-bold text-gray-900 dark:text-white bg-gray-200 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">ICMP State</p>
 						<div class="py-3 space-y-3">
@@ -172,17 +159,18 @@
 							<Services key="anysec" services={serviceOptions} state={allState.anysec} />
 						</div>
 					</div>
-				</div>
-				<div class="p-4 space-y-4 {currentPanel === 'packet' ? '' : 'hidden'}">
-					<div class="flex flex-col space-y-4">
-						{#each packetCaptureLinks as entry}
-							{@const [neName, ifcname] = entry.split("-")}
-							<a href="{edgesharkLink(entry)}" target="_blank" class="px-3 py-2 flex items-center justify-between rounded-lg dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 border dark:border-gray-600">
-								<span>{neName}</span>
-								<span>{ifcname}</span>
-								<span class="w-6"><img src="/images/edgeshark.png" alt="fin"/></span>
-							</a>
-						{/each}
+					<div class="rounded-lg border border-gray-200 dark:border-gray-600 md:min-w-40">
+						<p class="px-4 py-2 text-center rounded-t-lg font-bold text-gray-900 dark:text-white bg-gray-200 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">Packet Capture</p>
+						<div class="flex flex-col space-y-4 p-4">
+							{#each packetCaptureLinks as entry}
+								{@const [neName, ifcname] = entry.split("-")}
+								<a href="{edgesharkLink(entry)}" target="_blank" class="px-3 py-1 flex items-center justify-between rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 border dark:border-gray-600">
+									<span>{neName}</span>
+									<span>{ifcname}</span>
+									<span class="w-6"><img src="/images/edgeshark.png" alt="fin"/></span>
+								</a>
+							{/each}
+						</div>
 					</div>
 				</div>
 			</div>
