@@ -18,6 +18,7 @@
 		document.getElementById('close-sidebar')?.classList.toggle('hidden');
 	};
 
+	const packetCaptureLinks = ['PE1-eth1', 'PE1-eth2'];
 	const serviceOptions = ['VLL', 'VPLS', 'VPRN'];
 	const link = [
 		{ id: 'top', title: 'Top Link', src: 'PE1', dest: 'P3' },
@@ -27,6 +28,13 @@
 		{ id: 'size', label: 'Size (bytes)', min: 0, max: 8000, step: 1, default: 2000 },
 		{ id: 'interval', label: 'Interval (secs)', min: 0.01, max: 1, step: 0.01, default: 0.01 }
 	];
+
+	function edgesharkLink(link: string) {
+		let [neName, ifcName] = link.split('-');
+		let baseUrl = 'packetflix:ws://devbox:5001/capture?';
+		let urlParams = `container={"network-interfaces":["${ifcName}"],"name":"${neName.toLocaleLowerCase()}","type":"docker","prefix":""}&nif=${ifcName}`;
+		return baseUrl + urlParams;
+	}
 
 	const updateToggle = (state: AllState) => {
 		const toggle = (section: string, data: ServiceState | LinkState) => {
@@ -86,17 +94,15 @@
 	<title>SROS ANYSec Lab - Automation Panel</title>
 </svelte:head>
 
-<!-- NAVBAR -->
-<nav
-	class="fixed top-0 z-30 px-3 py-4 w-screen select-none text-sm font-nunito bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700"
->
-	<div class="flex justify-between">
-		<!-- navbar left item -->
-		<div class="flex items-center space-x-2">
-			<button type="button" class="flex dark:text-gray-200" on:click={toggleSidebar}>
+<nav class="fixed w-screen top-0 z-30 text-sm font-nunito">
+	<div
+		class="flex items-center justify-between p-4 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700"
+	>
+		<div class="flex items-center">
+			<button type="button" class="pr-4 dark:text-gray-200 lg:hidden" on:click={toggleSidebar}>
 				<svg
 					id="open-sidebar"
-					class="w-5 h-5 hidden"
+					class="w-5 h-5"
 					fill="none"
 					stroke="currentColor"
 					stroke-width="2"
@@ -107,7 +113,7 @@
 				</svg>
 				<svg
 					id="close-sidebar"
-					class="w-5 h-5"
+					class="w-5 h-5 hidden"
 					fill="none"
 					stroke="currentColor"
 					stroke-width="2"
@@ -117,96 +123,113 @@
 					<path d="M6 18L18 6M6 6l12 12"></path>
 				</svg>
 			</button>
-			<!--<div class="flex"><img src="/images/containerlab.svg" alt="Logo" width="35" /></div>-->
-			<div class="flex px-2"><img src="/images/navbar-logo.png" alt="Logo" width="25" /></div>
-			<!--<div class="flex px-2"><img src="/images/{darkMode ? 'nwhite' : 'nblue'}.png" alt="Logo" width="70" /></div>-->
+			<div><img src="/images/navbar-logo.png" alt="Logo" width="25" /></div>
 		</div>
-		<!-- navbar centre item -->
 		<div class="md:flex text-center">
 			<p class="dark:text-gray-200">ANYSec Lab</p>
 			<p class="dark:text-gray-200">&nbsp;Automation Panel</p>
 		</div>
-		<!-- navbar right item -->
-		<div class="flex items-center mr-3">
+		<div class="flex pr-4 items-center">
 			<Theme />
 		</div>
 	</div>
 </nav>
 
-<!-- SIDEBAR -->
-<div
-	id="sidebar"
-	class="fixed h-screen overflow-hidden transform transition ease-in-out duration-300"
->
+<div class="flex text-sm font-nunito">
 	<aside
-		class="text-sm pb-4 overflow-y-auto scroll-light dark:scroll-dark z-20 w-[300px] h-screen bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700"
+		id="sidebar"
+		class="h-screen fixed lg:sticky top-0 left-0 w-[300px] pt-[73px] md:pt-[58px] bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-transform duration-300 -translate-x-full lg:-translate-x-0"
 	>
-		<div class="px-4 space-y-4 pt-[87px] md:pt-[72px]">
-			<div class="rounded-lg border border-gray-200 dark:border-gray-600">
-				<p
-					class="px-4 py-2 text-center rounded-t-lg font-bold text-gray-900 dark:text-white bg-gray-200 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600"
-				>
-					ICMP State
-				</p>
-				<div class="py-3 space-y-3">
-					{#each formInputs as entry}
-						<Form {entry} />
-					{/each}
-					<hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
-					<Services key="icmp" services={serviceOptions} state={allState.icmp} />
-				</div>
-			</div>
-			<div class="rounded-lg border border-gray-200 dark:border-gray-600 md:min-w-40">
-				<p
-					class="px-4 py-2 text-center rounded-t-lg font-bold text-gray-900 dark:text-white bg-gray-200 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600"
-				>
-					Link State
-				</p>
-				<div class="py-3 space-y-3">
-					{#each link as entry}
-						<div class="flex items-center justify-between px-4">
-							<div>
-								<p class="text-gray-900 dark:text-white">{entry.title}</p>
-								<p class="text-gray-900 dark:text-white text-xs">
-									{entry.src} &mdash; {entry.dest}
-								</p>
-							</div>
-							<div class="flex">
-								<label class="inline-flex items-center cursor-pointer">
-									<input
-										type="checkbox"
-										class="sr-only peer"
-										id="link-{entry.id}"
-										checked={allState.link[entry.id]}
-										on:change={(event) => triggerSet(event, 'link', entry.id)}
-									/>
-									<div
-										class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
-									></div>
-								</label>
-							</div>
+		<div class="flex flex-col h-full">
+			<div class="flex-grow overflow-y-auto scroll-light dark:scroll-dark">
+				<div class="p-4 space-y-4">
+					<div class="rounded-lg border border-gray-200 dark:border-gray-600">
+						<p
+							class="px-4 py-2 text-center rounded-t-lg font-bold text-gray-900 dark:text-white bg-gray-200 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600"
+						>
+							ICMP State
+						</p>
+						<div class="py-3 space-y-3">
+							{#each formInputs as entry}
+								<Form {entry} />
+							{/each}
+							<hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+							<Services key="icmp" services={serviceOptions} state={allState.icmp} />
 						</div>
-					{/each}
-				</div>
-			</div>
-			<div class="rounded-lg border border-gray-200 dark:border-gray-600 md:min-w-40">
-				<p
-					class="px-4 py-2 text-center rounded-t-lg font-bold text-gray-900 dark:text-white bg-gray-200 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600"
-				>
-					ANYSec State
-				</p>
-				<div class="py-3 space-y-3">
-					<Services key="anysec" services={serviceOptions} state={allState.anysec} />
+					</div>
+					<div class="rounded-lg border border-gray-200 dark:border-gray-600 md:min-w-40">
+						<p
+							class="px-4 py-2 text-center rounded-t-lg font-bold text-gray-900 dark:text-white bg-gray-200 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600"
+						>
+							Link State
+						</p>
+						<div class="py-3 space-y-3">
+							{#each link as entry}
+								<div class="flex items-center justify-between px-4">
+									<div>
+										<p class="text-gray-900 dark:text-white">{entry.title}</p>
+										<p class="text-gray-900 dark:text-white text-xs">
+											{entry.src} &mdash; {entry.dest}
+										</p>
+									</div>
+									<div class="flex">
+										<label class="inline-flex items-center cursor-pointer">
+											<input
+												type="checkbox"
+												class="sr-only peer"
+												id="link-{entry.id}"
+												checked={allState.link[entry.id]}
+												on:change={(event) => triggerSet(event, 'link', entry.id)}
+											/>
+											<div
+												class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
+											></div>
+										</label>
+									</div>
+								</div>
+							{/each}
+						</div>
+					</div>
+					<div class="rounded-lg border border-gray-200 dark:border-gray-600 md:min-w-40">
+						<p
+							class="px-4 py-2 text-center rounded-t-lg font-bold text-gray-900 dark:text-white bg-gray-200 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600"
+						>
+							ANYSec State
+						</p>
+						<div class="py-3 space-y-3">
+							<Services key="anysec" services={serviceOptions} state={allState.anysec} />
+						</div>
+					</div>
+					<div class="rounded-lg border border-gray-200 dark:border-gray-600 md:min-w-40">
+						<p
+							class="px-4 py-2 text-center rounded-t-lg font-bold text-gray-900 dark:text-white bg-gray-200 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600"
+						>
+							Packet Capture
+						</p>
+						<div class="flex flex-col space-y-4 p-4">
+							{#each packetCaptureLinks as entry}
+								{@const [neName, ifcname] = entry.split('-')}
+								<a
+									href={edgesharkLink(entry)}
+									target="_blank"
+									class="px-3 py-1 flex items-center justify-between rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 border dark:border-gray-600"
+								>
+									<span>{neName}</span>
+									<span>{ifcname}</span>
+									<span class="w-6"><img src="/images/edgeshark.png" alt="fin" /></span>
+								</a>
+							{/each}
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 	</aside>
-</div>
-
-<div class="pt-[55px]">
-	<!-- svelte-ignore a11y-missing-attribute -->
-	<iframe
-		class="h-[calc(100vh-55px)] w-screen"
-		src="http://{urlHost}:3000/d/kawVPD-Gk/anysec-telemetry"
-	></iframe>
+	<main class="flex-1 bg-gray-400 pt-[73px] md:pt-[58px]">
+		<!-- svelte-ignore a11y-missing-attribute -->
+		<iframe
+			class="h-[calc(100vh-55px)] w-full"
+			src="http://{urlHost}:3000/d/kawVPD-Gk/anysec-telemetry"
+		></iframe>
+	</main>
 </div>

@@ -350,3 +350,11 @@ CLAB and vSIMs can be used to test and validate the configurations.
 Setup is fully functional with ANYSec stats increase and packets are encrypted as seen in the TCPDUMP capture.
 
 More to come in the upcoming releases!
+
+## Dev notes
+
+To test the frontend:
+
+1. change the target proxy url in the `automation_panel/frontend/vite.config.ts` to `target: 'http://panel:8080'`
+2. run `pnmp run dev` or `npm run dev`
+3. Use the `5173` port to reach the frontend
