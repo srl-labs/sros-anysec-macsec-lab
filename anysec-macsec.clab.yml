@@ -124,6 +124,7 @@ topology:
       kind: linux
       mgmt-ipv4: 172.50.50.33
       image: ghcr.io/srl-labs/sros-anysec-macsec-lab/panel
+      image-pull-policy: always
       ports:
         - 54173:4173 # prod port
         - 55173:5173 # dev port
