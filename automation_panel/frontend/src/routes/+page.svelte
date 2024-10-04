@@ -31,7 +31,7 @@
 
 	function edgesharkLink(link: string) {
 		let [neName, ifcName] = link.split('-');
-		let baseUrl = 'packetflix:ws://devbox:5001/capture?';
+		let baseUrl = `packetflix:ws://${urlHost}:5001/capture?`;
 		let urlParams = `container={"network-interfaces":["${ifcName}"],"name":"${neName.toLocaleLowerCase()}","type":"docker","prefix":""}&nif=${ifcName}`;
 		return baseUrl + urlParams;
 	}
