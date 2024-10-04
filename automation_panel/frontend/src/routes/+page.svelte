@@ -190,7 +190,6 @@
 	</aside>
 	<main class="flex-1 bg-gray-400 pt-[73px] md:pt-[58px]">
 		<!-- svelte-ignore a11y-missing-attribute -->
-		<iframe class="w-full h-screen border-none" src="https://fr.wikipedia.org/wiki/Main_Page"></iframe>
-		<!--<iframe src="http://{urlHost}:3000/d/kawVPD-Gk/anysec-telemetry"></iframe>-->
+		<iframe src="http://{urlHost}:3000/d/kawVPD-Gk/anysec-telemetry"></iframe>
 	</main>
 </div>
