@@ -21,8 +21,11 @@ Based on MACSec standards as the foundation, it introduces the flexibility to of
 
 To deploy this lab you need:
 
-1. a server with Docker and Containerlab.
-2. SR OS 23.10.R1+ image and a valid license file.
+1. A server with Docker and Containerlab (upgrade to latest releases is recomended).
+2. EdgeShark (Refer to [CLAB and EdgeShark integration](https://containerlab.dev/manual/wireshark/#edgeshark-integration) for details.) 
+3. SR OS 23.10.R1+ image and a valid SROS license file.
+
+Note: This lab requires ~22G RAM.
 
 ## Clone the lab on your server
 
@@ -70,7 +73,7 @@ Note: After you've built the image, edit the `anysec-macsec.clab.yml` file and c
 
 SR OS vSIMs require a valid license. You need to get a valid license from Nokia and save it as `/opt/nokia/SROS/r24_license.key` file on your host machine.
 
-This file is referenced in the clab topology file.
+This file is referenced in the clab topology file (ensure you use the correct version).
 
 ## Deploy the lab
 
@@ -184,14 +187,17 @@ The following stack of software solutions has been chosen for this lab:
 | Time-Series DB      | [prometheus](https://prometheus.io)   | 9090  | <http://localhost:9090/graph> |             |
 | Visualization       | [grafana](https://grafana.com)        | 3000  | <http://localhost:3000>       | admin/admin |
 | Automation          | Go/Svelte                             | 54173 | <http://localhost:54173/>     |             |
+| EdgeShark           | [EdgeShark](https://edgeshark.siemens.io/#/)| 5001 | <http://localhost:5001/>     |             |
 
 ### Access details
 
-If you are accessing from a remote host, then replace localhost by the CLAB Server IP address
+If you are accessing from a remote host, then replace localhost by the CLAB Server IP address:
 
-* Grafana: <http://localhost:3000>. Built-in user credentials: `admin/admin`
-* Prometheus: <http://localhost:9090/graph>
-* Automation Panel: <http://localhost:54173/>
+* Grafana: <http://<Server-IP>:3000>. Built-in user credentials: `admin/admin`
+* Prometheus: <http://<Server-IP>:9090/graph>
+* Automation Panel: <http://<Server-IP>:54173/>
+* Go/Svelte: http://<Server-IP>:54173
+* EdgeShark: http://<Server-IP>:5001/
 
 ## Verify the setup
 
