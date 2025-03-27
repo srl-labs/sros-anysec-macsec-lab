@@ -250,14 +250,14 @@ ssh root@10.82.182.179 "ip netns exec pe1 tcpdump -U -nni eth1 -w -" | "c:\Progr
 
 ### Wireshark ANYSec Decoding
 
-Wireshark does not have native support for decoding ANYSec MACSec (802.1AE) headers. You'll be able to see the MPLS and ANYSec labels, but the MACSec header will not be decoded.
+Wireshark does not have native support for decoding ANYSec MACSec (802.1AE) or MKAoUDP headers. You'll be able to see the MPLS and ANYSec labels, but the MACSec header will not be decoded.  
+You may use the ANYsec  dissectors available in this GH repo: [ANYsec Packet Dissectors for Wireshark](https://github.com/xavixava/anysec-dissectors)
 
-Nokia has an internal version with a protocol dissector for ANYSec MACSec / 802.1a headers.
-This is the output comparison between the public wireshark and the Nokia's version:
+This is the output comparison between the wireshark without and with dissectors:
 
 ![pic1](pics/anysec-wireshark.jpg)
 
-Note: With the public Wireshark, the ANYSec header not decoded but you still be able to validate ANYSec looking into the ANYSec label.
+Note: With the public Wireshark the ANYSec header is not decoded but you are still able to identify it is ANYSec by looking into the ANYSec label within the configured range.
 
 ### ANYSec Stack
 
