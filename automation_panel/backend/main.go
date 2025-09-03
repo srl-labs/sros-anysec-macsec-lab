@@ -326,7 +326,7 @@ func linkSubscribeRequest(group *[]LinkEndpoint) {
 			Host:     endpoint[i].Host,
 			Port:     "57400",
 			Username: "admin",
-			Password: "admin",
+			Password: "NokiaSros1!",   //# SR-SIM credentials changed to admin/NokiaSros1! (vSIM were admin/admin)
 		}
 
 		endpoint[i].Gnmi.Context, endpoint[i].Gnmi.Cancel = context.WithCancel(context.Background())
@@ -379,7 +379,7 @@ func anysecSubscribeRequest(group *[]AnysecEndpoint) {
 			Host:     endpoint[i].Host,
 			Port:     "57400",
 			Username: "admin",
-			Password: "admin",
+			Password: "NokiaSros1!",   // SR-SIM credentials changed to admin/NokiaSros1! (vSIM were admin/admin)
 		}
 
 		endpoint[i].Gnmi.Context, endpoint[i].Gnmi.Cancel = context.WithCancel(context.Background())

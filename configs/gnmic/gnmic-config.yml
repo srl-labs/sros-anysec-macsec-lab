@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 username: admin
-password: admin
+password: NokiaSros1!   # SR-SIM credentials changed to admin/NokiaSros1! (vSIM were admin/admin)
 # skip-verify: true
 insecure: true
 port: 57400
