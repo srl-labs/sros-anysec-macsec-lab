@@ -18,7 +18,7 @@
 		document.getElementById('close-sidebar')?.classList.toggle('hidden');
 	};
 
-	const packetCaptureLinks = ['PE1-eth1', 'PE1-eth2'];
+	const packetCaptureLinks = ['PE1-iom_e1-1-c1-1', 'PE1-iom_e1-1-c2-1'];
 	const serviceOptions = ['VLL', 'VPLS', 'VPRN'];
 	const link = [
 		{ id: 'top', title: 'Top Link', src: 'PE1', dest: 'P3' },
@@ -30,7 +30,7 @@
 	];
 
 	function edgesharkLink(link: string) {
-		let [neName, ifcName] = link.split('-');
+		let [neName, ifcName] = link.split('_');
 		let baseUrl = `packetflix:ws://${urlHost}:5001/capture?`;
 		let urlParams = `container={"network-interfaces":["${ifcName}"],"name":"${neName.toLocaleLowerCase()}","type":"docker","prefix":""}&nif=${ifcName}`;
 		return baseUrl + urlParams;
@@ -208,7 +208,7 @@
 						</p>
 						<div class="flex flex-col space-y-4 p-4">
 							{#each packetCaptureLinks as entry}
-								{@const [neName, ifcname] = entry.split('-')}
+								{@const [neName, ifcname] = entry.split('_')}
 								<a
 									href={edgesharkLink(entry)}
 									target="_blank"

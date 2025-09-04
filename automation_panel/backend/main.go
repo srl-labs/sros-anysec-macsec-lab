@@ -326,7 +326,7 @@ func linkSubscribeRequest(group *[]LinkEndpoint) {
 			Host:     endpoint[i].Host,
 			Port:     "57400",
 			Username: "admin",
-			Password: "admin",
+			Password: "NokiaSros1!", //# SR-SIM credentials changed to admin/NokiaSros1! (vSIM were admin/admin)
 		}
 
 		endpoint[i].Gnmi.Context, endpoint[i].Gnmi.Cancel = context.WithCancel(context.Background())
@@ -379,7 +379,7 @@ func anysecSubscribeRequest(group *[]AnysecEndpoint) {
 			Host:     endpoint[i].Host,
 			Port:     "57400",
 			Username: "admin",
-			Password: "admin",
+			Password: "NokiaSros1!", // SR-SIM credentials changed to admin/NokiaSros1! (vSIM were admin/admin)
 		}
 
 		endpoint[i].Gnmi.Context, endpoint[i].Gnmi.Cancel = context.WithCancel(context.Background())
@@ -505,7 +505,7 @@ func main() {
 		Icmp: &IcmpGroup{
 			Vll: IcmpEndpoint{
 				SshHost:     "client7",
-				SshUser:     "user",
+				SshUser:     "admin",
 				SshPass:     "multit00l",
 				Destination: "192.168.51.8",
 				Size:        2000,
@@ -515,7 +515,7 @@ func main() {
 			},
 			Vpls: IcmpEndpoint{
 				SshHost:     "client7",
-				SshUser:     "user",
+				SshUser:     "admin",
 				SshPass:     "multit00l",
 				Destination: "192.168.52.8",
 				Size:        2000,
@@ -525,7 +525,7 @@ func main() {
 			},
 			Vprn: IcmpEndpoint{
 				SshHost:     "client7",
-				SshUser:     "user",
+				SshUser:     "admin",
 				SshPass:     "multit00l",
 				Destination: "192.168.63.8",
 				Size:        2000,

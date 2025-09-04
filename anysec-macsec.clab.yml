@@ -6,12 +6,12 @@ mgmt:
 
 topology:
   kinds:
-    nokia_sros:
-      type: sr-1x-48d
-      image: registry.srlinux.dev/pub/vr-sros:24.3.R2-1
-      license: ${SROS_LIC_PATH:-/opt/nokia/sros/r24_license.key}
+    nokia_srsim:
+      type: sr-1x-48d   # Note: SR-SIM FP5 small fixed platforms are distributed (SR-1/1x/1se)
+      image: registry.srlinux.dev/pub/nokia_srsim:25.7.R1
+      license: ${SROS_LIC_PATH:-/opt/nokia/sros/r25_sr-sim_license.key}
     linux:
-      image: ghcr.io/srl-labs/network-multitool
+      image: ghcr.io/srl-labs/network-multitool:v0.4.1
       env:
         http_proxy: ${http_proxy:=""}
         https_proxy: ${https_proxy:=""}
@@ -21,42 +21,74 @@ topology:
     ### CORE FP5 and FP4###
     # FP5
     pe1:
-      kind: nokia_sros
+      kind: nokia_srsim
       mgmt-ipv4: 172.50.50.11
       startup-config: configs/core/pe1.partial.cfg
+      env:
+         NOKIA_SROS_SLOT: A
+    pe1-iom:
+      kind: nokia_srsim
+      network-mode: container:pe1
+      env:
+        NOKIA_SROS_SLOT: 1
 
     # FP5
     pe2:
-      kind: nokia_sros
+      kind: nokia_srsim
       mgmt-ipv4: 172.50.50.12
       startup-config: configs/core/pe2.partial.cfg
+      env:
+         NOKIA_SROS_SLOT: A
+    pe2-iom:
+      kind: nokia_srsim
+      network-mode: container:pe2
+      env:
+        NOKIA_SROS_SLOT: 1
 
     # FP4
     p3:
-      kind: nokia_sros
+      kind: nokia_srsim
       mgmt-ipv4: 172.50.50.13
       type: SR-1
       startup-config: configs/core/p3.partial.cfg
+      env:
+        NOKIA_SROS_MDA_1: me12-100gb-qsfp28   # default SR-SIM changed from me12-100gb-qsfp28 to me6-100gb-qsfp28
 
     # FP4
     p4:
-      kind: nokia_sros
+      kind: nokia_srsim
       mgmt-ipv4: 172.50.50.14
       type: SR-1
       startup-config: configs/core/p4.partial.cfg
+      env:
+        NOKIA_SROS_MDA_1: me12-100gb-qsfp28   # default SR-SIM changed from me12-100gb-qsfp28 to me6-100gb-qsfp28
 
     ### CEs ###
     # FP5
     ce5:
-      kind: nokia_sros
+      kind: nokia_srsim
       mgmt-ipv4: 172.50.50.51
       startup-config: configs/core/ce5.partial.cfg
+      env:
+         NOKIA_SROS_SLOT: A
+    ce5-iom:
+      kind: nokia_srsim
+      network-mode: container:ce5
+      env:
+        NOKIA_SROS_SLOT: 1
 
     # FP5
     ce6:
-      kind: nokia_sros
+      kind: nokia_srsim
       mgmt-ipv4: 172.50.50.52
       startup-config: configs/core/ce6.partial.cfg
+      env:
+         NOKIA_SROS_SLOT: A
+    ce6-iom:
+      kind: nokia_srsim
+      network-mode: container:ce6
+      env:
+        NOKIA_SROS_SLOT: 1
 
     ### CLIENTS & Automation Stack ###
     client7:
@@ -123,7 +155,7 @@ topology:
     panel:
       kind: linux
       mgmt-ipv4: 172.50.50.33
-      image: ghcr.io/srl-labs/sros-anysec-macsec-lab/panel
+      image: ghcr.io/srl-labs/sros-anysec-macsec-lab/panel:v0.2.0
       image-pull-policy: always
       ports:
         - 54173:4173 # prod port
@@ -147,22 +179,22 @@ topology:
               stage: healthy
 
   links:
-    - endpoints: ["ce5:eth7", "pe1:eth3"]
-    - endpoints: ["ce6:eth7", "pe2:eth3"]
-    - endpoints: ["pe1:eth1", "p3:eth2"]
-    - endpoints: ["pe1:eth2", "p4:eth2"]
-    - endpoints: ["pe2:eth1", "p3:eth3"]
-    - endpoints: ["pe2:eth2", "p4:eth3"]
-    - endpoints: ["p3:eth1", "p4:eth1"]
+    - endpoints: ["ce5-iom:1/1/c7/1", "pe1-iom:1/1/c3/1"]
+    - endpoints: ["ce6-iom:1/1/c7/1", "pe2-iom:1/1/c3/1"]
+    - endpoints: ["pe1-iom:1/1/c1/1", "p3:1/1/c2/1"]
+    - endpoints: ["pe1-iom:1/1/c2/1", "p4:1/1/c2/1"]
+    - endpoints: ["pe2-iom:1/1/c1/1", "p3:1/1/c3/1"]
+    - endpoints: ["pe2-iom:1/1/c2/1", "p4:1/1/c3/1"]
+    - endpoints: ["p3:1/1/c1/1", "p4:1/1/c1/1"]
     # Client7
-    - endpoints: ["client7:eth1", "ce5:eth1"]
-    - endpoints: ["client7:eth2", "ce5:eth2"]
-    - endpoints: ["client7:eth3", "ce5:eth3"]
+    - endpoints: ["client7:eth1", "ce5-iom:1/1/c1/1"]
+    - endpoints: ["client7:eth2", "ce5-iom:1/1/c2/1"]
+    - endpoints: ["client7:eth3", "ce5-iom:1/1/c3/1"]
     # Client8
-    - endpoints: ["client8:eth1", "ce6:eth1"]
-    - endpoints: ["client8:eth2", "ce6:eth2"]
-    - endpoints: ["client8:eth3", "ce6:eth3"]
+    - endpoints: ["client8:eth1", "ce6-iom:1/1/c1/1"]
+    - endpoints: ["client8:eth2", "ce6-iom:1/1/c2/1"]
+    - endpoints: ["client8:eth3", "ce6-iom:1/1/c3/1"]
     # Mirror - For Advanced TShoot, disabled by default
-    - endpoints: ["pe1:eth6", "ce6:eth6"]
-    - endpoints: ["pe2:eth5", "ce6:eth5"]
-    - endpoints: ["ce6:eth10", "ce6:eth11"] ### mirror dest is eth10 to allow single point of capture
+    - endpoints: ["pe1-iom:1/1/c6/1", "ce6-iom:1/1/c6/1"]
+    - endpoints: ["pe2-iom:1/1/c5/1", "ce6-iom:1/1/c5/1"]
+    - endpoints: ["ce6-iom:1/1/c10/1", "ce6-iom:1/1/c11/1"] ### mirror dest is eth10 to allow single point of capture
