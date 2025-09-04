@@ -11,7 +11,7 @@ topology:
       image: registry.srlinux.dev/pub/nokia_srsim:25.7.R1
       license: ${SROS_LIC_PATH:-/opt/nokia/sros/r25_sr-sim_license.key}
     linux:
-      image: ghcr.io/srl-labs/network-multitool
+      image: ghcr.io/srl-labs/network-multitool:v0.4.1
       env:
         http_proxy: ${http_proxy:=""}
         https_proxy: ${https_proxy:=""}
@@ -155,7 +155,7 @@ topology:
     panel:
       kind: linux
       mgmt-ipv4: 172.50.50.33
-      image: ghcr.io/srl-labs/sros-anysec-macsec-lab/panel
+      image: ghcr.io/srl-labs/sros-anysec-macsec-lab/panel:v0.2.0
       image-pull-policy: always
       ports:
         - 54173:4173 # prod port
