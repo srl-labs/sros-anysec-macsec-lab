@@ -18,7 +18,7 @@
 		document.getElementById('close-sidebar')?.classList.toggle('hidden');
 	};
 
-	const packetCaptureLinks = ['PE1-eth1', 'PE1-eth2'];
+	const packetCaptureLinks = ['PE1-1/1/c1/1', 'PE1-1/1/c2/1'];
 	const serviceOptions = ['VLL', 'VPLS', 'VPRN'];
 	const link = [
 		{ id: 'top', title: 'Top Link', src: 'PE1', dest: 'P3' },
