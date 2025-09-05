@@ -3,7 +3,7 @@
 
 ANYSec is a Nokia technology that provides low-latency and line-rate native encryption for any transport (IP, MPLS, segment routing, Ethernet or VLAN), on any service, at any time and for any load conditions without impacting performance.
 
-This lab is an ANYSec demo using [Nokia SR OS FP5](https://www.nokia.com/networks/technologies/fp5/) vSIMs orchestrated by [Containerlab](https://containerlab.dev/).
+This lab is an ANYSec demo using [Nokia SR OS FP5](https://www.nokia.com/networks/technologies/fp5/) SR-SIMs orchestrated by [Containerlab](https://containerlab.dev/).
 It combines ANYSec with MACSec and illustrates ANYSec slicing for distinct network services with multi-instance SR-ISIS and FLEX-Algo.
 
 Augmented with a visualization dashboard rendering the data received by means of the Streaming Telemetry stack (gNMIc, Prometheus and Grafana).
@@ -19,13 +19,19 @@ Based on MACSec standards as the foundation, it introduces the flexibility to of
 
 ## Requirements
 
+> [!NOTE] 
+> Note: This lab has been updated from vSIM R24 to SR-SIM 25.7.R1. 
+> For SR-SIM details refer to the [SR-SIM Installation, deployment and setup guide](https://documentation.nokia.com/sr/25-7/7750-sr/titles/sr-sim-installation-setup.html). 
+
 To deploy this lab you need:
 
-1. A server with Docker and Containerlab (upgrade to latest releases is recomended).
+1. A server or laptop with linux or WSL, Docker and Containerlab 0.69.3 (upgrade to latest releases is recomended).
 2. EdgeShark (Refer to [CLAB and EdgeShark integration](https://containerlab.dev/manual/wireshark/#edgeshark-integration) for details.) 
-3. SR OS 23.10.R1+ image and a valid SROS license file.
+3. SR-SIM 25.7.R1 image and a valid SROS SR-SIM license file (reach your Nokia representative for support).
 
-Note: This lab requires ~22G RAM.
+> [!NOTE] 
+> Note: This lab has 16 containers (10 SR-SIMs and 6 Linux hosts) and requires ~14G RAM.
+> SR-SIM FP5 small fixed platforms (SR-1/1x/1se) and require a distributed model of deployment as described in the [SR-SIM Installation, deployment and setup guide](https://documentation.nokia.com/sr/25-7/7750-sr/titles/sr-sim-installation-setup.html).
 
 ## Clone the lab on your server
 
@@ -36,48 +42,26 @@ To deploy this lab, you must clone it to your server with git.
 git clone https://github.com/srl-labs/SROS-anysec-macsec-lab.git
 ```
 
-## SR OS Image
+## SR-SIM Image and License
 
-The lab file provided with this repository uses the internal Nokia SR OS image, that is not available externally.
+To obtain the SR-SIM image and license contact your Nokia representative.
 
-To obtain the SR OS image contact your Nokia representative and build a Containerlab-compatible image using the [vrnetlab project](https://containerlab.dev/manual/vrnetlab/#vrnetlab).
-
-To build the container image for SR OS vSIM, follow the steps below:
+Once you have your image and license edit the `anysec-macsec.clab.yml` file and update it accordingly.
 
 ```bash
-# Clone the vrnetlab repo
-git clone https://github.com/hellt/vrnetlab && cd vrnetlab
+# replace this by your image and license files
+      image: registry.srlinux.dev/pub/nokia_srsim:25.7.R1
+      license: ${SROS_LIC_PATH:-/opt/nokia/sros/r25_sr-sim_license.key}
 ```
 
-Download qcow2 vSIM image from Nokia Support Portal (<https://customer.nokia.com/support/s>) or get one from your Nokia contacts.  
-Change the qcow2 file name to `SR OS-vm-<VERSION>.qcow2`.
+Note that the default image link under this lab is a Nokia internal that is not available externally.
+You need a valid SR-SIM license under `/opt/nokia/sros/r25_sr-sim_license.key`, or change it to another location.
+Ensure you use the correct SR-SIM and license versions.
 
-Move the qcow2 file to `SR OS` directory of the cloned repository and run `make` command:
-
-The build process should take 1-2 minutes, after which you can list the images matching the `vr-SR OS` pattern to verify the image was built successfully:
-
-```
-docker images | grep vr-SR OS
-```
-
-Note: After you've built the image, edit the `anysec-macsec.clab.yml` file and change the SR OS container image name to match the one you've built.
-
-```bash
-# replace this 
-      image: registry.srlinux.dev/pub/vr-SR OS:23.10.R2
-# with this (assuming you've built the 23.10.R2 image):
-      image: vrnetlab/vr-SR OS:23.10.R2
-```
-
-### License file
-
-SR OS vSIMs require a valid license. You need to get a valid license from Nokia and save it as `/opt/nokia/SROS/r24_license.key` file on your host machine.
-
-This file is referenced in the clab topology file (ensure you use the correct version).
 
 ## Deploy the lab
 
-The rest of the images used in this lab are publicly available and will be downloaded automatically by Containerlab when we deploy the lab:
+The remaining images used in this lab are publicly available and will be downloaded automatically by Containerlab when you deploy the lab:
 
 ```bash
 # while in the lab directory, run
@@ -226,9 +210,9 @@ clab inspect -a
 # list the interfaces (links) of a given container
 ip netns exec pe1 ip link
 # Start a capture and display packets in the session
-ip netns exec pe1 tcpdump -nni eth1
+ip netns exec pe1 tcpdump -nni e1-1-c1-1
 # Start a capture and store the packets in the file
-ip netns exec pe1 tcpdump -nni eth1 -w capture_file.pcap
+ip netns exec pe1 tcpdump -nni e1-1-c1-1 -w capture_file.pcap
 ```
 
 ### Remote capture
@@ -242,10 +226,10 @@ Syntax:
 ssh $containerlab_host_address "ip netns exec $lab_node_name tcpdump -U -nni $if_name -w -" | $wireshark_path -k -i -
 
 Linux example:
-ssh root@10.82.182.179 "ip netns exec pe1 tcpdump -U -nni eth1 -w -" | /mnt/c/Program\ Files/Wireshark/wireshark.exe -k -i -
+ssh root@10.82.182.179 "ip netns exec pe1 tcpdump -U -nni e1-1-c1-1 -w -" | /mnt/c/Program\ Files/Wireshark/wireshark.exe -k -i -
 
 Windows example:
-ssh root@10.82.182.179 "ip netns exec pe1 tcpdump -U -nni eth1 -w -" | "c:\Program Files\Wireshark\Wireshark.exe" -k -i -
+ssh root@10.82.182.179 "ip netns exec pe1 tcpdump -U -nni e1-1-c1-1 -w -" | "c:\Program Files\Wireshark\Wireshark.exe" -k -i -
 ```
 
 ### Wireshark ANYSec Decoding
@@ -296,7 +280,7 @@ From your Windows laptop prompt execute Tshark an pipe the output to Wireshark:
 ```bash
 ### Example! Replace IP and windows path
 ssh root@<IP> "ip netns exec <CONTAINER> tshark -l -i <IF1> [-i <IF2>] [-i <IFN>] -w -" | "<WIRESHARK PATH>" -k -i -
-ssh root@10.82.182.179 "ip netns exec pe1 tshark -l -i eth3 -i eth1 -i eth2 -w -" | "c:\Program Files\Wireshark\Wireshark.exe" -k -i -
+ssh root@10.82.182.179 "ip netns exec pe1 tshark -l -i eth3 -i e1-1-c1-1 -i e1-1-c2-1 -w -" | "c:\Program Files\Wireshark\Wireshark.exe" -k -i -
 ```
 
 ## Outputs
@@ -350,9 +334,9 @@ The Demo Video shows the Grafana Dashboard, the Automation Panel to execute and 
 ANYSec is an amazing technology, flexible and scalable, capable of E2E low-latency and line-rate transport encryption.
 ANYSec can be combined with other technologies such as MACSec or IPSec. It allows slicing and per service encryption.
 
-Does ANYSec work with CLAB vSIMs?
+Does ANYSec work with CLAB vSIMs or SR-SIMs?
 Yes for functional tests, but obviously not for performance/latency.
-CLAB and vSIMs can be used to test and validate the configurations.
+CLAB and SR-SIMs can be used to test and validate the configurations.
 Setup is fully functional with ANYSec stats increase and packets are encrypted as seen in the TCPDUMP capture.
 
 More to come in the upcoming releases!
