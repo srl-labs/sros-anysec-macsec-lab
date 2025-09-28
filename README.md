@@ -19,17 +19,17 @@ Based on MACSec standards as the foundation, it introduces the flexibility to of
 
 ## Requirements
 
-> [!NOTE] 
-> Note: This lab has been updated from vSIM R24 to SR-SIM 25.7.R1. 
-> For SR-SIM details refer to the [SR-SIM Installation, deployment and setup guide](https://documentation.nokia.com/sr/25-7/7750-sr/titles/sr-sim-installation-setup.html). 
+> [!NOTE]
+> Note: This lab has been updated from vSIM R24 to SR-SIM 25.7.R1.
+> For SR-SIM details refer to the [SR-SIM Installation, deployment and setup guide](https://documentation.nokia.com/sr/25-7/7750-sr/titles/sr-sim-installation-setup.html).
 
 To deploy this lab you need:
 
 1. A server or laptop with linux or WSL, Docker and Containerlab 0.69.3 (upgrade to latest releases is recomended).
-2. EdgeShark (Refer to [CLAB and EdgeShark integration](https://containerlab.dev/manual/wireshark/#edgeshark-integration) for details.) 
+2. EdgeShark (Refer to [CLAB and EdgeShark integration](https://containerlab.dev/manual/wireshark/#edgeshark-integration) for details.)
 3. SR-SIM 25.7.R1 image and a valid SROS SR-SIM license file (reach your Nokia representative for support).
 
-> [!NOTE] 
+> [!NOTE]
 > Note: This lab has 16 containers (10 SR-SIMs and 6 Linux hosts) and requires ~14G RAM.
 > SR-SIM FP5 small fixed platforms (SR-1/1x/1se) and require a distributed model of deployment as described in the [SR-SIM Installation, deployment and setup guide](https://documentation.nokia.com/sr/25-7/7750-sr/titles/sr-sim-installation-setup.html).
 
@@ -57,7 +57,6 @@ Once you have your image and license edit the `anysec-macsec.clab.yml` file and 
 Note that the default image link under this lab is a Nokia internal that is not available externally.
 You need a valid SR-SIM license under `/opt/nokia/sros/r25_sr-sim_license.key`, or change it to another location.
 Ensure you use the correct SR-SIM and license versions.
-
 
 ## Deploy the lab
 
