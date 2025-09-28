@@ -15,7 +15,7 @@ For enhanced demonstration purposes a web-based automation panel has been added 
 ANYSec is a Nokia's proprietary network encryption solution available with the new FP5 models starting with SR OS 23.10R1 release.  
 It is a low-latency line-rate encryption mechanism that is scalable, flexible and quantum-safe.
 
-Based on MACSec standards as the foundation, it introduces the flexibility to offset the authentication and encription to allow L2, L2.5 and L3 encryption.
+Based on MACSec standards as the foundation, it introduces the flexibility to offset the authentication and encryption to allow L2, L2.5 and L3 encryption.
 
 ## Requirements
 
@@ -25,7 +25,7 @@ Based on MACSec standards as the foundation, it introduces the flexibility to of
 
 To deploy this lab you need:
 
-1. A server or laptop with linux or WSL, Docker and Containerlab 0.69.3 (upgrade to latest releases is recomended).
+1. A server or laptop with linux or WSL, Docker and Containerlab 0.69.3 (upgrade to latest releases is recommended).
 2. EdgeShark (Refer to [CLAB and EdgeShark integration](https://containerlab.dev/manual/wireshark/#edgeshark-integration) for details.)
 3. SR-SIM 25.7.R1 image and a valid SROS SR-SIM license file (reach your Nokia representative for support).
 
@@ -71,7 +71,7 @@ sudo containerlab deploy -c
 
 ### Physical setup
 
-The physical setup is ilustrated below:
+The physical setup is illustrated below:
 
 ![pic](pics/physical-setup.jpg)
 
@@ -218,7 +218,7 @@ ip netns exec pe1 tcpdump -nni e1-1-c1-1 -w capture_file.pcap
 
 Besides displaying the packets to the session or store in a file, its possible to open them directly on Wireshark using a remote SSH connection.
 
-Follows examples of the SSH comand from a Linux Shell or Windows Comand Prompt:
+Follows examples of the SSH command from a Linux Shell or Windows Command Prompt:
 
 ```bash
 Syntax:
@@ -264,7 +264,7 @@ TCPDUMP on a multiple interfaces (any for all) shows a distinct stack: Linux coo
 ### TShark Capture multiple interfaces
 
 Tshark is similar to TCPDump but allows to define only the interfaces to capture and does not change the header stack.
-The drawback is it has to be installed in the CLAB Server (ussually not installed by default as TCPDump).
+The drawback is it has to be installed in the CLAB Server (usually not installed by default as TCPDump).
 
 Install Tshark at CLAB Server/hypervisor (Ubuntu):
 
@@ -317,7 +317,7 @@ show router bgp routes 10.0.0.2/32 vpn-ipv4 hunt
 
 Note: Use the VPRN service for this test. Wireshark correctly decodes ICMP for VPRN but not for L2 Services. You can still use VLL and VPLS and see packet in clear but ICMP Header will not be decoded.
 
-Upon Disable ANYSec verify ping is still working but unecripted.
+Upon Disable ANYSec verify ping is still working but unencrypted.
 Re-enable ANYSec and verify traffic is encrypted again.
 
 ![pic](pics/disable-anysec.jpg)
@@ -345,5 +345,5 @@ More to come in the upcoming releases!
 To test the frontend:
 
 1. change the target proxy url in the `automation_panel/frontend/vite.config.ts` to `target: 'http://panel:8080'`
-2. run `pnmp run dev` or `npm run dev`
+2. run `pnpm run dev` or `npm run dev`
 3. Use the `5173` port to reach the frontend
