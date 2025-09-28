@@ -23,5 +23,5 @@ PROXY_BUILD_ARGS="--build-arg http_proxy=${http_proxy} --build-arg HTTP_PROXY=${
 # build the automation panel container
 docker buildx build --push --platform linux/amd64,linux/arm64 ${PROXY_BUILD_ARGS} -t ghcr.io/srl-labs/sros-anysec-macsec-lab/panel:${TAG} ${BASEDIR}
 
-# for local testing without pushing to registry, use this instead of the previoud command:
-#docker build ${PROXY_BUILD_ARGS} -t panel:local-${TAG} ${BASEDIR}
+# for local testing without pushing to registry, use this instead of the previous command:
+# docker build ${PROXY_BUILD_ARGS} -t -t ghcr.io/srl-labs/sros-anysec-macsec-lab/panel:${TAG} ${BASEDIR}
