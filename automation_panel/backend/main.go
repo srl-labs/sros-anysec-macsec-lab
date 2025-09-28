@@ -425,7 +425,7 @@ func main() {
 		Link: &LinkGroup{
 			Top: []LinkEndpoint{
 				{
-					Host:       "pe1",
+					Host:       "pe1-a",
 					Port:       "1/1/c1/1",
 					Reference:  "src",
 					AdminState: false,
@@ -439,7 +439,7 @@ func main() {
 			},
 			Bottom: []LinkEndpoint{
 				{
-					Host:       "pe1",
+					Host:       "pe1-a",
 					Port:       "1/1/c2/1",
 					Reference:  "src",
 					AdminState: false,
@@ -455,14 +455,14 @@ func main() {
 		Anysec: &AnysecGroup{
 			Vll: []AnysecEndpoint{
 				{
-					Host:       "pe1",
+					Host:       "pe1-a",
 					GroupName:  "EG_VLL-1001",
 					Peer:       "10.0.0.21",
 					Reference:  "end-a",
 					AdminState: false,
 				},
 				{
-					Host:       "pe2",
+					Host:       "pe2-a",
 					GroupName:  "EG_VLL-1001",
 					Peer:       "10.0.0.11",
 					Reference:  "end-b",
@@ -471,14 +471,14 @@ func main() {
 			},
 			Vpls: []AnysecEndpoint{
 				{
-					Host:       "pe1",
+					Host:       "pe1-a",
 					GroupName:  "EG_VPLS-1002",
 					Peer:       "10.0.0.22",
 					Reference:  "end-a",
 					AdminState: false,
 				},
 				{
-					Host:       "pe2",
+					Host:       "pe2-a",
 					GroupName:  "EG_VPLS-1002",
 					Peer:       "10.0.0.12",
 					Reference:  "end-b",
@@ -487,14 +487,14 @@ func main() {
 			},
 			Vprn: []AnysecEndpoint{
 				{
-					Host:       "pe1",
+					Host:       "pe1-a",
 					GroupName:  "EG_VPRN-1003",
 					Peer:       "10.0.0.2",
 					Reference:  "end-a",
 					AdminState: false,
 				},
 				{
-					Host:       "pe2",
+					Host:       "pe2-a",
 					GroupName:  "EG_VPRN-1003",
 					Peer:       "10.0.0.1",
 					Reference:  "end-b",
