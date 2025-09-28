@@ -7,7 +7,7 @@ mgmt:
 topology:
   kinds:
     nokia_srsim:
-      type: sr-1x-48d   # Note: SR-SIM FP5 small fixed platforms are distributed (SR-1/1x/1se)
+      type: sr-1x-48d # Note: SR-SIM FP5 small fixed platforms are distributed (SR-1/1x/1se)
       image: registry.srlinux.dev/pub/nokia_srsim:25.7.R1
       license: ${SROS_LIC_PATH:-/opt/nokia/sros/r25_sr-sim_license.key}
     linux:
@@ -44,7 +44,7 @@ topology:
       type: sr-1
       startup-config: configs/core/p3.partial.cfg
       env:
-        NOKIA_SROS_MDA_1: me12-100gb-qsfp28   # default SR-SIM changed from me12-100gb-qsfp28 to me6-100gb-qsfp28
+        NOKIA_SROS_MDA_1: me12-100gb-qsfp28 # default SR-SIM changed from me12-100gb-qsfp28 to me6-100gb-qsfp28
 
     # FP4
     p4:
@@ -53,7 +53,7 @@ topology:
       type: sr-1
       startup-config: configs/core/p4.partial.cfg
       env:
-        NOKIA_SROS_MDA_1: me12-100gb-qsfp28   # default SR-SIM changed from me12-100gb-qsfp28 to me6-100gb-qsfp28
+        NOKIA_SROS_MDA_1: me12-100gb-qsfp28 # default SR-SIM changed from me12-100gb-qsfp28 to me6-100gb-qsfp28
 
     ### CEs ###
     # FP5
