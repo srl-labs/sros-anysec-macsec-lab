@@ -67,6 +67,21 @@ The remaining images used in this lab are publicly available and will be downloa
 sudo containerlab deploy -c
 ```
 
+> [!NOTE for WSL deployments]
+> Note: For WSL deployments you need to the following environment variable prior to lab deployment. 
+> ```bash
+> # Export env var 
+> export PANEL_PORT=4173
+> # To remove use `unset PANEL_PORT`
+> ```
+>
+>To make it persistent use the following 
+> ```bash
+> # Create persistent env var 
+> echo 'export PANEL_PORT=4173' >> ~/.bashrc  ### update shell as needed, e.g. zshrc
+> source ~/.bashrc
+> ```
+
 ## ANYSec setup
 
 ### Physical setup
