@@ -67,12 +67,11 @@ The remaining images used in this lab are publicly available and will be downloa
 sudo containerlab deploy -c
 ```
 
-> [!NOTE]
-> Note for WSL deployments: For WSL deployments you need to the following environment variable prior to lab deployment. 
+> [!NOTE] 
+> Note for WSL deployments: For WSL deployments you need to set the following environment variable prior to the lab deployment. 
 > ```bash
-> # Export env var 
+> # Export env var => To remove use: unset PANEL_PORT
 > export PANEL_PORT=4173
-> # To remove use `unset PANEL_PORT`
 > ```
 >
 >To make it persistent use the following 
