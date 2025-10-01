@@ -8,7 +8,7 @@ topology:
   kinds:
     nokia_srsim:
       type: sr-1x-48d # Note: SR-SIM FP5 small fixed platforms are distributed (SR-1/1x/1se)
-      image: registry.srlinux.dev/pub/nokia_srsim:25.7.R1
+      image: registry.srlinux.dev/pub/nokia_srsim:25.7.R2
       license: ${SROS_LIC_PATH:-/opt/nokia/sros/r25_sr-sim_license.key}
     linux:
       image: ghcr.io/srl-labs/network-multitool:v0.4.1
