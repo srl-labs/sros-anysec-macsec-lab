@@ -24,4 +24,5 @@ PROXY_BUILD_ARGS="--build-arg http_proxy=${http_proxy} --build-arg HTTP_PROXY=${
 docker buildx build --push --platform linux/amd64,linux/arm64 ${PROXY_BUILD_ARGS} -t ghcr.io/srl-labs/sros-anysec-macsec-lab/panel:${TAG} ${BASEDIR}
 
 # for local testing without pushing to registry, use this instead of the previous command:
-# docker build ${PROXY_BUILD_ARGS} -t -t ghcr.io/srl-labs/sros-anysec-macsec-lab/panel:${TAG} ${BASEDIR}
+# you also need to comment the "image-pull-policy: always" under the panel yml definition 
+# docker build ${PROXY_BUILD_ARGS} -t ghcr.io/srl-labs/sros-anysec-macsec-lab/panel:${TAG} ${BASEDIR}

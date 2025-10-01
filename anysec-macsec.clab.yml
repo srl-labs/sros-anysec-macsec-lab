@@ -142,7 +142,8 @@ topology:
       image: ghcr.io/srl-labs/sros-anysec-macsec-lab/panel:v0.2.0
       image-pull-policy: always
       ports:
-        - 54173:4173 # prod port
+        #  All deployments use 54173 except WSL that requires host port = 4173. For WSL export PANEL_PORT=4173 before deploy
+        - "${PANEL_PORT:-54173}:4173" # prod port 
         - 55173:5173 # dev port
       binds:
         # to allow the frontend to resolve the public hostname
