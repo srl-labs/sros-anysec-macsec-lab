@@ -67,8 +67,8 @@ The remaining images used in this lab are publicly available and will be downloa
 sudo containerlab deploy -c
 ```
 
-> [!NOTE for WSL deployments]
-> Note: For WSL deployments you need to the following environment variable prior to lab deployment. 
+> [!NOTE]
+> Note for WSL deployments: For WSL deployments you need to the following environment variable prior to lab deployment. 
 > ```bash
 > # Export env var 
 > export PANEL_PORT=4173
