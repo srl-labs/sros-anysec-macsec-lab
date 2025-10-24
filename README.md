@@ -25,7 +25,7 @@ Based on MACSec standards as the foundation, it introduces the flexibility to of
 
 To deploy this lab you need:
 
-1. A server or laptop with linux or WSL, Docker and Containerlab 0.69.3 (upgrade to latest releases is recommended).
+1. A server or laptop with linux and Docker and Containerlab 0.70.2 (upgrade to latest releases is recommended). Windows WSL and macOS OrbStack are also supported (see the [Deploy the lab](#deploy-the-lab) notes).
 2. EdgeShark (Refer to [CLAB and EdgeShark integration](https://containerlab.dev/manual/wireshark/#edgeshark-integration) for details.)
 3. SR-SIM 25.7.R1 image and a valid SROS SR-SIM license file (reach your Nokia representative for support).
 
@@ -57,10 +57,11 @@ Once you have your image and license edit the `anysec-macsec.clab.yml` file and 
 Note that the default image link under this lab is a Nokia internal that is not available externally.
 You need a valid SR-SIM license under `/opt/nokia/sros/r25_sr-sim_license.key`, or change it to another location.
 Ensure you use the correct SR-SIM and license versions.
+The remaining images used in this lab are publicly available and will be downloaded automatically by Containerlab when you deploy the lab.
 
 ## Deploy the lab
 
-The remaining images used in this lab are publicly available and will be downloaded automatically by Containerlab when you deploy the lab:
+Use the following command to deploy the lab (see the note for WSL and OrbStack).
 
 ```bash
 # while in the lab directory, run
@@ -68,7 +69,7 @@ sudo containerlab deploy -c
 ```
 
 > [!NOTE] 
-> Note for WSL deployments: For WSL deployments you need to set the following environment variable prior to the lab deployment. 
+> For Windows WSL and macOS OrbStack deployments you need to set the following environment variable prior to the lab deployment. 
 > ```bash
 > # Export env var => To remove use: unset PANEL_PORT
 > export PANEL_PORT=4173
@@ -184,7 +185,7 @@ The following stack of software solutions has been chosen for this lab:
 | Time-Series DB      | [prometheus](https://prometheus.io)   | 9090  | <http://localhost:9090/graph> |             |
 | Visualization       | [grafana](https://grafana.com)        | 3000  | <http://localhost:3000>       | admin/admin |
 | Automation          | Go/Svelte                             | 54173 | <http://localhost:54173/>     |             |
-| Automation for WSL  | Go/Svelte                             | 4173 | <http://localhost:4173/>     |             |
+| Automation for WSL/OrbStack  | Go/Svelte                             | 4173 | <http://localhost:4173/>     |             |
 | EdgeShark           | [EdgeShark](https://edgeshark.siemens.io/#/)| 5001 | <http://localhost:5001/>     |             |
 
 ### Access details
@@ -194,7 +195,7 @@ If you are accessing from a remote host, then replace localhost by the CLAB Serv
 * Grafana: <http://<Server-IP>:3000>. Built-in user credentials: `admin/admin`
 * Prometheus: <http://<Server-IP>:9090/graph>
 * Automation Panel: <http://<Server-IP>:54173/>
-* Automation Panel for WSL: <http://<Server-IP>:4173/>
+* Automation Panel for WSL/Orbstack: <http://<Server-IP>:4173/>
 * EdgeShark: http://<Server-IP>:5001/
 
 ## Verify the setup
