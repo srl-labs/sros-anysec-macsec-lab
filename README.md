@@ -160,7 +160,7 @@ sudo clab inspect -a
 # reach a SR OS node via SSH
 ssh pe1
 # reach Linux clients (password: multit00l)
-ssh user@client7
+ssh admin@client7
 ```
 
 ## SR OS Streaming Telemetry and Automation
